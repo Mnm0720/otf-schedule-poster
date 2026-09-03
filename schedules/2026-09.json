@@ -1,0 +1,457 @@
+{
+  "year": 2026,
+  "month": 9,
+  "theme": "Rhythm & Routine",
+  "tagline": "No month-long event &mdash; <b>three marked dates</b> and a steady repeat cycle",
+  "subtitle": "Monthly Schedule Poster",
+  "source_url": "reddit.com/r/orangetheory",
+  "strength_split": [
+    {
+      "days": "Mon / Thu",
+      "focus": "Upper Body"
+    },
+    {
+      "days": "Tue / Fri",
+      "focus": "Lower Body"
+    },
+    {
+      "days": "Wed / Sat / Sun",
+      "focus": "Total Body"
+    }
+  ],
+  "notes": [],
+  "footnotes": [],
+  "days": [
+    {
+      "day": 1,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 2,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 3,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 4,
+      "entries": [
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 5,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        },
+        {
+          "category": "incline",
+          "title": "",
+          "raw": "Incline Bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 6,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 7,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 8,
+      "entries": [
+        {
+          "category": "bench",
+          "title": "1000 Meter Row",
+          "raw": "Benchmark: 1000 Meter Row"
+        },
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 9,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 10,
+      "entries": [
+        {
+          "category": "switch",
+          "title": "",
+          "raw": "Switch Template"
+        },
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 11,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 12,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        },
+        {
+          "category": "band",
+          "title": "",
+          "raw": "Minibands"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 13,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        },
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 14,
+      "entries": [
+        {
+          "category": "bosu",
+          "title": "",
+          "raw": "BOSU"
+        }
+      ],
+      "repeat_of": null,
+      "note": ""
+    },
+    {
+      "day": 15,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        }
+      ],
+      "repeat_of": null,
+      "note": "Not a repeat"
+    },
+    {
+      "day": 16,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": 1,
+      "note": ""
+    },
+    {
+      "day": 17,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        }
+      ],
+      "repeat_of": 2,
+      "note": ""
+    },
+    {
+      "day": 18,
+      "entries": [
+        {
+          "category": "sig",
+          "title": "OTF Foundations",
+          "raw": "Signature: OTF Foundations"
+        },
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        }
+      ],
+      "repeat_of": null,
+      "note": "Not a repeat"
+    },
+    {
+      "day": 19,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        }
+      ],
+      "repeat_of": 3,
+      "note": ""
+    },
+    {
+      "day": 20,
+      "entries": [
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": 4,
+      "note": ""
+    },
+    {
+      "day": 21,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        },
+        {
+          "category": "incline",
+          "title": "",
+          "raw": "Incline Bench"
+        }
+      ],
+      "repeat_of": 5,
+      "note": ""
+    },
+    {
+      "day": 22,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": 6,
+      "note": ""
+    },
+    {
+      "day": 23,
+      "entries": [
+        {
+          "category": "sig",
+          "title": "The Chipper",
+          "raw": "Signature: The Chipper"
+        }
+      ],
+      "repeat_of": null,
+      "note": "Not a repeat"
+    },
+    {
+      "day": 24,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        }
+      ],
+      "repeat_of": 7,
+      "note": ""
+    },
+    {
+      "day": 25,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": 9,
+      "note": ""
+    },
+    {
+      "day": 26,
+      "entries": [
+        {
+          "category": "switch",
+          "title": "",
+          "raw": "Switch Template"
+        },
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        }
+      ],
+      "repeat_of": 10,
+      "note": ""
+    },
+    {
+      "day": 27,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "Standard"
+        }
+      ],
+      "repeat_of": 11,
+      "note": ""
+    },
+    {
+      "day": 28,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        },
+        {
+          "category": "band",
+          "title": "",
+          "raw": "Minibands"
+        }
+      ],
+      "repeat_of": 12,
+      "note": ""
+    },
+    {
+      "day": 29,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Row"
+        },
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": 13,
+      "note": ""
+    },
+    {
+      "day": 30,
+      "entries": [
+        {
+          "category": "bosu",
+          "title": "",
+          "raw": "BOSU"
+        }
+      ],
+      "repeat_of": 14,
+      "note": ""
+    }
+  ],
+  "schema_version": 1
+}

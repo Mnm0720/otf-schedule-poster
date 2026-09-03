@@ -1,0 +1,32 @@
+[project]
+name = "otf-schedule-poster"
+version = "0.1.0"
+description = "Generate an OTF monthly schedule poster (PNG) from a pasted monthly template post."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "jinja2>=3.1",
+    "markupsafe>=2.1",
+    "playwright>=1.40",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+otfposter = "otfposter.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["otfposter*"]
+
+[tool.setuptools.package-data]
+otfposter = ["templates/*.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error::DeprecationWarning"]

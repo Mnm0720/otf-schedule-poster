@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OTF {{ title_month }} Schedule</title>
+<style>
+{{ font_css }}
+  :root{
+    --orange:#F4511E;
+    --orange-lt:#FFF1EB;
+    --ink:#1A1A1A;
+    --line:#DCE0E6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    width:1200px;background:#fff;font-family:'Barlow',system-ui,sans-serif;color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .poster{width:1200px;padding:16px;background:#fff;}
+  .frame{
+    border:3px solid var(--orange);border-radius:22px;padding:22px 22px 24px;position:relative;overflow:hidden;
+    background:radial-gradient(circle at 1px 1px, #E9EDF2 1.1px, transparent 1.1px) 0 0/14px 14px;
+    background-repeat:repeat-x;background-size:14px 14px;background-color:#fff;
+  }
+  /* corner accents */
+  .corner{position:absolute;width:0;height:0;z-index:2;}
+  .corner.tl{top:0;left:0;border-top:96px solid var(--orange);border-right:96px solid transparent;}
+  .corner.tr{top:0;right:0;border-top:96px solid #16181D;border-left:96px solid transparent;}
+  .speed{position:absolute;z-index:3;}
+  .speed span{display:block;height:3px;background:#fff;border-radius:2px;margin-bottom:6px;transform:skewX(-28deg);opacity:.85;}
+  .speed.tl{top:16px;left:14px;}
+  .speed.tr{top:16px;right:14px;text-align:right;}
+  .speed.tr span{margin-left:auto}
+  .speed span:nth-child(1){width:38px}
+  .speed span:nth-child(2){width:28px}
+  .speed span:nth-child(3){width:18px}
+
+  /* ---------- header ---------- */
+  header{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative;z-index:4;padding:6px 6px 0;}
+  .brandwrap{text-align:center;flex:1;}
+  h1{font-family:'Anton',Impact,sans-serif;font-size:72px;line-height:.92;letter-spacing:.5px;font-weight:400;}
+  h1 .otf{color:var(--orange);}
+  h1 .mo{color:#16181D;}
+  .sub{font-family:'Anton',sans-serif;font-size:30px;color:#7A828C;letter-spacing:.4px;margin-top:2px;font-weight:400;}
+  .theme{
+    display:inline-block;background:var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;font-size:27px;letter-spacing:.6px;padding:7px 26px;border-radius:999px;margin-top:9px;
+  }
+  .tagline{font-style:italic;color:#7A828C;font-size:17px;font-weight:600;margin-top:7px;letter-spacing:.2px;}
+  .tagline b{color:var(--orange);font-style:italic;}
+  .hero-icon{width:112px;height:112px;flex:0 0 112px;border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(0,0,0,.08);}
+  .hero-icon svg{width:66px;height:66px;display:block;}
+  .hero-icon.dark{background:#16181D;color:var(--orange);}
+  .hero-icon.accent{background:var(--orange);color:#fff;}
+
+  /* ---------- marked-dates ribbon ---------- */
+  .ribbon{
+    margin:12px 0 10px;border-radius:12px;background:#16181D;color:#fff;display:flex;align-items:center;
+    padding:9px 18px;gap:14px;position:relative;overflow:hidden;
+  }
+  .ribbon:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--orange) 0 6px,transparent 6px);}
+  .ribbon .tag{background:var(--orange);color:#fff;font-family:'Anton',sans-serif;font-size:19px;letter-spacing:.6px;padding:4px 13px;border-radius:6px;white-space:nowrap;}
+  .ribbon .txt{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.3px;}
+  .ribbon .txt em{color:#FFB59A;font-style:italic;}
+
+  /* ---------- calendar ---------- */
+  .cal{border:2px solid #16181D;border-radius:12px;overflow:hidden;position:relative;z-index:4;}
+  .cal table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  .cal th{
+    background:#16181D;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+    font-size:20px;letter-spacing:2px;padding:7px 0;text-transform:uppercase;
+  }
+  .cal td{border:1px solid var(--line);vertical-align:top;height:92px;padding:5px 6px 7px;background:#fff;position:relative;}
+  .cal td.blank{background:#F7F8FA;}
+  .cal td.weekend{background:#FCFCFD;}
+  .dnum{font-family:'Anton',sans-serif;font-size:22px;line-height:1;color:#16181D;font-weight:400;}
+  .pills{margin-top:5px;display:flex;flex-direction:column;gap:3px;align-items:stretch;}
+  .pill{
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:.3px;
+    color:#fff;text-align:center;border-radius:5px;padding:3px 4px;line-height:1.12;
+  }
+  .pill.two{font-size:13.5px;}
+  .note{font-size:12.5px;color:#8A919B;font-style:italic;margin-top:4px;text-align:center;font-weight:500;}
+  .note.flag{color:var(--orange);font-weight:600;}
+
+  /* ---------- panels ---------- */
+  .panel{border:2px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;}
+  .panel .ph{
+    display:flex;align-items:center;gap:9px;background:var(--orange);color:#fff;padding:7px 13px;
+    font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.5px;font-weight:400;
+  }
+  .panel .ph svg{width:20px;height:20px;fill:#fff;flex:0 0 20px;}
+  .panel .pb{padding:11px 13px 12px;}
+
+  /* strength row */
+  .strength{margin-top:11px;border:2px solid var(--orange);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:18px;}
+  .strength .kb{width:78px;flex:0 0 78px;display:flex;align-items:center;justify-content:center;}
+  .strength .kb svg{width:78px;height:78px;}
+  .s-mid{flex:0 0 430px;}
+  .s-title{font-family:'Anton',sans-serif;font-size:23px;text-align:center;margin-bottom:9px;font-weight:400;}
+  .split{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden;}
+  .split div{flex:1;padding:8px 6px;text-align:center;border-right:2px solid var(--line);}
+  .split div:last-child{border-right:none;}
+  .split .d{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--orange);font-size:18px;letter-spacing:.4px;}
+  .split .bb{margin:5px auto;display:block;width:52px;}
+  .split .b{font-size:12.5px;font-weight:600;color:#3C424A;line-height:1.25;}
+  .s-list{flex:1;}
+  .s-list li{list-style:none;display:flex;gap:8px;align-items:flex-start;font-size:14.5px;font-weight:500;margin-bottom:5.5px;color:#2E3339;line-height:1.25;}
+  .s-list li:last-child{margin-bottom:0;}
+  .chk{flex:0 0 15px;width:15px;height:15px;margin-top:2px;}
+  .s-run{width:78px;flex:0 0 78px;display:flex;align-items:center;justify-content:center;}
+  .s-run svg{width:78px;height:78px;}
+
+  /* three-column row */
+  .row3{display:grid;grid-template-columns:1fr 1.18fr 1fr;gap:12px;margin-top:11px;}
+  .kd{display:flex;gap:9px;margin-bottom:9px;align-items:flex-start;}
+  .kd:last-child{margin-bottom:0;}
+  .kd .ic{flex:0 0 22px;width:22px;height:22px;margin-top:1px;}
+  .kd .d{font-weight:700;font-size:14.5px;line-height:1.2;}
+  .kd .t{font-size:13px;color:#6B727B;font-style:italic;line-height:1.25;margin-top:1px;}
+  .hl{display:flex;gap:8px;font-size:13.5px;margin-bottom:6.5px;line-height:1.3;align-items:baseline;}
+  .hl:last-child{margin-bottom:0;}
+  .dot{flex:0 0 10px;width:10px;height:10px;border-radius:50%;position:relative;top:1px;}
+  .hl b{font-weight:700;}
+  .map{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;}
+  .map div{font-size:13.5px;font-weight:600;color:#2E3339;display:flex;gap:6px;align-items:baseline;}
+  .map div:before{content:"";width:5px;height:5px;border-radius:50%;background:#9AA1AA;position:relative;top:-3px;}
+  .mapnote{margin-top:9px;color:#E53935;font-weight:700;font-size:13.5px;text-align:center;line-height:1.3;}
+  .mapnote span{display:block;color:#8A919B;font-weight:600;font-style:italic;font-size:12.5px;margin-top:3px;}
+  .empty{font-size:13px;color:#8A919B;font-style:italic;}
+
+  /* bottom */
+  .bottom{margin-top:11px;border:2px solid var(--line);border-radius:12px;overflow:hidden;}
+  .bottom .bh{background:var(--orange);color:#fff;text-align:center;padding:7px;font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.6px;display:flex;justify-content:center;align-items:center;gap:9px;font-weight:400;}
+  .bottom .bh svg{width:20px;height:20px;fill:#fff;}
+  .bwrap{display:grid;grid-template-columns:1fr 1fr 1fr 0.92fr;}
+  .bcol{padding:11px 13px;border-right:2px solid var(--line);}
+  .bcol:last-child{border-right:none;background:var(--orange-lt);}
+  .btype{display:flex;gap:9px;margin-bottom:8px;align-items:flex-start;}
+  .btype:last-child{margin-bottom:0;}
+  .btype .pill{flex:0 0 112px;font-size:13px;padding:3px 4px;}
+  .btype p{font-size:12.4px;color:#5C6470;line-height:1.28;font-weight:500;}
+  .bnote{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
+  .bnote:last-child{margin-bottom:0;}
+  .bnote svg{flex:0 0 22px;width:22px;height:22px;fill:#8A919B;margin-top:1px;}
+  .bnote p{font-size:12.6px;font-style:italic;color:#4C535B;line-height:1.3;font-weight:500;}
+  .bnote p b{font-style:normal;font-weight:700;color:#2E3339;}
+  .repeat-ic{display:inline-block;vertical-align:middle;width:22px;height:22px;fill:var(--orange);}
+  .credit{margin-top:9px;text-align:center;font-size:11.5px;color:#A6ADB6;font-weight:500;}
+</style>
+</head>
+<body>
+<div class="poster">
+<div class="frame">
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="speed tl"><span></span><span></span><span></span></div>
+  <div class="speed tr"><span></span><span></span><span></span></div>
+
+  <header>
+    <div class="hero-icon dark">{{ icon("sprint") }}</div>
+    <div class="brandwrap">
+      <h1><span class="otf">OTF</span> <span class="mo">{{ title_month }}</span></h1>
+      <div class="sub">{{ subtitle }}</div>
+      {% if theme %}<div class="theme">&#9733; THEME OF THE MONTH: {{ theme|upper }} &#9733;</div>{% endif %}
+      {% if tagline %}<div class="tagline">{{ tagline|safe }}</div>{% endif %}
+    </div>
+    <div class="hero-icon accent">{{ icon("fitness_center") }}</div>
+  </header>
+
+  {% if marked %}
+  <div class="ribbon">
+    <span class="tag">MARKED DATES</span>
+    <span class="txt">
+      {%- for md in marked -%}
+        {% if not loop.first %} &middot; {% endif %}
+        {%- if md.category == 'spec' -%}<em>{{ md.text }}</em>{%- else -%}{{ md.text }}{%- endif -%}
+      {%- endfor -%}
+    </span>
+  </div>
+  {% endif %}
+
+  <div class="cal">
+    <table>
+      <thead><tr>{% for d in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<th>{{ d }}</th>{% endfor %}</tr></thead>
+      <tbody>
+      {% for week in weeks %}
+        <tr>
+        {% for cell in week %}
+          {% if cell is none %}<td class="blank"></td>
+          {% else %}
+          <td{% if cell.weekend %} class="weekend"{% endif %}>
+            <div class="dnum">{{ cell.day }}</div>
+            <div class="pills">
+              {% for p in cell.pills %}
+              <div class="pill{% if cell.two %} two{% endif %}" style="background:{{ p.color }};color:{{ p.fg }}">{{ p.label }}</div>
+              {% endfor %}
+            </div>
+            {% if cell.note %}<div class="note{% if cell.flag %} flag{% endif %}">{{ cell.note }}</div>{% endif %}
+          </td>
+          {% endif %}
+        {% endfor %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="strength">
+    <div class="kb">{{ icon("exercise", color="#16181D") }}</div>
+    <div class="s-mid">
+      <div class="s-title">Strength 50 / Tread 50 Weekly Pattern</div>
+      <div class="split">
+        {% for s in strength_split %}
+        <div>
+          <div class="d">{{ s.days }}</div>
+          <svg class="bb" viewBox="0 0 100 26"><rect x="0" y="7" width="9" height="12" rx="3" fill="#16181D"/><rect x="11" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="23" y="10" width="54" height="6" rx="3" fill="#16181D"/><rect x="77" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="91" y="7" width="9" height="12" rx="3" fill="#16181D"/></svg>
+          <div class="b">Strength 50 =<br><b>{{ s.focus }}</b></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <ul class="s-list">
+      {% for n in notes %}<li>{{ icon("check_circle", cls="chk", color="#F4511E") }}<span>{{ n }}</span></li>{% endfor %}
+    </ul>
+    <div class="s-run">{{ icon("sprint", color="#F4511E") }}</div>
+  </div>
+
+  <div class="row3">
+    <div class="panel">
+      <div class="ph">{{ icon("calendar_month") }}Key Dates</div>
+      <div class="pb">
+        {% for k in key_dates %}
+        <div class="kd">{{ icon(k.icon, cls="ic", color=k.color) }}<div><div class="d">{{ k.heading }}</div><div class="t">{{ k.detail }}</div></div></div>
+        {% else %}
+        <div class="empty">No benchmarks, signatures or specialties this month.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">{{ icon("equalizer") }}Template &amp; Equipment Highlights</div>
+      <div class="pb">
+        {% for h in highlights %}
+        <div class="hl"><span class="dot" style="background:{{ h.color }}"></span><span><b style="color:{{ h.color }}">{{ h.label }}:</b> {{ h.value }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">{{ icon("autorenew") }}Repeat Template Map</div>
+      <div class="pb">
+        {% if repeat_map %}
+        <div class="map">
+          {% for r in repeat_map %}<div>{{ r.day }} = {{ r.source }}</div>{% endfor %}
+        </div>
+        {% if non_repeat %}
+        <div class="mapnote">{{ non_repeat|join(', ') }} {{ 'is' if non_repeat|length == 1 else 'are' }} not {{ 'a repeat' if non_repeat|length == 1 else 'repeats' }}</div>
+        {% endif %}
+        {% else %}
+        <div class="empty">No repeated templates this month.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="bh">{{ icon("menu_book") }}Workout Types &amp; Monthly Notes</div>
+    <div class="bwrap">
+      {% for col in legend|batch((legend|length / 3)|round(0,'ceil')|int) %}
+      <div class="bcol">
+        {% for t in col %}
+        <div class="btype"><div class="pill" style="background:{{ t.color }};color:{{ t.fg }}">{{ t.label }}</div><p>{{ t.blurb }}</p></div>
+        {% endfor %}
+        {% if loop.last %}
+        <div class="btype"><div style="flex:0 0 112px;text-align:center">{{ icon("autorenew", cls="repeat-ic", color="#F4511E") }}<div style="font-family:'Barlow Condensed';font-weight:700;font-size:13px;color:#F4511E">Repeat</div></div><p>The day re-runs an earlier template from the same month.</p></div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div class="bcol">
+        {% for f in footnotes %}
+        <div class="bnote">{{ icon(f.icon) }}<p><b>{{ f.lead }}</b> {{ f.text }}</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if source_url %}<div class="credit">Schedule data from {{ source_url }}</div>{% endif %}
+</div>
+</div>
+</body>
+</html>
