@@ -219,6 +219,10 @@ html{scroll-padding-top:80px;scroll-padding-bottom:130px;}
 .key-date-toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;max-width:800px;}
 .key-date-toolbar>.editor-field{flex:1 1 240px;}
 .key-date-form{max-width:800px;margin:8px 0 12px;}
+.section-subheading{margin:2px 0 6px;}
+.section-explanation{margin-bottom:16px;max-width:80ch;}
+#additionalInfoEditor .editor-field,#creditsEditor .editor-field{max-width:900px;}
+#additionalInfoEditor textarea,#creditsEditor textarea{min-height:140px;}
 .automatic-copy .style-controls{margin-bottom:16px;}
 #monthlyNotesEditor>.automatic-copy{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
 #monthlyNotesEditor>.automatic-copy>li{border:1px solid var(--line);border-radius:8px;padding:14px;margin:0;}

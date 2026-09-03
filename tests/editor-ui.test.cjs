@@ -9,7 +9,8 @@ function setup() {
   const state = new EditorState();
   state.accept({categories:[{key:'std', label:'Standard',color:'#E4E7EB'}, {key:'bench', label:'Benchmark', titled:true,color:'#1A3A6B'}],
     icons:['groups','bolt','flag','check_circle'].map(key => ({key,label:key,svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0z"/></svg>'})),
-    defaults:{notes:['Automatic'], footnotes:[{id:'three_g',icon:'groups',color:'#8A919B',lead:'Default',text:'Default body'}],
+    keyDateTypes:['Benchmark','Signature','Specialty'],
+    defaults:{credits:'Image: u/MnM0720\nModsquad: u/example',notes:['Automatic'], footnotes:[{id:'three_g',icon:'groups',color:'#8A919B',lead:'Default',text:'Default body'}],
       key_dates:[{id:'workout:8:bench:0',days:[8],detail:'Benchmark: Row',icon:'flag',color:'#1A3A6B'}]},
     schedule:{year:2026, month:9, theme:'Original', tagline:'', subtitle:'Monthly Schedule Poster',
       notes:[], footnotes:[], events:[{name:'Existing', start:1, end:30, kind:'special'}],
@@ -147,4 +148,28 @@ test('workout controls no longer repeat the poster highlight text or dates', () 
   state.current.highlights=[{label:'Run/Rows',value:'9/3, 9/8'}]; editor.renderWorkoutTypes();
   const text=all(doc.getElementById('workoutTypesEditor')).map(e=>e.textContent||'').join(' ');
   assert.doesNotMatch(text,/highlights|9\/3|9\/8/i);
+});
+
+test('additional information and credits preserve multiline edits and support clearing and reset', () => {
+  const {doc,state,editor}=setup();
+  let info=labelled(doc.getElementById('additionalInfoEditor'),'Additional info');
+  let credits=labelled(doc.getElementById('creditsEditor'),'Credits & team');
+  assert.equal(info.value,''); assert.equal(credits.value,state.current.defaults.credits);
+  info.value='Bring water\nBook early'; info.oninput();
+  credits.value='Image: u/custom\nStudio team'; credits.oninput();
+  assert.equal(state.dirty,true); assert.equal(state.canDownload,false);
+  editor.render();
+  assert.equal(labelled(doc.getElementById('additionalInfoEditor'),'Additional info').value,'Bring water\nBook early');
+  credits=labelled(doc.getElementById('creditsEditor'),'Credits & team');
+  assert.equal(credits.value,'Image: u/custom\nStudio team');
+  credits.value=''; credits.oninput(); editor.render();
+  assert.equal(labelled(doc.getElementById('creditsEditor'),'Credits & team').value,'');
+  labelled(doc.getElementById('creditsEditor'),'Restore default credits').onclick();
+  assert.equal(state.draft.credits,state.current.defaults.credits);
+});
+
+test('key date subheader explains every source of automatic entries', () => {
+  const {doc}=setup();
+  const text=all(doc.getElementById('keyDatesEditor')).map(e=>e.textContent||'').join(' ');
+  for (const name of ['Benchmark','Signature','Specialty','events','non-repeat']) assert.ok(text.includes(name));
 });

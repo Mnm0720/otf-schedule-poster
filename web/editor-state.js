@@ -10,6 +10,8 @@
       this.draft = clone(result.schedule);
       for (const key of ['category_styles','key_date_overrides','footnote_styles','note_style']) this.draft[key] ??= {};
       this.draft.key_dates ??= [];
+      this.draft.additional_info ??= '';
+      this.draft.credits ??= result.defaults.credits || '';
       this.dirty = false;
     }
     edit(change) {

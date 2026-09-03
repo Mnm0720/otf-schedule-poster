@@ -4,7 +4,7 @@ import json
 from otfposter.categories import CATEGORIES
 from otfposter.derive import default_notes, default_footnotes, automatic_key_dates, highlights
 from otfposter.assets import ICON_NAMES, make_icon_fn
-from otfposter.models import Month
+from otfposter.models import Month, DEFAULT_CREDITS
 from otfposter.parse import parse
 from otfposter.render import render_html
 from otfposter import validate
@@ -27,7 +27,8 @@ def _result(m, parse_notes="", *, edited=False):
         "parseNotes": parse_notes, "errors": errors, "days": len(m.days),
         "schedule": m.to_dict(),
         "defaults": {"notes": default_notes(m), "footnotes": default_footnotes(m),
-                     "key_dates": automatic_key_dates(m)},
+                     "key_dates": automatic_key_dates(m), "credits": DEFAULT_CREDITS},
+        "keyDateTypes": sorted(c.label for c in CATEGORIES if c.titled and c.key != 'unknown'),
         "highlights": highlights(m),
         "icons": [{"key": name, "label": name.replace('_', ' ').title(),
                    "svg": str(make_icon_fn(allow_fetch=False)(name))} for name in ICON_NAMES],

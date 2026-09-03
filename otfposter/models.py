@@ -16,6 +16,11 @@ from .categories import BY_KEY, Category, lookup
 
 SCHEMA_VERSION = 1
 
+DEFAULT_CREDITS = (
+    "Image: u/MnM0720\n"
+    "Modsquad: u/lookie4dacookie, u/jenniferlynn5454, u/pantherluna, and u/Rizzah319"
+)
+
 # OTF's standing Strength 50 split. Overridable per month.
 DEFAULT_STRENGTH_SPLIT = [
     {"days": "Mon / Thu", "focus": "Upper Body"},
@@ -90,6 +95,8 @@ class Month:
     key_date_overrides: dict[str, dict] = field(default_factory=dict)
     footnote_styles: dict[str, dict] = field(default_factory=dict)
     note_style: dict = field(default_factory=dict)
+    additional_info: str = ""
+    credits: str = DEFAULT_CREDITS
     days: list[Day] = field(default_factory=list)
     schema_version: int = SCHEMA_VERSION
 

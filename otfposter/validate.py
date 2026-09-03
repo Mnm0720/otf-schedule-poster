@@ -85,6 +85,10 @@ def customization_errors(m: Month) -> list[tuple[str, str]]:
     def error(label, message):
         issues.append((ERROR, f'{label}: {message}'))
 
+    for key, label in [('additional_info', 'Additional info'), ('credits', 'Credits & team')]:
+        if not isinstance(getattr(m, key), str):
+            error(label, 'enter plain text')
+
     def style(value, label):
         if not isinstance(value, dict):
             error(label, 'settings must be an object')

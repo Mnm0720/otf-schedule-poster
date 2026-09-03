@@ -16,7 +16,7 @@ def test_customization_sections_start_collapsed_and_titles_precede_schedule():
     page = Page()
     page.feed((Path(__file__).resolve().parents[1] / 'web/index.html').read_text(encoding='utf-8'))
     ids = [attrs.get('id') for _, attrs in page.nodes]
-    sections = ['titleSection', 'keyDateSection', 'workoutSection', 'notesSection', 'monthlyNotesSection', 'eventsSection']
+    sections = ['titleSection', 'keyDateSection', 'workoutSection', 'notesSection', 'monthlyNotesSection', 'eventsSection', 'additionalInfoSection', 'creditsSection']
     for section in sections:
         tag, attrs = next((tag, attrs) for tag, attrs in page.nodes if attrs.get('id') == section)
         assert tag == 'details' and 'open' not in attrs
@@ -24,6 +24,7 @@ def test_customization_sections_start_collapsed_and_titles_precede_schedule():
     assert ids.index('previewWrap') < ids.index('png') < ids.index('html') < ids.index('previewZoom')
     assert ids.index('go') < ids.index('restart') < ids.index('previewWrap')
     assert 'sourceInputs' in ids
+    assert ids.index('eventsSection') < ids.index('additionalInfoSection') < ids.index('creditsSection')
 
 
 def test_restart_popup_explains_loss_and_defaults_to_keep_editing():

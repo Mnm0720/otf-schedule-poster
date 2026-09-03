@@ -152,7 +152,7 @@ function confirmRestart() {
   editorState.reset();
   current = {html:'', slug:'poster', days:0};
   editor.selectedDay = editor.selectedKeyDate = editor.selectionMonth = null;
-  for (const id of ['titleSection','keyDateSection','workoutSection','notesSection','monthlyNotesSection','eventsSection']) $(id).open = false;
+  for (const id of ['titleSection','keyDateSection','workoutSection','notesSection','monthlyNotesSection','eventsSection','additionalInfoSection','creditsSection']) $(id).open = false;
   els.previewWrap.hidden = $('editorWrap').hidden = true;
   els.preview.srcdoc = '';
   els.png.hidden = els.html.hidden = true;

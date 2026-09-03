@@ -7,6 +7,7 @@ the day list is the only thing anyone edits.
 from __future__ import annotations
 
 from datetime import date
+import re
 
 from .categories import BY_KEY, CATEGORIES, light_text
 from .models import Month
@@ -357,6 +358,21 @@ def pill(entry, m: Month) -> dict:
     }
 
 
+def credit_lines(text: str) -> list[list[dict]]:
+    """Plain text plus safe Reddit profile links, escaped by the template."""
+    lines = []
+    for line in text.splitlines():
+        parts = []
+        start = 0
+        for match in re.finditer(r'(?<![\w/])u/[A-Za-z0-9_-]+', line):
+            parts.append({'text': line[start:match.start()], 'href': ''})
+            parts.append({'text': match.group(), 'href': f'https://www.reddit.com/{match.group()}/'})
+            start = match.end()
+        parts.append({'text': line[start:], 'href': ''})
+        lines.append(parts)
+    return lines
+
+
 def build_context(m: Month) -> dict:
     """Assemble every value the Jinja template needs."""
     grid = calendar_grid(m)
@@ -408,4 +424,6 @@ def build_context(m: Month) -> dict:
         "legend": legend,
         "footnotes": [{'color':'#8A919B', **f} for f in (m.footnotes or default_footnotes(m))],
         "source_url": m.source_url,
+        "additional_info": m.additional_info if m.additional_info.strip() else '',
+        "credit_lines": credit_lines(m.credits) if m.credits.strip() else [],
     }

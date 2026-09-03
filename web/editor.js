@@ -181,6 +181,9 @@
     renderKeyDates() {
       const root = this.doc.getElementById('keyDatesEditor'); root.replaceChildren();
       const m = this.state.draft;
+      root.append(this.node('h3','Added automatically from your schedule','section-subheading'));
+      const types=(this.state.current.keyDateTypes || []).join(', ');
+      root.append(this.node('p',`${types ? types + ' workouts, ' : ''}events, and non-repeat-day callouts (when applicable) appear here after you regenerate.`,'hint section-explanation'));
       const entries = [];
       for (const source of this.state.current.defaults.key_dates || []) {
         if (m.key_date_overrides[source.id]?.hidden) continue;
@@ -312,6 +315,20 @@
         }));
       };
       renderEvents();
+      const info = this.doc.getElementById('additionalInfoEditor'); info.replaceChildren();
+      info.append(this.node('p','Add any extra information at the bottom of your poster. Line breaks are preserved. Leave blank to hide this section.','hint section-explanation'));
+      this.field(info,'Text','Additional info',m.additional_info,value=>{ m.additional_info=value; },'textarea');
+      const credits = this.doc.getElementById('creditsEditor');
+      const renderCredits = () => {
+        credits.replaceChildren();
+        credits.append(this.node('p','Credit the people behind the poster. Reddit usernames become profile links. Clear the text to hide this section.','hint section-explanation'));
+        this.field(credits,'Text','Credits & team',m.credits,value=>{ m.credits=value; },'textarea');
+        credits.append(this.button('Restore default credits','Restore default credits',()=>{
+          this.change(()=>{ m.credits=this.state.current.defaults.credits; }); renderCredits();
+          credits.querySelectorAll('textarea')[0]?.focus();
+        }));
+      };
+      renderCredits();
     }
   }
   if (typeof module !== 'undefined' && module.exports) module.exports = {ScheduleEditor};

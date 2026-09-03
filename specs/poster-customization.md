@@ -37,6 +37,30 @@ ID), `footnote_styles` (sparse patches keyed by automatic note ID), and `note_st
 (checklist icon/color). Defaults are empty. The Python renderer owns derivation;
 the browser receives current defaults and the registries from its Python bridge.
 
+## Additional information and attribution
+
+- Explain beneath Key Dates that Benchmark, Signature, and Specialty workouts,
+  events, and applicable non-repeat-day callouts are added automatically. Derive
+  the workout names from the existing category registry so this stays accurate.
+- Append two independent, initially collapsed editor sections after Events:
+  Additional info, then Credits & team. Both accept multiline plain text, mark
+  the draft dirty, and update the poster/exports only after regeneration.
+- Additional info defaults to an empty string. Whitespace-only text produces no
+  poster section, heading, or reserved space. Nonempty text appears below the
+  existing poster content, retaining line breaks and wrapping long words.
+- Credits & team follows Additional info at the bottom of the poster. Its default
+  is `Image: u/MnM0720` followed on a new line by `Modsquad: u/lookie4dacookie,
+  u/jenniferlynn5454, u/pantherluna, and u/Rizzah319`. Display these as profile links
+  in the HTML export and readable text in PNG. Allow editing, clearing to hide,
+  and explicitly restoring the default. Escape all user text; link only recognized
+  `u/username` mentions to a constructed HTTPS Reddit profile URL.
+- Store `additional_info` and `credits` in Month JSON. Older schedules lacking the
+  fields receive defaults; existing custom or explicitly empty values survive
+  round trips. Keep the defaults in Python, not a separate JavaScript copy.
+- Restart closes the new editor sections and returns to the initial defaults.
+  This feature does not add browser persistence. Existing drafts still live only
+  in the current tab; saved-data migrations/backups remain future work.
+
 ## Simplified editing flow
 
 - After the first successful generation, hide the source inputs/examples and disable
@@ -129,3 +153,22 @@ committer, with no co-author trailers.
   the original paste, closed all sections, enabled Generate, and focused the text.
   Tests also cover failed regeneration, failed initial parsing, and blocked
   overlapping actions. The original user tab was not modified.
+
+### Additional info and credits verification, 2026-09-03
+
+- Red: eight Python cases (including the expanded structure check) and two Node
+  cases failed before the new model fields, footer rendering, and controls existed.
+- Green: 108 Python tests and 22 Node tests pass. All four saved schedules validate;
+  the static build succeeds. Older schedule JSON receives defaults, custom values
+  round-trip, and explicitly empty credit text remains empty.
+- Actual browser: default Additional info is absent from the poster; the credit
+  block contains the requested Image/Modsquad text and five Reddit profile links.
+  Editing multiline Additional info disables stale downloads; regeneration places
+  it below the existing panels and above Credits & team.
+- Inspected the downloaded 2400×4110 PNG: the complete poster, both extra text
+  lines, credit names, and readable profile labels appear without clipping.
+- At 390px and 320px, document/client widths match at 375px and 305px; footer text
+  controls use 16px text and stay inside the page. New editor sections start closed.
+- Clearing both text fields with the keyboard and regenerating removes both poster
+  sections. Restore default credits brings back the requested attribution while
+  Additional info stays hidden. The original user tab was not modified.

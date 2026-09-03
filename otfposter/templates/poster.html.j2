@@ -153,6 +153,12 @@
   .bnote p b{font-style:normal;font-weight:700;color:#2E3339;}
   .repeat-ic{display:inline-block;vertical-align:middle;width:22px;height:22px;fill:var(--orange);}
   .credit{margin-top:9px;text-align:center;font-size:11.5px;color:#A6ADB6;font-weight:500;}
+  .poster-extra{margin-top:11px;}
+  .extra-copy{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.45;}
+  .poster-credits{margin-top:11px;padding:12px 14px;border-top:1px solid var(--line);color:#5C6470;font-size:13px;line-height:1.5;overflow-wrap:anywhere;}
+  .poster-credits h2{font-size:14px;color:#2E3339;margin-bottom:5px;}
+  .credit-line{white-space:pre-wrap;min-height:1.5em;}
+  .poster-credits a{color:#9C300F;text-decoration:underline;text-underline-offset:2px;}
 </style>
 </head>
 <body>
@@ -299,6 +305,20 @@
   </div>
 
   {% if source_url %}<div class="credit">Schedule data from {{ source_url }}</div>{% endif %}
+  {% if additional_info %}
+  <section class="poster-extra panel">
+    <div class="ph">Additional info</div>
+    <div class="pb extra-copy">{{ additional_info }}</div>
+  </section>
+  {% endif %}
+  {% if credit_lines %}
+  <footer class="poster-credits">
+    <h2>Credits &amp; team</h2>
+    {% for line in credit_lines %}
+    <div class="credit-line">{% for part in line %}{% if part.href %}<a href="{{ part.href }}" target="_blank" rel="noopener noreferrer">{{ part.text }}</a>{% else %}{{ part.text }}{% endif %}{% endfor %}</div>
+    {% endfor %}
+  </footer>
+  {% endif %}
 </div>
 </div>
 </body>

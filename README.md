@@ -49,6 +49,12 @@ copy by default. Turn off **Use automatic copy** to customize the displayed text
 clearing all notes or removing all footnotes restores automatic copy. Events use
 day numbers within the displayed month, including a single day or the whole month.
 
+**Additional info** and **Credits & team** are the last two sections. Additional info
+accepts multiline text and appears below the other poster sections only when filled
+in. Credits default to the image and Modsquad attribution, with Reddit usernames
+linked to their profiles in the HTML poster. Edit or clear the credit text as needed;
+**Restore default credits** brings the original attribution back.
+
 Click **Regenerate poster** to apply your edits. Downloads stay disabled while the
 preview is out of date. If an edit is invalid, the draft stays available to fix.
 Edits live in this tab only; download the finished poster before closing it.
