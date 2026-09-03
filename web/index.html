@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OTF Schedule Poster Generator</title>
+<meta name="description" content="Paste the monthly r/orangetheory thread, get a printable schedule poster. Runs entirely in your browser.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F4511E'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Arial Black,sans-serif' fill='white'>O</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span>OTF</span> Schedule Poster</div>
+    <a class="gh" href="https://github.com/Mnm0720/otf-schedule-poster" target="_blank" rel="noopener">Source on GitHub</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <p class="lede">
+    Paste the monthly <strong>r/orangetheory</strong> thread below and get a printable
+    schedule poster. Everything runs in your browser &mdash; nothing is uploaded,
+    and you don't need a GitHub account.
+  </p>
+
+  <section class="panel">
+    <div class="panel-head">
+      <label for="src">Monthly thread text</label>
+      <div class="examples">
+        <span>Try an example:</span>
+        <span id="examples"></span>
+      </div>
+    </div>
+    <textarea id="src" spellcheck="false" placeholder="Welcome to the September 2026 Monthly Thread!
+&#10;...paste the whole post here, prose and all...&#10;
+* Run/Rows on 9/3, 9/5, 9/8 (benchmark), 9/13, 9/19, 9/21, 9/29.
+* Lift More templates on 9/2, 9/7, 9/10, 9/12, ...
+* Repeat templates are as follows: 9/16 = 9/1, 9/17 = 9/2, ..."></textarea>
+
+    <div class="row">
+      <div class="field">
+        <label for="month">Month <span class="hint">optional &mdash; read from the text</span></label>
+        <input id="month" type="text" placeholder="2026-09" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="theme">Theme <span class="hint">optional &mdash; read from the text</span></label>
+        <input id="theme" type="text" placeholder="Rhythm &amp; Routine" autocomplete="off">
+      </div>
+      <div class="field grow">
+        <label for="tagline">Tagline <span class="hint">optional</span></label>
+        <input id="tagline" type="text" placeholder="A line under the theme" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="go" class="primary" disabled>Loading&hellip;</button>
+      <button id="png" class="ghost" hidden>Download PNG</button>
+      <button id="html" class="ghost" hidden>Download HTML</button>
+      <span id="status" class="status"></span>
+    </div>
+
+    <div id="report" class="report" hidden></div>
+  </section>
+
+  <section id="previewWrap" class="panel preview" hidden>
+    <div class="panel-head"><label>Poster</label><span class="hint" id="dims"></span></div>
+    <div class="stage" id="stage"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
+  </section>
+
+  <details class="panel help">
+    <summary>What it reads from the post</summary>
+    <p>The threads describe a month <strong>by category, not day by day</strong>, so the
+       schedule is assembled by inverting those lists. Four things are read; everything
+       else is ignored.</p>
+    <pre>Welcome to the September 2026 Monthly Thread!
+... for September it is Rhythm &amp; Routine.
+
+Key Dates for The Month
+* September 8 (Tuesday): 1000 Meter Row; benchmark. ...
+* August 1 (Saturday) - August 31 (Monday): Marathon Month; event. ...
+
+* Run/Rows on 9/3, 9/5, 9/8 (benchmark), 9/13, ...
+* Repeat templates are as follows: 9/16 = 9/1, 9/17 = 9/2, ...</pre>
+    <p>Any day no category names becomes a <strong>Standard</strong> template. The
+       <code>(benchmark)</code> hints cross-reference Key Dates and don't add a second pill.
+       A plain day list (<code>9/1 - Standard</code>) is also accepted and detected
+       automatically.</p>
+    <p>Nothing is guessed. If a category label isn't recognised it's reported above the
+       poster rather than quietly dropped.</p>
+  </details>
+
+  <p class="foot">
+    Unofficial fan tool, not affiliated with Orangetheory Fitness.
+    Schedule data comes from the r/orangetheory monthly threads.
+  </p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

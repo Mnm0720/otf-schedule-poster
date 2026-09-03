@@ -1,0 +1,56 @@
+name: Deploy site
+
+# Builds the browser version and publishes it to GitHub Pages, so anyone can
+# generate a poster with no account, no clone and no install.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "otfposter/**"
+      - "assets/**"
+      - "schedules/raw/**"
+      - "scripts/build_site.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a half-finished deploy; queue instead.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+
+      # The site ships the real package, so if the package is broken the site
+      # should not go out.
+      - run: python -m pytest -q
+
+      - run: python scripts/build_site.py
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -11,6 +11,24 @@ Orangetheory Fitness.
 
 ---
 
+## Use it in your browser — no install, no account
+
+**→ https://mnm0720.github.io/otf-schedule-poster/**
+
+Paste the thread, hit Generate, download the PNG. Nothing is uploaded: the page
+runs the *actual* Python package via [Pyodide](https://pyodide.org/), so the
+parsing happens on your machine.
+
+That is not a reimplementation. `scripts/build_site.py` bundles the same `.py`
+files and Jinja template that CI uses, and the browser writes them into
+Pyodide's filesystem. Verified byte-for-byte: for all four months in
+`schedules/raw/`, the HTML the browser produces has the same SHA-256 as the HTML
+the command line produces.
+
+The rest of this README is for working on the tool itself.
+
+---
+
 ## Quick start
 
 ```bash
@@ -32,13 +50,17 @@ That writes:
 | `out/otf_2026-09.html` | a standalone HTML poster (fonts and icons inlined) |
 | `out/otf_2026-09.png` | the 2400px-wide poster image |
 
-## Generating a poster from GitHub (no local setup)
+## Generating a poster from GitHub Actions
 
 **Actions → Build poster → Run workflow**, paste the thread into the
-`schedule_text` box, run. The poster is attached to the run as an artifact and
-(unless you untick `commit`) committed to `out/`.
+`schedule_text` box, run. The poster is attached to the run as an artifact.
 
-PRs touching `schedules/` render a preview artifact without committing.
+Note this route needs **write access** to the repo — GitHub only shows "Run
+workflow" to collaborators. For everyone else, the Pages site above is the way
+in.
+
+Workflows never push to the repo: posters exist as run artifacts, and the Pages
+site is built and deployed straight from `main` without committing build output.
 
 ## What it reads
 
@@ -126,6 +148,8 @@ derived from the schedule.
 | `validate [json…]` | check schedules without rendering |
 | `fetch-assets` | refresh the cached icons and fonts under `assets/` |
 
+Plus `python scripts/build_site.py`, which assembles `site/` for GitHub Pages.
+
 Useful flags: `--strict`, `--offline`, `--html-only` (skip the browser),
 `--scale N` (pixel density, default 2), `--theme`, `--tagline`, `--out DIR`.
 
@@ -193,6 +217,12 @@ the month is computed in `derive.py`.
   only 7 of its last 20 days; labelling the other 13 "not a repeat" would mark
   most of the calendar and say nothing. Below 60% coverage the label is dropped
   and the notes say how many days repeat instead.
+- **The browser runs the real package, not a copy of it.** A JavaScript
+  reimplementation of the parser would be far lighter than shipping Pyodide,
+  but the parser is the part of this project with all the subtle behaviour and
+  all the tests, and a second copy would drift silently. `tests/test_site.py`
+  fails the build if a new module isn't bundled, or if Playwright ever moves to
+  module scope in `render.py` (the browser has no browser to drive).
 - **Rules the poster asserts are not always checkable.** The threads say
   templates never repeat inside a Mon–Sun week, and an early version validated
   it — but it flagged four false positives on real months, because two days can

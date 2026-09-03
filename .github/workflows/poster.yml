@@ -1,9 +1,12 @@
 name: Build poster
 
-# Three ways in:
-#   1. Paste a new month's post straight into the Actions UI (workflow_dispatch).
-#   2. Push/commit a file to schedules/raw/ and it renders on merge.
-#   3. Open a PR touching a schedule -- renders a preview artifact, commits nothing.
+# Renders posters and attaches them to the run as artifacts. Nothing is ever
+# pushed back to the repo -- see docs/ and the Pages site for the way most
+# people are expected to generate a poster.
+#
+#   1. Paste a month's post into the Actions UI (workflow_dispatch).
+#   2. Push a file to schedules/raw/ and it renders on merge.
+#   3. Open a PR touching a schedule -- renders a preview artifact.
 on:
   workflow_dispatch:
     inputs:
@@ -23,11 +26,6 @@ on:
         description: "Italic line under the theme (inline HTML allowed)"
         required: false
         type: string
-      commit:
-        description: "Commit the generated poster back to the repo"
-        required: false
-        default: true
-        type: boolean
       strict:
         description: "Fail if the parser or validator flags anything"
         required: false
@@ -46,7 +44,7 @@ on:
       - "assets/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: poster-${{ github.ref }}
@@ -110,22 +108,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: otf-poster${{ github.event_name == 'pull_request' && '-preview' || '' }}
+          retention-days: 90
           path: |
             out/*.png
             out/*.html
           if-no-files-found: error
-
-      - name: Commit generated files
-        if: >-
-          github.event_name != 'pull_request' &&
-          (github.event_name != 'workflow_dispatch' || inputs.commit)
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A out schedules assets
-          if git diff --cached --quiet; then
-            echo "nothing changed"
-          else
-            git commit -m "Build OTF poster [skip ci]"
-            git push
-          fi

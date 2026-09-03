@@ -1,0 +1,110 @@
+:root{
+  --orange:#F4511E;
+  --ink:#16181D;
+  --body:#2E3339;
+  --muted:#6B727B;
+  --line:#DCE0E6;
+  --bg:#F6F7F9;
+  --panel:#fff;
+  --warn:#8A5B00;
+  --warn-bg:#FFF7E6;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#F2F4F7; --body:#D7DBE0; --muted:#98A0AA; --line:#333941;
+    --bg:#14161A; --panel:#1C1F25; --warn:#FFC978; --warn-bg:#2A2418;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg);color:var(--body);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px;}
+
+.top{background:var(--ink);color:#fff;padding:14px 0;margin-bottom:26px;}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.brand{font-size:20px;font-weight:800;letter-spacing:.2px;}
+.brand span{color:var(--orange);}
+.gh{color:#C9CFD6;text-decoration:none;font-size:14px;font-weight:600;}
+.gh:hover{color:#fff;text-decoration:underline;}
+
+.lede{font-size:16px;color:var(--body);margin-bottom:20px;max-width:70ch;}
+.lede strong{color:var(--ink);}
+
+.panel{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:18px;margin-bottom:20px;
+}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px;flex-wrap:wrap;}
+label{font-weight:700;color:var(--ink);font-size:14px;display:block;}
+.hint{font-weight:500;color:var(--muted);font-size:12.5px;}
+
+.examples{font-size:13px;color:var(--muted);}
+.examples button{
+  background:none;border:1px solid var(--line);color:var(--orange);
+  border-radius:999px;padding:2px 11px;margin-left:5px;cursor:pointer;
+  font-size:12.5px;font-weight:700;font-family:inherit;
+}
+.examples button:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+textarea,input[type=text]{
+  width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:var(--bg);color:var(--body);
+  border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-size:13px;
+}
+textarea{min-height:230px;resize:vertical;line-height:1.45;}
+input[type=text]{font-size:13.5px;}
+textarea:focus,input:focus{outline:2px solid var(--orange);outline-offset:-1px;border-color:transparent;}
+
+.row{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
+.field{flex:0 0 170px;}
+.field.grow{flex:1 1 240px;}
+.field label{margin-bottom:5px;}
+
+.actions{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap;}
+button.primary,button.ghost{
+  font:inherit;font-weight:700;border-radius:8px;padding:10px 20px;cursor:pointer;
+  border:1px solid transparent;
+}
+button.primary{background:var(--orange);color:#fff;}
+button.primary:hover:not(:disabled){background:#D93F10;}
+button.primary:disabled{background:#B9BFC7;cursor:not-allowed;}
+button.ghost{background:transparent;color:var(--orange);border-color:var(--orange);}
+button.ghost:hover{background:var(--orange);color:#fff;}
+.status{color:var(--muted);font-size:13.5px;}
+.status.err{color:#C62828;font-weight:600;}
+
+.report{
+  margin-top:14px;background:var(--warn-bg);border:1px solid var(--warn);
+  border-radius:8px;padding:11px 13px;color:var(--warn);
+  font-size:13px;white-space:pre-wrap;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+
+/* The poster is authored at a fixed 1200px. Rather than let it overflow a
+   narrower pane, render it full size and scale the whole iframe down to fit --
+   the node inside keeps its real dimensions, so the PNG export is unaffected. */
+.stage{
+  width:100%;overflow:hidden;border:1px solid var(--line);border-radius:8px;
+  background:#fff;
+}
+.preview iframe{
+  width:1200px;border:0;display:block;transform-origin:top left;background:#fff;
+}
+
+.help summary{cursor:pointer;font-weight:700;color:var(--ink);}
+.help p{margin-top:11px;max-width:75ch;}
+.help pre{
+  margin-top:11px;background:var(--bg);border:1px solid var(--line);border-radius:8px;
+  padding:12px;overflow-x:auto;font-size:12.5px;line-height:1.5;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.help code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12.5px;}
+
+.foot{color:var(--muted);font-size:13px;margin:26px 0 40px;}
+
+@media (max-width:640px){
+  .field,.field.grow{flex:1 1 100%;}
+}
