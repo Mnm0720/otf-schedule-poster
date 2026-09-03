@@ -1,6 +1,6 @@
 /* Form controls edit the Month JSON in place; the Python renderer owns all copy. */
 (function (root) {
-  const {calendarCells} = typeof module !== 'undefined' && module.exports
+  const {parseDayList} = typeof module !== 'undefined' && module.exports
     ? require('./editor-state.js') : root.OTFEditor;
   const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -55,31 +55,31 @@
       return select;
     }
     render() {
-      this.renderCalendar(); this.renderCopy();
+      this.renderCalendar(); this.renderCopy(); this.renderKeyDates(); this.renderWorkoutTypes();
       this.doc.getElementById('editorWrap').hidden = false;
     }
     renderCalendar() {
       const grid = this.doc.getElementById('calendarEditor'); grid.replaceChildren();
       const m = this.state.draft;
+      const month = `${m.year}-${m.month}`;
+      if (this.selectionMonth !== month || !m.days.some(d => d.day === this.selectedDay)) this.selectedDay = m.days[0].day;
+      this.selectionMonth = month;
       const jump = this.doc.getElementById('dayJump'); jump.replaceChildren();
-      const prompt = this.node('option', 'Choose a day…'); prompt.value = ''; jump.append(prompt);
       for (const day of m.days) {
-        const option = this.node('option', `${m.month}/${day.day}`); option.value = String(day.day); jump.append(option);
+        const weekday = weekdays[new Date(Date.UTC(m.year,m.month-1,day.day)).getUTCDay()];
+        const option = this.node('option', `${m.month}/${day.day} · ${weekday}`); option.value = String(day.day); jump.append(option);
       }
-      jump.value = '';
-      jump.onchange = () => {
-        if (!jump.value) return;
-        const card = this.doc.getElementById(`day-${jump.value}`);
-        card.focus({preventScroll:true}); card.scrollIntoView({block:'start', behavior:'instant'});
-      };
-      for (const day of weekdays) grid.append(this.node('div', day.slice(0, 3), 'weekday-heading'));
-      for (const number of calendarCells(m.year, m.month)) {
-        if (!number) { const blank = this.node('div', undefined, 'calendar-blank'); blank.setAttribute('aria-hidden', 'true'); grid.append(blank); continue; }
-        const day = m.days.find(d => d.day === number);
-        const card = this.node('fieldset', undefined, 'day-card');
-        card.id = `day-${day.day}`; card.tabIndex = -1;
+      jump.value = String(this.selectedDay);
+      const showDay = () => {
+        grid.replaceChildren();
+        const day = m.days.find(d => d.day === this.selectedDay);
+        const card = this.node('fieldset', undefined, 'day-card'); card.id = `day-${day.day}`;
         grid.append(card); this.renderDay(card, day);
-      }
+      };
+      jump.onchange = () => {
+        this.selectedDay = Number(jump.value); showDay();
+      };
+      showDay();
     }
     renderDay(card, day) {
       card.replaceChildren();
@@ -92,18 +92,19 @@
         if (!options.some(([key]) => key === entry.category)) options.push([entry.category, entry.category]);
         this.select(group, 'Template', `Day ${day.day} template ${index + 1}`, options, entry.category, value => {
           entry.category = value;
+          this.renderWorkoutTypes();
         });
         // Keep each entry's own title, including unknown or custom regular templates.
         this.field(group, 'Workout title', `Day ${day.day} workout title ${index + 1}`, entry.title,
           value => { entry.title = value; });
         group.append(this.button('Remove', `Day ${day.day} remove template ${index + 1}`, () => {
-          this.change(() => day.entries.splice(index, 1)); this.renderDay(card, day);
+          this.change(() => day.entries.splice(index, 1)); this.renderDay(card, day); this.renderWorkoutTypes();
           card.querySelectorAll('button')[0]?.focus();
         }));
         card.append(group);
       });
       const add = this.button('+ Template', `Day ${day.day} add template`, () => {
-        this.change(() => day.entries.push({category:'std', title:''})); this.renderDay(card, day);
+        this.change(() => day.entries.push({category:'std', title:''})); this.renderDay(card, day); this.renderWorkoutTypes();
         const selects = card.querySelectorAll('select'); selects[selects.length - 2]?.focus();
       });
       card.append(add);
@@ -112,6 +113,80 @@
         day.repeat_of, value => { day.repeat_of = value ? Number(value) : null; });
       this.checkbox(card, '3G template', `Day ${day.day} 3G`, day.three_g,
         checked => this.change(() => { day.three_g = checked; }));
+    }
+    styleControls(parent, value, label, update, defaults = {}) {
+      const row = this.node('div', undefined, 'style-controls');
+      this.select(row, 'Icon', `${label} icon`, (this.state.current.icons || []).map(i => [i.key,i.label]),
+        value.icon || defaults.icon || 'groups', icon => update('icon',icon));
+      this.field(row, 'Color', `${label} color`, value.color || defaults.color || '#8A919B',
+        color => update('color',color), 'color');
+      parent.append(row);
+    }
+    renderWorkoutTypes() {
+      const root = this.doc.getElementById('workoutTypesEditor'); root.replaceChildren();
+      const m = this.state.draft;
+      const used = new Set(m.days.flatMap(d => d.entries.map(e => e.category)));
+      root.append(this.node('p','Selections start with the types used this month. Colors apply across the poster; toggles change the legend only.','hint'));
+      const list = this.node('div', undefined, 'workout-types'); root.append(list);
+      for (const cat of this.state.current.categories) {
+        const row = this.node('div', undefined, 'type-setting');
+        const settings = m.category_styles[cat.key] || {};
+        const set = (key,value) => { (m.category_styles[cat.key] ??= {})[key] = value; };
+        this.checkbox(row, cat.label, `Show ${cat.label} in workout types`, settings.visible ?? used.has(cat.key),
+          checked => this.change(() => set('visible',checked)));
+        this.field(row,'Color',`${cat.label} color`,settings.color || cat.color || '#8A919B', color => set('color',color),'color');
+        list.append(row);
+      }
+      root.append(this.button('Use automatic selections','Use automatic workout selections',() => {
+        this.change(() => { for (const settings of Object.values(m.category_styles)) delete settings.visible; });
+        this.renderWorkoutTypes();
+      }));
+      root.append(this.button('Reset type colors','Reset workout colors',() => {
+        this.change(() => { for (const settings of Object.values(m.category_styles)) delete settings.color; });
+        this.renderWorkoutTypes();
+      }));
+      root.append(this.node('h3','Template & equipment highlights'));
+      root.append(this.node('p','Dates are linked to your schedule. Regenerate to refresh the list below.','hint'));
+      const highlights = this.node('ul',undefined,'automatic-copy');
+      for (const row of this.state.current.highlights || []) highlights.append(this.node('li',`${row.label}: ${row.value}`));
+      root.append(highlights);
+    }
+    renderKeyDates() {
+      const root = this.doc.getElementById('keyDatesEditor'); root.replaceChildren();
+      const m = this.state.draft;
+      root.append(this.node('p','Workouts and events stay linked to the schedule. Customize a field to override it, or add your own dates. Regenerate to refresh linked rows.','hint'));
+      const renderRow = (value,label,set,remove) => {
+        const row = this.node('section',undefined,'copy-item');
+        row.append(this.node('h3',label));
+        this.field(row,'Date(s)',`${label} dates`,Array.isArray(value.days) ? value.days.join(', ') : value.days,
+          input => set('days',parseDayList(input,m.days.length) ?? input));
+        row.append(this.node('p','Day numbers or ranges, e.g. 8, 18, 24-28.','hint'));
+        this.field(row,'Description',`${label} description`,value.detail,input => set('detail',input));
+        this.styleControls(row,value,label,set,{icon:'flag',color:'#F4511E'});
+        row.append(remove); root.append(row);
+      };
+      (this.state.current.defaults.key_dates || []).forEach((source,index) => {
+        const label = `Key Date ${index+1}`;
+        const patch = m.key_date_overrides[source.id] || {};
+        if (patch.hidden) return;
+        const set = (key,value) => { (m.key_date_overrides[source.id] ??= {})[key]=value; };
+        renderRow({...source,...patch},label,set,this.button('Hide linked entry',`Hide ${label}`,() => {
+          this.change(() => set('hidden',true)); this.renderKeyDates();
+        }));
+      });
+      m.key_dates.forEach((row,index) => {
+        const label = `Custom Key Date ${index+1}`;
+        renderRow(row,label,(key,value) => { row[key]=value; },this.button('Remove entry',`Remove ${label}`,() => {
+          this.change(() => m.key_dates.splice(index,1)); this.renderKeyDates();
+        }));
+      });
+      root.append(this.button('+ Key date','Add key date',() => {
+        this.change(() => m.key_dates.push({days:[this.selectedDay],detail:'',icon:'flag',color:'#F4511E'}));
+        this.renderKeyDates();
+      }));
+      root.append(this.button('Restore linked entries','Restore linked key dates',() => {
+        this.change(() => { m.key_date_overrides={}; }); this.renderKeyDates();
+      }));
     }
     renderCopy() {
       const root = this.doc.getElementById('copyEditor'); root.replaceChildren();
@@ -125,7 +200,9 @@
         const section = this.node('section', undefined, 'copy-section'); root.append(section);
         const renderSection = () => {
           section.replaceChildren();
-          section.append(this.node('h3', key === 'notes' ? 'Notes' : 'Footnotes'));
+          section.append(this.node('h3', key === 'notes' ? 'Checklist notes' : 'Monthly notes'));
+          if (key === 'notes') this.styleControls(section,m.note_style,'Checklist notes',
+            (key,value) => { m.note_style[key]=value; },{icon:'check_circle',color:'#F4511E'});
           const automatic = m[key].length === 0;
           const toggle = this.checkbox(section, 'Use automatic copy', `Automatic ${key}`, automatic, checked => {
             this.state.setAutomatic(key, checked); this.changed(); renderSection();
@@ -133,8 +210,14 @@
           });
           if (automatic) {
             const preview = this.node('ul', undefined, 'automatic-copy');
-            for (const item of this.state.current.defaults[key]) {
-              preview.append(this.node('li', key === 'notes' ? item : `${item.lead} ${item.text}`));
+            for (const [index,item] of this.state.current.defaults[key].entries()) {
+              const li = this.node('li', key === 'notes' ? item : `${item.lead} ${item.text}`);
+              if (key === 'footnotes') {
+                const id = item.id || String(index);
+                this.styleControls(li,{...item,...m.footnote_styles[id]},`Monthly note ${index+1}`,
+                  (key,value) => { (m.footnote_styles[id] ??= {})[key]=value; });
+              }
+              preview.append(li);
             }
             section.append(preview, this.node('p', 'Automatic copy updates when you regenerate.', 'hint'));
           } else if (key === 'notes') {
@@ -148,6 +231,7 @@
               const row = this.node('div', undefined, 'copy-item');
               this.field(row, 'Heading', `Footnote ${index + 1} heading`, item.lead, value => { item.lead = value; });
               this.field(row, 'Text', `Footnote ${index + 1} text`, item.text, value => { item.text = value; }, 'textarea');
+              this.styleControls(row,item,`Monthly note ${index+1}`,(key,value) => { item[key]=value; });
               row.append(this.button('Remove footnote', `Remove footnote ${index + 1}`, () => {
                 this.change(() => m.footnotes.splice(index, 1)); renderSection();
                 section.querySelectorAll('input')[0]?.focus();

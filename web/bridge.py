@@ -2,7 +2,8 @@
 import json
 
 from otfposter.categories import CATEGORIES
-from otfposter.derive import default_notes, default_footnotes
+from otfposter.derive import default_notes, default_footnotes, automatic_key_dates, highlights
+from otfposter.assets import ICON_NAMES
 from otfposter.models import Month
 from otfposter.parse import parse
 from otfposter.render import render_html
@@ -25,8 +26,11 @@ def _result(m, parse_notes="", *, edited=False):
         "notes": "\n".join(n for n in [parse_notes, validate.report(issues)] if n.strip()),
         "parseNotes": parse_notes, "errors": errors, "days": len(m.days),
         "schedule": m.to_dict(),
-        "defaults": {"notes": default_notes(m), "footnotes": default_footnotes(m)},
-        "categories": [{"key": c.key, "label": c.label, "titled": c.titled}
+        "defaults": {"notes": default_notes(m), "footnotes": default_footnotes(m),
+                     "key_dates": automatic_key_dates(m)},
+        "highlights": highlights(m),
+        "icons": [{"key": name, "label": name.replace('_', ' ').title()} for name in ICON_NAMES],
+        "categories": [{"key": c.key, "label": c.label, "titled": c.titled, "color": c.color}
                        for c in sorted(CATEGORIES, key=lambda c: c.order)],
     })
 

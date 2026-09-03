@@ -1,6 +1,6 @@
 const {test} = require('node:test');
 const assert = require('node:assert/strict');
-const {EditorState, calendarCells, validateDraft} = require('../web/editor-state.js');
+const {EditorState, calendarCells, validateDraft, parseDayList} = require('../web/editor-state.js');
 
 function response() {
   return {html: 'old poster', slug: '2026-09', days: 30, defaults: {
@@ -21,6 +21,13 @@ test('draft edits never mutate the last rendered schedule or unrelated data', ()
   assert.equal(s.draft.source_url, 'keep me');
   assert.equal(s.draft.days[0].note, 'Keep this note');
   assert.equal(s.dirty, true); assert.equal(s.canDownload, false);
+});
+
+test('linked date input accepts lists/ranges and rejects invalid or out-of-month values', () => {
+  assert.deepEqual(parseDayList('3, 7-9, 3',30),[3,7,8,9]);
+  for (const value of ['0','31','1.5','9-4','a','1,,2']) assert.equal(parseDayList(value,30),null);
+  const d=response().schedule; d.key_dates=[{days:[],detail:'Missing date'}];
+  assert.match(validateDraft(d).join(' '),/Key Date/);
 });
 
 test('render failure retains draft; success updates export and clears dirty state', () => {
@@ -50,6 +57,17 @@ test('calendar covers leap February and Sunday-first six-week months', () => {
   assert.equal(feb.filter(Boolean).length, 29); assert.equal(feb[2], 1);
   const aug = calendarCells(2026, 8);
   assert.equal(aug.length, 42); assert.equal(aug[6], 1); assert.equal(aug[36], 31);
+});
+
+test('custom monthly copy keeps unsaved automatic icon and color changes', () => {
+  const result = response(); result.defaults.footnotes[0].id = 'three_g';
+  const s = new EditorState(); s.accept(result);
+  s.edit(d => { d.footnote_styles.three_g = {icon:'bolt',color:'#126789'}; });
+  s.setAutomatic('footnotes', false);
+  assert.equal(s.draft.footnotes[0].icon, 'bolt');
+  assert.equal(s.draft.footnotes[0].color, '#126789');
+  assert.equal(s.draft.footnotes[0].text, 'Body');
+  assert.equal(s.current.defaults.footnotes[0].icon, 'groups');
 });
 
 test('repeat and event validation catches invalid ranges but permits clearing', () => {

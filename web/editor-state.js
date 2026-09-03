@@ -7,6 +7,8 @@
     accept(result) {
       this.current = clone(result);
       this.draft = clone(result.schedule);
+      for (const key of ['category_styles','key_date_overrides','footnote_styles','note_style']) this.draft[key] ??= {};
+      this.draft.key_dates ??= [];
       this.dirty = false;
     }
     edit(change) {
@@ -15,7 +17,11 @@
       this.dirty = true;
     }
     setAutomatic(key, automatic) {
-      this.edit(d => { d[key] = automatic ? [] : clone(d[key].length ? d[key] : this.current.defaults[key]); });
+      this.edit(d => {
+        const defaults = key === 'footnotes' ? this.current.defaults[key].map(note =>
+          ({...note, ...d.footnote_styles[note.id]})) : this.current.defaults[key];
+        d[key] = automatic ? [] : clone(d[key].length ? d[key] : defaults);
+      });
     }
     begin() { if (this.busy) return false; this.busy = true; return true; }
     finish() { this.busy = false; }
@@ -47,10 +53,32 @@
         errors.push(`Event ${index + 1}: choose start/end days between 1 and ${length}, in order.`);
       }
     }
+    const linked = (row, label, required) => {
+      if ((required || 'days' in row) && (!Array.isArray(row.days) || !row.days.length ||
+          row.days.some(d => !Number.isInteger(d) || d < 1 || d > length))) {
+        errors.push(`${label}: choose date numbers between 1 and ${length}, e.g. 8, 18, 24-28.`);
+      }
+      if (required && !row.detail?.trim()) errors.push(`${label}: enter a description.`);
+    };
+    (draft.key_dates || []).forEach((row,i) => linked(row, `Key Date ${i+1}`, true));
+    Object.values(draft.key_date_overrides || {}).forEach(row => linked(row, 'Key Date', false));
     return errors;
   }
 
-  const api = {EditorState, calendarCells, validateDraft};
+  function parseDayList(text, length) {
+    if (!text.trim()) return [];
+    const days = new Set();
+    for (const part of text.split(',')) {
+      const match = part.trim().match(/^(\d+)(?:\s*-\s*(\d+))?$/);
+      if (!match) return null;
+      const first = Number(match[1]), last = Number(match[2] || match[1]);
+      if (first < 1 || last > length || first > last) return null;
+      for (let day = first; day <= last; day++) days.add(day);
+    }
+    return [...days].sort((a,b) => a-b);
+  }
+
+  const api = {EditorState, calendarCells, validateDraft, parseDayList};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.OTFEditor = api;
 })(globalThis);

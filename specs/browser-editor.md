@@ -10,8 +10,10 @@ The existing GitHub Pages build and Python category registry remain authoritativ
 
 ## Acceptance criteria
 
-1. Every day of the parsed month appears in a Sunday-first calendar on wide screens
-   and dated cards on narrow screens, including February and six-week months.
+1. Every day of the parsed month is available in a date dropdown. Show exactly one
+   selected day form, preserving edits when switching dates and keeping the selected
+   date after regeneration. See [poster customization](poster-customization.md)
+   for linked Key Dates, workout toggles, shared colors, and note icons.
 2. Each day supports multiple template entries with category dropdowns, independent
    workout titles, add/remove actions, an optional earlier repeat source, and 3G.
    Preserve entry order, unknown entries, raw text, day notes, and unrelated month
@@ -44,7 +46,7 @@ The existing GitHub Pages build and Python category registry remain authoritativ
 10. At 320px, 390px, 768px, and desktop widths, the page fits without horizontal
     scrolling. Phone day cards and copy fields use a single column. Section links
     reach paste, poster, days, copy, and help; generated sections appear in navigation
-    only after generation. A day picker scrolls to and focuses the requested day.
+    only after generation. A day picker replaces the form with the requested day.
     Sticky navigation must not cover the destination or keyboard focus.
 11. The poster preview defaults to fit-to-width. A full-size view lets people read
     the fixed-width print layout by scrolling inside the preview without widening
@@ -57,7 +59,8 @@ Before this change, actual browser checks at 390px found a dark-mode header with
 section navigation. Verify the corrected styles, navigation, generated editor,
 regeneration, and exports in the real browser as well as the existing unit suites.
 
-Responsive pass verified on 2026-09-02:
+Historical responsive pass for the original calendar editor, verified on 2026-09-02
+(the selected-date editor's current results are in the customization spec):
 
 | Viewport width | Document width | Day columns | Input font | Example / editor buttons |
 | --- | --- | --- | --- | --- |

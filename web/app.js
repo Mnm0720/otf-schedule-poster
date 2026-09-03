@@ -255,7 +255,7 @@ $('previewZoom').onclick = () => {
   fitPreview();
 };
 // Open disclosures before following their section anchors.
-for (const anchor of document.querySelectorAll('a[href="#copySection"], a[href="#help"]')) {
+for (const anchor of document.querySelectorAll('a[href="#copySection"], a[href="#help"], a[href="#keyDateSection"], a[href="#workoutSection"]')) {
   anchor.onclick = () => { $(anchor.getAttribute('href').slice(1)).open = true; };
 }
 addEventListener('beforeunload', event => {

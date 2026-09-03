@@ -14,6 +14,10 @@ TEMPLATE_DIR = Path(__file__).parent / "templates"
 
 
 def render_html(m: Month, *, allow_fetch: bool = True) -> str:
+    from .validate import customization_errors
+    errors = customization_errors(m)
+    if errors:
+        raise ValueError('\n'.join(message for _, message in errors))
     env = Environment(
         loader=FileSystemLoader(TEMPLATE_DIR),
         autoescape=True,

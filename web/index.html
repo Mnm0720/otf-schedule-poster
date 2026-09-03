@@ -85,18 +85,28 @@
       <h2 id="editorTitle">Edit your schedule</h2>
       <a href="#previewWrap">Back to poster ↑</a>
     </div>
-    <p class="editor-intro">Adjust any day or customize the poster copy, then regenerate.
+    <p class="editor-intro">Choose a date to edit, or customize the poster sections below, then regenerate.
       Repeat links leave each day's templates as you set them. Your edits stay in this tab.</p>
     <fieldset id="editorFields" class="editor-fields">
       <legend class="visually-hidden">Schedule and poster settings</legend>
       <div class="editor-toolbar">
-        <label for="dayJump">Jump to day</label>
-        <select id="dayJump"><option value="">Choose a day…</option></select>
-        <a href="#copySection">Edit poster copy &amp; events ↓</a>
+        <label for="dayJump">Select date</label>
+        <select id="dayJump"></select>
+        <a href="#keyDateSection">Key Dates</a>
+        <a href="#workoutSection">Workout Types</a>
+        <a href="#copySection">Copy &amp; notes</a>
       </div>
       <div id="calendarEditor" class="calendar-editor"></div>
+      <details id="keyDateSection" class="copy-details">
+        <summary>Key Dates</summary>
+        <div id="keyDatesEditor"></div>
+      </details>
+      <details id="workoutSection" class="copy-details">
+        <summary>Workout Types &amp; Highlights</summary>
+        <div id="workoutTypesEditor"></div>
+      </details>
       <details id="copySection" class="copy-details" open>
-        <summary>Poster copy &amp; events</summary>
+        <summary>Poster copy, monthly notes &amp; events</summary>
         <div id="copyEditor" class="copy-editor"></div>
       </details>
     </fieldset>

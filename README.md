@@ -17,13 +17,27 @@ Everything runs in your browser. Nothing is uploaded, and you don't need an acco
 
 ### Fix or customize your poster
 
-After generating, use **Edit your schedule** below the poster. Each day supports
+After generating, use **Edit your schedule** below the poster. **Select date**
+shows one day at a time and keeps your edits when you switch dates. Each day supports
 multiple templates, a title for each workout, an earlier **Repeat of** day, and a
 **3G template** checkbox. Adding a repeat link leaves the day's templates as you
 set them; mismatches appear as warnings when you regenerate.
 
-Under **Poster copy & events**, edit the theme, tagline, subtitle, notes, footnote
-headings and text, or event names and date ranges. Notes and footnotes use automatic
+Under **Key Dates**, edit linked workout/event callouts or add your own. Link an
+entry to one date, several dates, or a range using day numbers such as `8, 18, 24-28`.
+Choose an icon and color for each entry. Unedited fields continue to follow the
+schedule; hide an automatic entry or restore linked entries when needed.
+
+Under **Workout Types & Highlights**, all workout types have a legend toggle and
+color picker. Types used in the month are selected automatically until you override
+them. Changing a color updates calendar pills, highlights, the legend, and linked
+Key Date icons without an individual color override. Highlights always derive from
+the schedule. **Use automatic selections** restores the month-based toggles;
+**Reset type colors** restores the original palette.
+
+Under **Poster copy, monthly notes & events**, edit the theme, tagline, subtitle,
+checklist notes, monthly note headings and text, or event names and date ranges.
+Choose icons and colors for checklist notes and each monthly note. Notes use automatic
 copy by default. Turn off **Use automatic copy** to customize the displayed text;
 clearing all notes or removing all footnotes restores automatic copy. Events use
 day numbers within the displayed month, including a single day or the whole month.
@@ -32,9 +46,9 @@ Click **Regenerate poster** to apply your edits. Downloads stay disabled while t
 preview is out of date. If an edit is invalid, the draft stays available to fix.
 Edits live in this tab only; download the finished poster before closing it.
 
-Use the section links to move between the paste, poster, days, copy, and help.
-**Jump to day** takes you directly to a date in the editor. On phones, day cards
-and copy fields stack into one column with larger touch controls. **View full size**
+Use the section links to move between the paste, poster, days, copy, and help,
+with direct links to Key Dates and Workout Types inside the editor. On phones,
+day cards and copy fields stack into one column with larger touch controls. **View full size**
 lets you scroll across the poster to read its details; **Fit to width** restores
 the overview. Both views export the same full-resolution poster.
 
@@ -164,7 +178,8 @@ from the edited schedule; custom fields preserve the model's existing semantics.
 
 ### Specifications and tests
 
-The [browser editor spec](specs/browser-editor.md) records the behavior and TDD
+The [browser editor spec](specs/browser-editor.md) and
+[poster customization spec](specs/poster-customization.md) record behavior and TDD
 verification. For behavior changes, add a failing regression test first, implement
 the smallest fix, then run the relevant tests and the full checks before delivery:
 

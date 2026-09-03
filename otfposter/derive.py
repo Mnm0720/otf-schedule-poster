@@ -52,7 +52,8 @@ def highlights(m: Month) -> list[dict]:
     titles: dict[str, list[str]] = {}
     for day in m.days:
         for e in day.entries:
-            hits.setdefault(e.category, []).append(m.mmdd(day.day))
+            if m.mmdd(day.day) not in hits.setdefault(e.category, []):
+                hits[e.category].append(m.mmdd(day.day))
             if e.cat.titled and e.title:
                 titles.setdefault(e.category, []).append(f"{m.mmdd(day.day)} {e.title}")
 
@@ -70,7 +71,7 @@ def highlights(m: Month) -> list[dict]:
         else:
             value = "none scheduled this month"
         rows.append({
-            "color": cat.color,
+            "color": category_color(m, cat.key),
             "label": _plural(cat.label),
             "value": value,
             "count": len(dates),
@@ -145,17 +146,20 @@ def non_repeat_days(m: Month) -> list[int]:
     return [d.day for d in m.days if d.day >= start and not d.repeat_of]
 
 
-def key_dates(m: Month) -> list[dict]:
+def automatic_key_dates(m: Month) -> list[dict]:
     """The Key Dates panel: marked workouts, then the non-repeat callout."""
     rows = []
-    seen: set[int] = set()
+    occurrences: dict[tuple, int] = {}
     for md in marked_dates(m):
-        if md["day"] in seen:
-            continue
-        seen.add(md["day"])
+        pair = (md['day'], md['category'])
+        occurrence = occurrences.get(pair, 0)
+        occurrences[pair] = occurrence + 1
         icon, color = KEY_DATE_ICONS.get(md["category"], ("star", "#E8A33D"))
+        color = m.category_styles.get(md['category'], {}).get('color', color)
         d = date(m.year, m.month, md["day"])
         rows.append({
+            "id": f"workout:{md['day']}:{md['category']}:{occurrence}",
+            "days": [md['day']],
             "icon": icon,
             "color": color,
             "heading": f"{d.strftime('%B')} {md['day']} ({d.strftime('%A')})",
@@ -168,6 +172,8 @@ def key_dates(m: Month) -> list[dict]:
         heading = (f"{d.strftime('%B')} {ev.start}" if ev.start == ev.end
                    else f"{d.strftime('%B')} {ev.start} - {end.strftime('%B')} {ev.end}")
         rows.insert(0, {
+            "id": f"event:{ev.name}:{ev.start}:{ev.end}",
+            "days": list(range(ev.start, ev.end + 1)),
             "icon": "flag", "color": "#F4511E",
             "heading": heading,
             "detail": f"{ev.name}; month-long event" if _is_whole_month(m, ev)
@@ -177,11 +183,39 @@ def key_dates(m: Month) -> list[dict]:
     nrd = non_repeat_days(m)
     if nrd:
         rows.append({
+            "id": "non-repeat", "days": nrd,
             "icon": "star", "color": "#E8A33D",
             "heading": _join_days(m, nrd),
             "detail": f"The month{RSQ}s only non-repeat day"
                       + ("s" if len(nrd) > 1 else ""),
         })
+    return rows
+
+
+def linked_heading(m: Month, days: list[int]) -> str:
+    days = sorted(set(days))
+    if len(days) == 1:
+        d = date(m.year, m.month, days[0])
+        return f"{d.strftime('%B')} {d.day} ({d.strftime('%A')})"
+    if days == list(range(days[0], days[-1] + 1)):
+        return f"{date(m.year, m.month, 1).strftime('%B')} {days[0]} - {days[-1]}"
+    return _join_days(m, days)
+
+
+def key_dates(m: Month) -> list[dict]:
+    rows = []
+    for source in automatic_key_dates(m):
+        patch = m.key_date_overrides.get(source['id'], {})
+        if patch.get('hidden'):
+            continue
+        row = {**source, **patch}
+        if 'days' in patch:
+            row['heading'] = linked_heading(m, row['days'])
+        rows.append(row)
+    for index, item in enumerate(m.key_dates):
+        row = {'icon':'flag', 'color':'#F4511E', **item, 'id':f'custom:{index}'}
+        row['heading'] = linked_heading(m, row['days'])
+        rows.append(row)
     return rows
 
 
@@ -250,11 +284,11 @@ def default_footnotes(m: Month) -> list[dict]:
     out = []
     three_g = [m.mmdd(d.day) for d in m.days if d.three_g]
     if three_g:
-        out.append({"icon": "groups", "lead": "3G-only templates:",
+        out.append({"id": "three_g", "icon": "groups", "lead": "3G-only templates:",
                     "text": f"{', '.join(three_g)} run 3G-style with about 14 "
                             "minutes at each station, even where 2G is listed."})
     else:
-        out.append({"icon": "groups", "lead": "No 3G-only templates this month.",
+        out.append({"id": "three_g", "icon": "groups", "lead": "No 3G-only templates this month.",
                     "text": f"{date(m.year, m.month, 1).strftime('%B')} has no "
                             "3G-only templates on the calendar."})
 
@@ -263,7 +297,7 @@ def default_footnotes(m: Month) -> list[dict]:
     if specialties:
         days = ", ".join(sorted({m.mmdd(d.day) for d in specialties},
                                 key=lambda x: int(x.split("/")[1])))
-        out.append({"icon": "local_fire_department",
+        out.append({"id": "specialties", "icon": "local_fire_department",
                     "lead": "Specialty workouts this month.",
                     "text": f"Scheduled on {days}."})
 
@@ -274,15 +308,18 @@ def default_footnotes(m: Month) -> list[dict]:
         if days:
             bench_bits.append(f"{name} {', '.join(days)}")
     if bench_bits:
-        out.append({"icon": "fitness_center", "lead": "Bench days are specific this month.",
+        out.append({"id": "bench", "icon": "fitness_center", "lead": "Bench days are specific this month.",
                     "text": (" " + BULLET_SEP).join(bench_bits).strip() + "."})
 
-    out.append({"icon": "cyclone", "lead": "Tornado & 90-minute classes",
+    out.append({"id": "tornado", "icon": "cyclone", "lead": "Tornado & 90-minute classes",
                 "text": "stay studio-specific. Two Tornado templates exist each "
                         "month; coaches pick."})
-    out.append({"icon": "bolt", "lead": f"Hyrox templates aren{RSQ}t date-specific.",
+    out.append({"id": "hyrox", "icon": "bolt", "lead": f"Hyrox templates aren{RSQ}t date-specific.",
                 "text": "Participating studios run whichever training phase "
                         "they're in."})
+    for item in out:
+        item['color'] = '#8A919B'
+        item.update(m.footnote_styles.get(item['id'], {}))
     return out
 
 
@@ -297,12 +334,26 @@ def cell_note(m: Month, day) -> tuple[str, bool]:
     return "", False
 
 
-def pill(entry) -> dict:
+def category_color(m: Month, key: str) -> str:
+    return m.category_styles.get(key, {}).get('color', BY_KEY[key].color)
+
+
+def category_foreground(m: Month, key: str) -> str:
+    color = category_color(m, key)
+    if 'color' not in m.category_styles.get(key, {}):
+        return '#fff' if light_text(color) else '#5C6470'
+    rgb = [int(color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb]
+    luminance = sum(v * weight for v, weight in zip(linear, (0.2126, 0.7152, 0.0722)))
+    return '#000000' if luminance > 0.179 else '#FFFFFF'
+
+
+def pill(entry, m: Month) -> dict:
     cat = entry.cat
     return {
         "label": entry.label,
-        "color": cat.color,
-        "fg": "#fff" if light_text(cat.color) else "#5C6470",
+        "color": category_color(m, cat.key),
+        "fg": category_foreground(m, cat.key),
     }
 
 
@@ -321,7 +372,7 @@ def build_context(m: Month) -> dict:
             note, flagged = cell_note(m, day)
             cells.append({
                 "day": d,
-                "pills": [pill(e) for e in day.entries],
+                "pills": [pill(e, m) for e in day.entries],
                 "two": len(day.entries) > 1,
                 "note": note,
                 "flag": flagged,
@@ -330,11 +381,12 @@ def build_context(m: Month) -> dict:
             })
         weeks.append(cells)
 
+    used = {entry.cat.key for day in m.days for entry in day.entries}
     legend = [
-        {"label": c.label, "color": c.color, "blurb": c.blurb,
-         "fg": "#fff" if light_text(c.color) else "#5C6470"}
+        {"label": c.label, "color": category_color(m, c.key), "blurb": c.blurb,
+         "fg": category_foreground(m, c.key)}
         for c in sorted(CATEGORIES, key=lambda c: c.order)
-        if c.key != "unknown"
+        if m.category_styles.get(c.key, {}).get('visible', c.key in used)
     ]
 
     return {
@@ -348,11 +400,12 @@ def build_context(m: Month) -> dict:
         "weeks": weeks,
         "strength_split": m.strength_split,
         "notes": m.notes or default_notes(m),
+        "note_style": {'icon':'check_circle', 'color':'#F4511E', **m.note_style},
         "key_dates": key_dates(m),
         "highlights": highlights(m),
         "repeat_map": repeat_map(m),
         "non_repeat": [m.mmdd(d) for d in non_repeat_days(m)],
         "legend": legend,
-        "footnotes": m.footnotes or default_footnotes(m),
+        "footnotes": [{'color':'#8A919B', **f} for f in (m.footnotes or default_footnotes(m))],
         "source_url": m.source_url,
     }

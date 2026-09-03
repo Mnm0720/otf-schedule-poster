@@ -148,7 +148,7 @@
   .btype p{font-size:12.4px;color:#5C6470;line-height:1.28;font-weight:500;}
   .bnote{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
   .bnote:last-child{margin-bottom:0;}
-  .bnote svg{flex:0 0 22px;width:22px;height:22px;fill:#8A919B;margin-top:1px;}
+  .bnote svg{flex:0 0 22px;width:22px;height:22px;fill:currentColor;margin-top:1px;}
   .bnote p{font-size:12.6px;font-style:italic;color:#4C535B;line-height:1.3;font-weight:500;}
   .bnote p b{font-style:normal;font-weight:700;color:#2E3339;}
   .repeat-ic{display:inline-block;vertical-align:middle;width:22px;height:22px;fill:var(--orange);}
@@ -233,7 +233,7 @@
       </div>
     </div>
     <ul class="s-list">
-      {% for n in notes %}<li>{{ icon("check_circle", cls="chk", color="#F4511E") }}<span>{{ n }}</span></li>{% endfor %}
+      {% for n in notes %}<li>{{ icon(note_style.icon, cls="chk", color=note_style.color) }}<span>{{ n }}</span></li>{% endfor %}
     </ul>
     <div class="s-run">{{ icon("sprint", color="#F4511E") }}</div>
   </div>
@@ -278,8 +278,9 @@
 
   <div class="bottom">
     <div class="bh">{{ icon("menu_book") }}Workout Types &amp; Monthly Notes</div>
-    <div class="bwrap">
-      {% for col in legend|batch((legend|length / 3)|round(0,'ceil')|int) %}
+    {% set legend_columns = legend|batch([1, (legend|length / 3)|round(0,'ceil')|int]|max)|list %}
+    <div class="bwrap" style="grid-template-columns:repeat({{ legend_columns|length + 1 }},1fr)">
+      {% for col in legend_columns %}
       <div class="bcol">
         {% for t in col %}
         <div class="btype"><div class="pill" style="background:{{ t.color }};color:{{ t.fg }}">{{ t.label }}</div><p>{{ t.blurb }}</p></div>
@@ -291,7 +292,7 @@
       {% endfor %}
       <div class="bcol">
         {% for f in footnotes %}
-        <div class="bnote">{{ icon(f.icon) }}<p><b>{{ f.lead }}</b> {{ f.text }}</p></div>
+        <div class="bnote">{{ icon(f.icon, color=f.color) }}<p><b>{{ f.lead }}</b> {{ f.text }}</p></div>
         {% endfor %}
       </div>
     </div>

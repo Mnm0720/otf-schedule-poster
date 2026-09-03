@@ -85,6 +85,11 @@ class Month:
     notes: list[str] = field(default_factory=list)     # checklist beside the split
     footnotes: list[dict] = field(default_factory=list)  # bottom-right callouts
     events: list[Event] = field(default_factory=list)
+    category_styles: dict[str, dict] = field(default_factory=dict)
+    key_dates: list[dict] = field(default_factory=list)
+    key_date_overrides: dict[str, dict] = field(default_factory=dict)
+    footnote_styles: dict[str, dict] = field(default_factory=dict)
+    note_style: dict = field(default_factory=dict)
     days: list[Day] = field(default_factory=list)
     schema_version: int = SCHEMA_VERSION
 
