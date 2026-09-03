@@ -42,7 +42,12 @@ async function app() {
 }
 
 test('generate → edit → regenerate updates preview and both downloads without parsing twice', async () => {
-  const a = await app(); await a.generate();
+  const a = await app();
+  assert.equal(a.context.document.getElementById('navDays').hidden, true);
+  await a.generate();
+  for (const id of ['navPoster', 'navDays', 'navCopy']) {
+    assert.equal(a.context.document.getElementById(id).hidden, false);
+  }
   assert.equal(a.els.png.disabled, false); assert.equal(a.els.html.disabled, false);
   a.editor.change(d => { d.subtitle = 'Edited subtitle'; });
   assert.equal(a.els.png.disabled, true); assert.equal(a.els.html.disabled, true);
@@ -83,4 +88,19 @@ test('invalid events block rendering and overlapping requests are ignored', asyn
   a.editor.change(d => { d.events = []; });
   await Promise.all([a.regenerate(), a.regenerate()]);
   assert.equal(a.calls.length, 2); assert.equal(a.editorState.busy, false);
+});
+
+test('full-size preview is readable without changing the exported poster', async () => {
+  const a = await app(); await a.generate();
+  a.els.stage.clientWidth = 320;
+  a.els.preview.contentDocument.querySelector = () => ({offsetHeight:1800});
+  const toggle = a.context.document.getElementById('previewZoom');
+  assert.equal(typeof toggle.onclick, 'function');
+  toggle.onclick();
+  assert.equal(a.els.preview.style.transform, 'scale(1)');
+  assert.equal(toggle.textContent, 'Fit to width');
+  toggle.onclick();
+  assert.equal(a.els.preview.style.transform, `scale(${320 / 1200})`);
+  assert.equal(a.editorState.dirty, false);
+  assert.equal(a.editorState.current.html, '<p>Monthly Schedule Poster</p>');
 });

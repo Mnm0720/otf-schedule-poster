@@ -15,6 +15,7 @@ const els = {
 };
 
 const POSTER_WIDTH = 1200;
+let previewFullSize = false;
 
 /** Scale the full-size poster iframe down to whatever width the page has. */
 function fitPreview() {
@@ -28,7 +29,7 @@ function fitPreview() {
   if (available < 1) return;
 
   const height = poster.offsetHeight;
-  const scale = Math.min(available / POSTER_WIDTH, 1);
+  const scale = previewFullSize ? 1 : Math.min(available / POSTER_WIDTH, 1);
   els.preview.style.height = height + "px";
   els.preview.style.transform = `scale(${scale})`;
   els.stage.style.height = Math.round(height * scale) + "px";
@@ -46,6 +47,7 @@ const editor = new ScheduleEditor(document, editorState, () => {
 });
 
 function syncControls() {
+  for (const id of ['navPoster', 'navDays', 'navCopy']) $(id).hidden = !editorState.current;
   els.go.disabled = !pyodide || editorState.busy;
   els.regenerate.disabled = !editorState.draft || editorState.busy;
   els.editorFields.disabled = editorState.busy;
@@ -244,6 +246,18 @@ els.png.onclick = async () => {
 
 els.go.onclick = generate;
 els.regenerate.onclick = regenerate;
+$('previewZoom').onclick = () => {
+  previewFullSize = !previewFullSize;
+  els.stage.classList.toggle('full-size', previewFullSize);
+  $('previewZoom').textContent = previewFullSize ? 'Fit to width' : 'View full size';
+  $('previewZoom').setAttribute('aria-pressed', String(previewFullSize));
+  els.stage.scrollLeft = els.stage.scrollTop = 0;
+  fitPreview();
+};
+// Open disclosures before following their section anchors.
+for (const anchor of document.querySelectorAll('a[href="#copySection"], a[href="#help"]')) {
+  anchor.onclick = () => { $(anchor.getAttribute('href').slice(1)).open = true; };
+}
 addEventListener('beforeunload', event => {
   if (editorState.dirty) { event.preventDefault(); event.returnValue = ''; }
 });

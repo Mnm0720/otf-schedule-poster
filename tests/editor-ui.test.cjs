@@ -55,3 +55,16 @@ test('copy controls seed defaults, edit events and preserve their kind', () => {
   labelled(copy, 'Add event').onclick();
   assert.deepEqual(state.draft.events, [{name:'', start:1, end:30, kind:'event'}]);
 });
+
+test('the day picker focuses and scrolls to the selected day without changing the draft', () => {
+  const {doc, state} = setup();
+  const jump = doc.getElementById('dayJump');
+  assert.equal(jump.children.length, 31);
+  const card = all(doc.getElementById('calendarEditor')).find(el => el.id === 'day-23');
+  assert.ok(card);
+  let scrolled = false; card.scrollIntoView = () => { scrolled = true; };
+  doc.elements.set('day-23', card);
+  jump.value = '23'; jump.onchange();
+  assert.equal(card.focused, true); assert.equal(scrolled, true);
+  assert.equal(state.dirty, false);
+});

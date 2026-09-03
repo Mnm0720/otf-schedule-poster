@@ -37,6 +37,49 @@ The existing GitHub Pages build and Python category registry remain authoritativ
    those edits. Loading example text alone does not discard the editor.
 8. All controls have labels, feedback is announced, keyboard focus remains usable,
    and user copy is rendered as text, not injected HTML. No persistence or accounts.
+9. The header keeps a dark charcoal background and contrasting text in either color
+   scheme. Main text and editable fields are at least 16px; secondary labels are
+   at least 14px. Links and buttons have readable contrast and touch targets of
+   at least 44px in height. The entire checkbox label is a touch target.
+10. At 320px, 390px, 768px, and desktop widths, the page fits without horizontal
+    scrolling. Phone day cards and copy fields use a single column. Section links
+    reach paste, poster, days, copy, and help; generated sections appear in navigation
+    only after generation. A day picker scrolls to and focuses the requested day.
+    Sticky navigation must not cover the destination or keyboard focus.
+11. The poster preview defaults to fit-to-width. A full-size view lets people read
+    the fixed-width print layout by scrolling inside the preview without widening
+    the page. Switching views does not change the generated HTML or export size.
+
+## Responsive/readability regression
+
+Before this change, actual browser checks at 390px found a dark-mode header with
+`rgb(242,244,247)` behind white text, 13px paste text, 22px example buttons, and no
+section navigation. Verify the corrected styles, navigation, generated editor,
+regeneration, and exports in the real browser as well as the existing unit suites.
+
+Responsive pass verified on 2026-09-02:
+
+| Viewport width | Document width | Day columns | Input font | Example / editor buttons |
+| --- | --- | --- | --- | --- |
+| 320px | 305px | 1 | 16px | 44px high |
+| 390px | 375px | 1 | 16px | 44px high |
+| 768px | 753px | 3 | 16px | 44px high |
+| 1440px | 1425px | 7 | 16px | 44px high |
+
+- Actual dark-mode header is now `rgb(24,33,45)` with white text; its background
+  is independent of the theme's text color. Desktop and mobile screenshots checked.
+- Day-picker and section navigation regressions failed before implementation and
+  passed afterward. Full-size preview likewise began with a failing test.
+- Real browser: loaded September through Pyodide, jumped to day 23, edited its
+  workout title and 3G flag, navigated to copy, changed subtitle, and regenerated.
+  Pending edits disabled downloads; successful regeneration restored them.
+- At 390px, full-size preview has 1200px scrollable content within a 304px region;
+  document width stays 375px. Fit-to-width restores the scaled overview.
+- Downloaded and inspected the actual 2400×3736 PNG: complete poster, edited copy
+  and 3G flag present. Downloaded HTML also contains the edited subtitle and title.
+- All 75 Python tests and 13 Node tests pass; saved schedules validate and the
+  static build succeeds. Original user preview was preserved with pending edits;
+  interaction tests used a separate tab and temporary viewport overrides were reset.
 
 ## TDD and verification
 
@@ -56,9 +99,8 @@ a browser or network. Build the same static output used by GitHub Pages.
   the render assertion to respect the existing renderer's uppercase theme style.
 - An additional regression test caught regeneration errors being replaced by the
   generic pending-edits message. Preserved the specific error beside the editor.
-- Final local checks: 75 Python tests and 11 Node tests pass; all four stored
+- Initial editor local checks: 75 Python tests and 11 Node tests pass; all four stored
   schedules validate; the static build includes the bridge and both editor files.
 - CI and the GitHub Pages build run editor tests before publication.
 - The Node tests exercise form handlers and application flow using a small DOM
-  adapter and mocked Pyodide. Actual browser startup, layout, and PNG export have
-  not been exercised by these automated checks.
+  adapter and mocked Pyodide. Actual browser checks are recorded separately above.

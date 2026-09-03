@@ -61,11 +61,23 @@
     renderCalendar() {
       const grid = this.doc.getElementById('calendarEditor'); grid.replaceChildren();
       const m = this.state.draft;
+      const jump = this.doc.getElementById('dayJump'); jump.replaceChildren();
+      const prompt = this.node('option', 'Choose a day…'); prompt.value = ''; jump.append(prompt);
+      for (const day of m.days) {
+        const option = this.node('option', `${m.month}/${day.day}`); option.value = String(day.day); jump.append(option);
+      }
+      jump.value = '';
+      jump.onchange = () => {
+        if (!jump.value) return;
+        const card = this.doc.getElementById(`day-${jump.value}`);
+        card.focus({preventScroll:true}); card.scrollIntoView({block:'start', behavior:'instant'});
+      };
       for (const day of weekdays) grid.append(this.node('div', day.slice(0, 3), 'weekday-heading'));
       for (const number of calendarCells(m.year, m.month)) {
         if (!number) { const blank = this.node('div', undefined, 'calendar-blank'); blank.setAttribute('aria-hidden', 'true'); grid.append(blank); continue; }
         const day = m.days.find(d => d.day === number);
         const card = this.node('fieldset', undefined, 'day-card');
+        card.id = `day-${day.day}`; card.tabIndex = -1;
         grid.append(card); this.renderDay(card, day);
       }
     }

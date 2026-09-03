@@ -32,6 +32,12 @@ Click **Regenerate poster** to apply your edits. Downloads stay disabled while t
 preview is out of date. If an edit is invalid, the draft stays available to fix.
 Edits live in this tab only; download the finished poster before closing it.
 
+Use the section links to move between the paste, poster, days, copy, and help.
+**Jump to day** takes you directly to a date in the editor. On phones, day cards
+and copy fields stack into one column with larger touch controls. **View full size**
+lets you scroll across the poster to read its details; **Fit to width** restores
+the overview. Both views export the same full-resolution poster.
+
 ### What to paste
 
 Copy the whole post — title, prose, links, everything. The generator reads four things

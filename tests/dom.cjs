@@ -16,6 +16,7 @@ class Element {
 class Document {
   constructor() { this.elements = new Map(); this.body = new Element('body'); }
   createElement(tag) { return new Element(tag); }
+  querySelectorAll() { return []; }
   getElementById(id) {
     if (!this.elements.has(id)) this.elements.set(id, new Element());
     return this.elements.get(id);

@@ -19,13 +19,21 @@
 
 <main class="wrap">
 
+  <nav class="section-nav" aria-label="Page sections">
+    <a href="#pastePanel">Paste</a>
+    <a id="navPoster" href="#previewWrap" hidden>Poster</a>
+    <a id="navDays" href="#editorWrap" hidden>Days</a>
+    <a id="navCopy" href="#copySection" hidden>Copy</a>
+    <a href="#help">Help</a>
+  </nav>
+
   <p class="lede">
     Paste the monthly <strong>r/orangetheory</strong> thread below and get a printable
     schedule poster. Everything runs in your browser &mdash; nothing is uploaded,
     and you don't need a GitHub account.
   </p>
 
-  <section class="panel">
+  <section id="pastePanel" class="panel">
     <div class="panel-head">
       <label for="src">Monthly thread text</label>
       <div class="examples">
@@ -65,8 +73,11 @@
   </section>
 
   <section id="previewWrap" class="panel preview" hidden>
-    <div class="panel-head"><label>Poster</label><span class="hint" id="dims"></span></div>
-    <div class="stage" id="stage"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
+    <div class="panel-head"><h2>Poster</h2><span class="hint" id="dims"></span>
+      <button id="previewZoom" class="ghost" type="button" aria-pressed="false">View full size</button>
+    </div>
+    <p class="hint preview-hint">Use full size to read the details, then scroll within the preview.</p>
+    <div class="stage" id="stage" tabindex="0" role="region" aria-label="Scrollable poster preview"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
   </section>
 
   <section id="editorWrap" class="panel schedule-editor" aria-labelledby="editorTitle" hidden>
@@ -78,8 +89,13 @@
       Repeat links leave each day's templates as you set them. Your edits stay in this tab.</p>
     <fieldset id="editorFields" class="editor-fields">
       <legend class="visually-hidden">Schedule and poster settings</legend>
+      <div class="editor-toolbar">
+        <label for="dayJump">Jump to day</label>
+        <select id="dayJump"><option value="">Choose a day…</option></select>
+        <a href="#copySection">Edit poster copy &amp; events ↓</a>
+      </div>
       <div id="calendarEditor" class="calendar-editor"></div>
-      <details class="copy-details" open>
+      <details id="copySection" class="copy-details" open>
         <summary>Poster copy &amp; events</summary>
         <div id="copyEditor" class="copy-editor"></div>
       </details>
@@ -90,7 +106,7 @@
     </div>
   </section>
 
-  <details class="panel help">
+  <details id="help" class="panel help">
     <summary>What it reads from the post</summary>
     <p>The threads describe a month <strong>by category, not day by day</strong>, so the
        schedule is assembled by inverting those lists. Four things are read; everything
