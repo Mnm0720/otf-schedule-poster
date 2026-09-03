@@ -14,7 +14,7 @@
   current month. The printed heading is derived from those date links.
 - Template & Equipment Highlights always derive their dates/types from the edited
   schedule. They have no independent date editor. Refresh after regeneration.
-- Show every registered workout type with a legend toggle and color control.
+- Show every built-in and month-local custom workout type with a legend toggle and color control.
   Unless explicitly overridden, the toggle follows whether the month uses that
   type. Manual choices persist; a reset restores automatic selections. Toggles
   affect the Workout Types legend only, never delete schedule data/highlights.
@@ -36,6 +36,9 @@ Month adds `category_styles` (per-key color/optional visibility), `key_dates`
 ID), `footnote_styles` (sparse patches keyed by automatic note ID), and `note_style`
 (checklist icon/color). Defaults are empty. The Python renderer owns derivation;
 the browser receives current defaults and the registries from its Python bridge.
+Month schema version 2 also stores `custom_categories` (per-key label and default
+color), `additional_info`, and `credits`. The migration, storage, and history
+contracts are in [saved workspaces](saved-workspaces.md#data-and-recovery-contract).
 
 ## Additional information and attribution
 
@@ -63,10 +66,13 @@ the browser receives current defaults and the registries from its Python bridge.
 
 ## Simplified editing flow
 
-- After the first successful generation, hide the source inputs/examples and disable
-  Generate. Place PNG/HTML downloads before View full size in the Poster section.
-  Offer Restart from text beside Generate. Always confirm that restarting removes
-  customizations, including edits already regenerated. Cancel preserves everything;
+- After the first successful generation, hide the source inputs and disable
+  Generate. Examples and the saved-poster library remain above the source area;
+  example buttons only load text before generation. Place PNG/HTML downloads and
+  the additional format controls before View full size in the Poster section.
+  Offer Restart from text beside Generate. Confirm that restarting clears current
+  customizations, including regenerated edits, while retaining saved posters.
+  Follow the saved-workspaces safeguards when saving fails. Cancel preserves everything;
   confirm clears the preview/draft/selections, shows the original paste, and enables
   Generate. A failed initial generation keeps the text available to correct.
 - Before the daily schedule, provide a collapsed Poster title & theme section for
@@ -91,6 +97,10 @@ the browser receives current defaults and the registries from its Python bridge.
   section labels. Editing alone does not update the preview or enable stale exports.
 
 ## Verification
+
+The records below describe each earlier implementation stage. The
+[saved-workspaces verification](saved-workspaces.md#verification-2026-09-03) records
+the latest combined suites and browser checks.
 
 Verified locally on 2026-09-02:
 

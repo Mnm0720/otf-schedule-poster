@@ -30,8 +30,68 @@
   updated link/file back. Bound decoded size and reject unsupported versions; offer
   a file when a link would be too long. No infrastructure credentials or backend.
 - Keep new controls labelled, keyboard usable, 44px touch targets, and responsive.
-  Show save/sync failure messages, disable stale visual exports, and preserve drafts
+  Show save, share, import, and export failure messages, disable stale poster and
+  calendar exports, and preserve drafts
   during render/network failures. Storage and sharing content is untrusted data.
+
+## Data and recovery contract
+
+- `web/workspace.js` stores workspace envelope version 1 with `id`, `name`,
+  `source`, `updatedAt`, and `state`. State contains `draft`, `rendered`, `initial`,
+  `past`, and `future`; all schedule snapshots use the Month JSON contract.
+  `otf-draft:<id>` holds each saved poster, `otf-active` identifies the last active
+  poster, and `otf-source` separately saves an unfinished paste and month override.
+- Month schema version 2 includes `custom_categories`. Older Month JSON and plain
+  schedule imports receive current defaults; versions newer than supported are
+  rejected. Unreadable local entries remain listed with a raw backup action.
+- Save edits before regeneration, preserving pending invalid values. Restore the
+  last rendered schedule through Python, then overlay the saved draft and history.
+  Do not reparse the source or show a pending edit as already rendered. Keep at most
+  100 undo snapshots. Regeneration does not discard history or change the initial
+  reset baseline.
+- Reject saves when stored data changed since it was read. When another tab changes
+  the active poster, preserve the current editor as a separate local copy. Report
+  storage failures and keep draft download available; no browser-only design can
+  guarantee recovery after site data is cleared.
+- Restart confirms clearing the active editor while keeping saved posters. If
+  autosave was already unavailable, warn to download a backup before discarding.
+  If a previously successful save fails at confirmation, abort restart and leave
+  the editor open. Successful restart restores the source paste and clears the
+  active selection, preview, and history without deleting library entries.
+- JSON draft backups include source text and history. Shared links contain the
+  current draft and last rendered schedule, use the shared draft as the recipient's
+  reset baseline, and omit source text and past/future history. Opening either an
+  imported file or link creates a separate local copy. Sending updates requires a
+  new link/file; there is no shared server state on GitHub Pages.
+- Gzip snapshots use URL-safe base64 in the fragment. Emitted encoded snapshots
+  are limited to 12,000 characters; input is capped at 20,000 encoded characters.
+  JSON input is capped at 2,000,000 characters; imported files and decompression
+  are also capped at 2,000,000 bytes.
+  Offer draft files when links exceed the limit. Validate versions and schedule
+  structure before restoring; escape imported poster text as for local edits.
+- PNG, HTML, PDF, phone/social images, and ICS use the last successfully rendered
+  schedule and are disabled while busy or dirty. Draft backup and sharing can
+  preserve pending edits. PDF uses A4 pages and favors section/row boundaries;
+  overlong blocks still retain every pixel. Compact images include the calendar,
+  color key, events, and credits; full poster/PDF retains detailed notes.
+
+Each section's Reset restores only these fields from `initial` and is undoable:
+
+| Section | Month fields restored |
+| --- | --- |
+| Poster title & theme | `theme`, `tagline`, `subtitle` |
+| Edit your schedule | `days` |
+| Key Dates | `key_dates`, `key_date_overrides` |
+| Workout Types | `category_styles` |
+| Strength & Tread 50 notes | `notes`, `note_style` |
+| Monthly notes | `footnotes`, `footnote_styles` |
+| Events | `events` |
+| Additional info | `additional_info` |
+| Credits & team | `credits` |
+
+Resetting Workout Types restores color/visibility choices and preserves the custom
+type registry and daily entries. Resetting the schedule restores the month's days
+without removing unrelated copy or style overrides.
 
 ## Verification
 

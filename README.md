@@ -11,8 +11,9 @@ Paste the monthly r/orangetheory thread, get a printable schedule poster.
 1. Open the monthly thread on r/orangetheory and copy the entire post
 2. Paste it into the text box on the site
 3. Hit **Generate** — the poster appears in seconds
-4. Review the poster and use **Download PNG** (for printing or sharing) or
-   **Download HTML** (opens in any browser) beside **View full size**
+4. Review the poster and use **Download PNG** or **Download HTML**, or choose PDF,
+   phone wallpaper, social calendar, or a calendar file and select **Download format**.
+   Download controls appear before **View full size**.
 
 Everything runs in your browser. Nothing is uploaded, and you don't need an account.
 
@@ -55,17 +56,20 @@ in. Credits default to the image and Modsquad attribution, with Reddit usernames
 linked to their profiles in the HTML poster. Edit or clear the credit text as needed;
 **Restore default credits** brings the original attribution back.
 
-Click **Regenerate poster** to apply your edits. Downloads stay disabled while the
-preview is out of date. If an edit is invalid, the draft stays available to fix.
+Click **Regenerate poster** to apply your edits. Poster and calendar exports stay
+disabled while the preview is out of date; draft backups and editable sharing still
+include pending edits. If an edit is invalid, the draft stays available to fix.
 Edits and undo history save automatically on this device, even before regeneration.
 After reopening, the last active draft is restored. An unfinished paste is also saved.
 Use **Undo**, **Redo**, or a section’s **Reset** button to experiment. Resets return
 only that section to its starting version and can be undone (up to 100 changes).
 
 To start over, select **Restart from text** beside the disabled Generate button.
-The popup explains that this clears the current editing session. Your saved poster
-is retained. **Keep editing** cancels; **Restart from text** restores the original
-paste and lets you generate a separate fresh poster.
+The popup explains that this clears the current editing session while retaining
+saved posters. If autosave is unavailable, it warns you to download a backup first.
+**Keep editing** cancels; **Restart from text** restores the original paste and lets
+you generate a separate fresh poster. If a previously working save fails during
+restart, the editor stays open so you can back up your changes.
 
 Use **Start**, **Poster**, **Edit**, and **Help** to navigate. On phones,
 day cards and copy fields stack into one column with larger touch controls. **View full size**
@@ -86,7 +90,9 @@ rewritten by older app versions. Invalid/unreadable saved files stay available f
 it opens as a separate local draft without replacing existing saved posters. After
 editing, send a new link or JSON file back. **Copies do not synchronize live.** This
 workflow runs entirely on GitHub Pages, with no accounts, database, or uploads.
-If a snapshot is too large for a reliable URL, use a draft file instead.
+Links include current edits and the last rendered schedule, but omit the original
+paste and undo history. Draft files include both. If a snapshot is too large for a
+reliable URL, use a draft file instead.
 
 ### More export formats
 
@@ -100,7 +106,7 @@ Select a format beside the normal PNG/HTML downloads:
   apps differ in whether repeat imports update entries or require removing a prior import.
 
 Compact images include attribution; use the full poster/PDF for detailed notes.
-Visual exports stay disabled while edits are pending. The last downloaded file
+Poster and calendar exports stay disabled while edits are pending. The last downloaded file
 also has an Open link for viewing or saving manually.
 
 ### What to paste
@@ -146,6 +152,9 @@ Each poster includes:
 | **Template Highlights** | Which days each template type lands on |
 | **Repeat Map** | Which days re-run an earlier template |
 | **Legend** | What each color means, plus monthly notes |
+| **Events** | Ribbons for events with their date ranges, when present |
+| **Additional info** | Optional free text below the other sections; hidden when empty |
+| **Credits & team** | Editable image and Modsquad attribution; hidden when cleared |
 
 ## Template types the poster knows
 
@@ -164,9 +173,10 @@ Each poster includes:
 | Specialty | Red | Event-style templates (Hell Week, PSL, etc.) |
 | Standard | Grey | A regular daily template |
 
-Adding a new template type is one entry in `otfposter/categories.py` — color, blurb,
-and the spellings to accept. The pill color, highlights row, and legend all follow
-automatically.
+Unknown types are added automatically to that month's editable workout types.
+To make a type a built-in default for every month, add an entry in
+`otfposter/categories.py` with its color, blurb, and accepted spellings. The pill
+color, highlights row, and legend follow automatically.
 
 ## GitHub Actions
 
@@ -203,50 +213,66 @@ The parse is a starting point. Edit `schedules/YYYY-MM.json` and re-render:
 python -m otfposter render --month 2026-09
 ```
 
-The JSON also carries poster copy — `theme`, `tagline`, `notes`, `footnotes`,
-`strength_split`, `events`. Leave them out and sensible values are derived from
-the schedule.
+The JSON also carries poster copy: `theme`, `tagline`, `subtitle`, `notes`,
+`footnotes`, `strength_split`, `events`, `additional_info`, and `credits`.
+Missing fields receive defaults; empty notes/footnotes request automatic copy.
+Empty additional info and explicitly empty credits hide those sections. Linked
+Key Dates, style overrides, and custom workout types also travel with the JSON;
+see the [customization data contract](specs/poster-customization.md#data-contract).
 
 ### Architecture
 
 ```
-monthly thread ──▶ thread.py ──┐
-                               ├──▶ Month (schedules/*.json) ──▶ derive.py ──▶ poster.html.j2 ──▶ PNG
-day list      ──▶ parse.py  ───┘         │                          │
-                                    validate.py          highlights, repeat map,
-                                                      key dates, legend, notes
+monthly thread / day list → thread.py / parse.py → Month JSON → validate.py
+                                                    │
+                              derive.py → render.py → full poster HTML
+                                                    → PNG / PDF in the browser
+                              exports.py → compact HTML → phone / social PNG
+                                         → all-day calendar (.ics)
 ```
 
 ### How the site works
 
 The browser site runs the *actual* Python package via [Pyodide](https://pyodide.org/).
-`scripts/build_site.py` bundles the same `.py` files and Jinja template that CI uses —
-no JavaScript reimplementation that could drift. Verified byte-for-byte: for all four
-months in `schedules/raw/`, the browser produces the same HTML as the command line.
+`scripts/build_site.py` bundles the Python modules, Jinja templates, and cached
+assets used by the renderer. The browser and command line share the full-poster
+renderer; bridge tests check HTML parity without duplicating parsing in JavaScript.
 
-The editor keeps a separate `Month.to_dict()` draft in memory. `web/bridge.py`
-reconstructs it with `Month.from_dict()` for regeneration without reparsing.
-Category choices come from the Python registry. Automatic copy remains derived
-from the edited schedule; custom fields preserve the model's existing semantics.
+`web/editor-state.js` keeps the editable draft, last rendered schedule, initial
+reset baseline, and undo/redo history. `web/workspace.js` handles versioned local
+storage and compressed snapshot links; `web/app.js` connects them to the forms,
+autosave, and exports. `web/bridge.py` reconstructs `Month.from_dict()` for
+regeneration without reparsing. Category choices combine Python's built-in registry
+with the month's `custom_categories`. Automatic copy derives from the edited schedule.
+
+Month schema version 2 and workspace envelope version 1 are separate contracts.
+Older schedule JSON is migrated; unsupported newer data is rejected and retained
+for backup. See [saved workspaces](specs/saved-workspaces.md#data-and-recovery-contract)
+for storage, reset, and sharing details. GitHub Pages serves static files only;
+editable links transfer snapshots and do not provide live synchronization.
 
 ### Specifications and tests
 
-The [browser editor spec](specs/browser-editor.md) and
-[poster customization spec](specs/poster-customization.md) record behavior and TDD
-verification. For behavior changes, add a failing regression test first, implement
+The [browser editor spec](specs/browser-editor.md),
+[poster customization spec](specs/poster-customization.md), and
+[saved workspaces spec](specs/saved-workspaces.md) record behavior and TDD
+verification. For behavior changes, update the relevant spec, add a failing regression test first, implement
 the smallest fix, then run the relevant tests and the full checks before delivery:
 
 ```bash
 python -m pytest -q
-node --test tests/editor.test.cjs tests/editor-ui.test.cjs tests/app.test.cjs
+node --test tests/*.test.cjs
 python -m otfposter validate
 python scripts/build_site.py
 ```
 
 The JavaScript suite uses Node 22+ and no extra packages. It exercises state, form
-handlers, and application flow with a minimal DOM adapter and a mocked runtime.
-Python tests exercise the actual bridge, model, and HTML renderer. These checks do
-not replace real-browser layout, Pyodide startup, or PNG export testing.
+handlers, application flow, storage failures, history, snapshot sharing, and PDF
+pagination with a minimal DOM adapter and a mocked runtime. Python tests exercise
+the actual bridge, model, HTML renderers, custom workout types, and ICS output.
+These checks do not replace real-browser layout, Pyodide startup, or downloaded
+export inspection. The [latest verification record](specs/saved-workspaces.md#verification-2026-09-03)
+records 114 Python and 33 Node tests, browser checks, and remaining verification limits.
 
 </details>
 

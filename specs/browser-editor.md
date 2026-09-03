@@ -29,17 +29,22 @@ The persistence, sharing, history, and export extensions are specified in
    the currently displayed defaults when there is no override. Empty custom lists
    restore automatic copy, matching the existing model. Subtitle initially reads
    “Monthly Schedule Poster” when no override exists.
-5. Editing marks the preview as out of date and disables both downloads until a
+5. Editing marks the preview as out of date and disables poster and calendar exports until a
    successful regeneration. Regeneration updates preview, dimensions, report, and
-   both exports together. Failed regeneration retains the draft and last preview.
+   the schedule used for PNG, HTML, PDF, compact images, and ICS together. Draft
+   backups and editable snapshots remain available with pending edits. Failed
+   regeneration retains the draft and last preview.
    Controls cannot launch overlapping renders or edits during rendering/export.
 6. Invalid repeats (self/future/missing source) and event ranges (outside month,
    reversed, fractional, or blank dates) block regeneration with useful errors.
    Existing repeat-template mismatches and unknown categories remain warnings.
 7. After successful generation, hide source inputs and disable Generate. Restart
-   from text opens a popup explaining that all customization will be removed.
-   Cancel preserves the draft and preview; confirmation clears them and restores
-   the original paste. Failed initial parsing keeps that text available to correct.
+   from text opens a popup explaining that the current editing session will be
+   cleared while saved posters remain. Warn when autosave is unavailable; if a
+   previously working save fails during confirmation, keep the editor open for
+   backup. Cancel preserves the draft and preview; successful confirmation clears
+   them and restores the original paste. Failed initial parsing keeps that text
+   available to correct. Recovery details follow the saved-workspaces contract.
 8. All controls have labels, feedback is announced, keyboard focus remains usable,
    and user copy is escaped; tagline supports attribute-free emphasis only. Local
    persistence and account-free sharing follow the saved-workspaces specification.
@@ -97,6 +102,9 @@ semantics, and render-state transitions. Run both suites in CI without requiring
 a browser or network. Build the same static output used by GitHub Pages.
 
 ## Verification record
+
+This is the original editor's historical record. Current combined test totals and
+browser/export checks are in [saved workspaces](saved-workspaces.md#verification-2026-09-03).
 
 - Baseline: 63 Python tests passed before changes.
 - Red: 12 bridge cases failed because the bridge did not exist; the state and UI
