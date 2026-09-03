@@ -25,3 +25,13 @@ jobs:
       - run: python -m pytest -q
       - name: Every committed schedule still validates
         run: python -m otfposter validate
+
+  browser-editor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Editor state, controls, and application flow
+        run: node --test tests/editor.test.cjs tests/editor-ui.test.cjs tests/app.test.cjs

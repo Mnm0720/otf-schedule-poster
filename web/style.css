@@ -108,3 +108,61 @@ button.ghost:hover{background:var(--orange);color:#fff;}
 @media (max-width:640px){
   .field,.field.grow{flex:1 1 100%;}
 }
+
+/* Keep editing controls readable; compact dated cards replace columns on phones. */
+[hidden]{display:none!important;}
+.wrap{max-width:1480px;}
+.panel:not(.schedule-editor),.lede,.foot{max-width:1200px;margin-left:auto;margin-right:auto;}
+h2{font-size:20px;color:var(--ink);}
+h3{font-size:16px;color:var(--ink);}
+a{color:var(--orange);}
+.editor-intro{margin-bottom:18px;max-width:80ch;font-size:16px;}
+.editor-fields{border:0;min-width:0;}
+.calendar-editor{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:start;}
+.weekday-heading{text-align:center;color:var(--muted);font-weight:700;font-size:14px;}
+.day-card{min-width:0;border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--bg);}
+.day-card legend{font-size:14px;font-weight:800;color:var(--ink);padding:0 4px;}
+.editor-field{min-width:0;margin-bottom:8px;}
+.editor-field label{font-size:14px;font-weight:600;margin-bottom:4px;}
+.editor-field input,.editor-field textarea,.editor-field select{
+  width:100%;min-width:0;background:var(--panel);color:var(--body);font:inherit;font-size:14px;
+  border:1px solid var(--line);border-radius:6px;padding:8px;
+}
+.editor-field textarea{min-height:100px;}
+.editor-field select{min-height:38px;}
+.template-entry{padding-bottom:9px;margin-bottom:10px;border-bottom:1px solid var(--line);}
+.small-button{font:inherit;font-size:14px;min-height:34px;padding:5px 9px;cursor:pointer;
+  border:1px solid var(--line);border-radius:6px;color:var(--body);background:var(--panel);margin-bottom:8px;}
+.small-button:hover{border-color:var(--orange);color:var(--orange);}
+.check-label{display:flex;align-items:center;gap:8px;font-size:14px;margin:8px 0;cursor:pointer;}
+.check-label input{accent-color:var(--orange);width:18px;height:18px;flex-shrink:0;}
+.copy-details{border-top:1px solid var(--line);margin-top:22px;padding-top:18px;}
+.copy-details summary{font-size:18px;font-weight:700;color:var(--ink);cursor:pointer;margin-bottom:16px;}
+.copy-editor{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.copy-headings{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.copy-section{min-width:0;border:1px solid var(--line);border-radius:8px;padding:16px;}
+.automatic-copy{padding-left:20px;font-size:14px;margin:12px 0;}
+.automatic-copy li{margin-bottom:6px;}
+.copy-item{border-top:1px solid var(--line);margin-top:12px;padding-top:12px;}
+.events{grid-column:1/-1;}
+.event-item{display:grid;grid-template-columns: minmax(0,2fr) minmax(70px,1fr) minmax(70px,1fr) auto;gap:12px;align-items:end;margin-top:14px;}
+.editor-actions{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line);padding:14px 0 4px;z-index:1;}
+button:disabled{opacity:.6;cursor:not-allowed;}
+button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible{
+  outline:2px solid var(--orange);outline-offset:3px;
+}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+@media(max-width:1150px){
+  .calendar-editor{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .weekday-heading,.calendar-blank{display:none;}
+}
+@media(max-width:700px){
+  .calendar-editor{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .copy-editor,.copy-headings{grid-template-columns:1fr;}
+  .event-item{grid-template-columns:1fr 1fr;}
+  .event-item>.editor-field:first-child{grid-column:1/-1;}
+}
+@media(max-width:420px){
+  .wrap{padding:0 12px;}
+  .calendar-editor{grid-template-columns:1fr;}
+}

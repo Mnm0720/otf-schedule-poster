@@ -15,6 +15,23 @@ Paste the monthly r/orangetheory thread, get a printable schedule poster.
 
 Everything runs in your browser. Nothing is uploaded, and you don't need an account.
 
+### Fix or customize your poster
+
+After generating, use **Edit your schedule** below the poster. Each day supports
+multiple templates, a title for each workout, an earlier **Repeat of** day, and a
+**3G template** checkbox. Adding a repeat link leaves the day's templates as you
+set them; mismatches appear as warnings when you regenerate.
+
+Under **Poster copy & events**, edit the theme, tagline, subtitle, notes, footnote
+headings and text, or event names and date ranges. Notes and footnotes use automatic
+copy by default. Turn off **Use automatic copy** to customize the displayed text;
+clearing all notes or removing all footnotes restores automatic copy. Events use
+day numbers within the displayed month, including a single day or the whole month.
+
+Click **Regenerate poster** to apply your edits. Downloads stay disabled while the
+preview is out of date. If an edit is invalid, the draft stays available to fix.
+Edits live in this tab only; download the finished poster before closing it.
+
 ### What to paste
 
 Copy the whole post — title, prose, links, everything. The generator reads four things
@@ -133,6 +150,29 @@ The browser site runs the *actual* Python package via [Pyodide](https://pyodide.
 `scripts/build_site.py` bundles the same `.py` files and Jinja template that CI uses —
 no JavaScript reimplementation that could drift. Verified byte-for-byte: for all four
 months in `schedules/raw/`, the browser produces the same HTML as the command line.
+
+The editor keeps a separate `Month.to_dict()` draft in memory. `web/bridge.py`
+reconstructs it with `Month.from_dict()` for regeneration without reparsing.
+Category choices come from the Python registry. Automatic copy remains derived
+from the edited schedule; custom fields preserve the model's existing semantics.
+
+### Specifications and tests
+
+The [browser editor spec](specs/browser-editor.md) records the behavior and TDD
+verification. For behavior changes, add a failing regression test first, implement
+the smallest fix, then run the relevant tests and the full checks before delivery:
+
+```bash
+python -m pytest -q
+node --test tests/editor.test.cjs tests/editor-ui.test.cjs tests/app.test.cjs
+python -m otfposter validate
+python scripts/build_site.py
+```
+
+The JavaScript suite uses Node 22+ and no extra packages. It exercises state, form
+handlers, and application flow with a minimal DOM adapter and a mocked runtime.
+Python tests exercise the actual bridge, model, and HTML renderer. These checks do
+not replace real-browser layout, Pyodide startup, or PNG export testing.
 
 </details>
 

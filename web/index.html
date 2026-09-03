@@ -58,7 +58,7 @@
       <button id="go" class="primary" disabled>Loading&hellip;</button>
       <button id="png" class="ghost" hidden>Download PNG</button>
       <button id="html" class="ghost" hidden>Download HTML</button>
-      <span id="status" class="status"></span>
+      <span id="status" class="status" role="status" aria-live="polite"></span>
     </div>
 
     <div id="report" class="report" hidden></div>
@@ -67,6 +67,27 @@
   <section id="previewWrap" class="panel preview" hidden>
     <div class="panel-head"><label>Poster</label><span class="hint" id="dims"></span></div>
     <div class="stage" id="stage"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
+  </section>
+
+  <section id="editorWrap" class="panel schedule-editor" aria-labelledby="editorTitle" hidden>
+    <div class="panel-head">
+      <h2 id="editorTitle">Edit your schedule</h2>
+      <a href="#previewWrap">Back to poster ↑</a>
+    </div>
+    <p class="editor-intro">Adjust any day or customize the poster copy, then regenerate.
+      Repeat links leave each day's templates as you set them. Your edits stay in this tab.</p>
+    <fieldset id="editorFields" class="editor-fields">
+      <legend class="visually-hidden">Schedule and poster settings</legend>
+      <div id="calendarEditor" class="calendar-editor"></div>
+      <details class="copy-details" open>
+        <summary>Poster copy &amp; events</summary>
+        <div id="copyEditor" class="copy-editor"></div>
+      </details>
+    </fieldset>
+    <div class="actions editor-actions">
+      <button id="regenerate" class="primary" type="button">Regenerate poster</button>
+      <span id="editStatus" class="status" role="status" aria-live="polite"></span>
+    </div>
   </section>
 
   <details class="panel help">
@@ -99,6 +120,8 @@ Key Dates for The Month
 
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+<script src="editor-state.js"></script>
+<script src="editor.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -60,6 +60,9 @@ def test_site_builds_and_bundle_is_self_contained():
     files = bundle["files"]
 
     assert "otfposter/templates/poster.html.j2" in files
+    assert files["browser_bridge.py"] == (ROOT / "web" / "bridge.py").read_text(encoding="utf-8")
+    for name in ("editor-state.js", "editor.js"):
+        assert (site / name).read_bytes() == (ROOT / "web" / name).read_bytes()
     for name in PY_MODULES:
         assert f"otfposter/{name}" in files
 

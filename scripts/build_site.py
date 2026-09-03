@@ -47,6 +47,7 @@ def build() -> Path:
 
     for name in PY_MODULES:
         files[f"otfposter/{name}"] = (ROOT / "otfposter" / name).read_text(encoding="utf-8")
+    files["browser_bridge.py"] = (WEB / "bridge.py").read_text(encoding="utf-8")
     files["otfposter/templates/poster.html.j2"] = (
         ROOT / "otfposter" / "templates" / "poster.html.j2"
     ).read_text(encoding="utf-8")

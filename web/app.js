@@ -11,6 +11,7 @@ const els = {
   go: $("go"), png: $("png"), html: $("html"), status: $("status"),
   report: $("report"), preview: $("preview"), previewWrap: $("previewWrap"),
   examples: $("examples"), dims: $("dims"), stage: $("stage"),
+  regenerate: $("regenerate"), editorFields: $("editorFields"), editStatus: $("editStatus"),
 };
 
 const POSTER_WIDTH = 1200;
@@ -38,6 +39,21 @@ function fitPreview() {
 let pyodide = null;
 let examples = {};
 let current = { html: "", slug: "poster", days: 0 };
+const editorState = new OTFEditor.EditorState();
+const editor = new ScheduleEditor(document, editorState, () => {
+  syncControls();
+  status("Edits pending — regenerate to update the poster and downloads.");
+});
+
+function syncControls() {
+  els.go.disabled = !pyodide || editorState.busy;
+  els.regenerate.disabled = !editorState.draft || editorState.busy;
+  els.editorFields.disabled = editorState.busy;
+  els.png.disabled = els.html.disabled = !editorState.canDownload;
+  els.editStatus.textContent = editorState.busy ? "Working…" : editorState.dirty
+    ? "Edits pending — regenerate before downloading." : "Preview is up to date.";
+  for (const button of els.examples.querySelectorAll('button')) button.disabled = editorState.busy;
+}
 
 function status(text, isError = false) {
   els.status.textContent = text;
@@ -59,7 +75,8 @@ async function boot() {
     status("Loading template engine…");
     await pyodide.loadPackage("micropip");
     const micropip = pyodide.pyimport("micropip");
-    await micropip.install(["jinja2", "markupsafe"]);
+    try { await micropip.install(["jinja2", "markupsafe"]); }
+    finally { micropip.destroy(); }
 
     status("Loading poster generator…");
     const bundle = await (await fetch("bundle.json")).json();
@@ -77,46 +94,15 @@ async function boot() {
       FS.writeFile("/app/" + path, content, { encoding: "utf8" });
     }
     pyodide.runPython(`import sys; sys.path.insert(0, "/app")`);
-    pyodide.runPython(`
-from otfposter.parse import parse
-from otfposter.render import render_html
-from otfposter import validate
-import json
-
-def generate(text, month=None, theme="", tagline=""):
-    """Parse a pasted post and render the poster. Returns JSON for JS."""
-    year = mo = None
-    if month:
-        year, mo = (int(p) for p in month.split("-"))
-    m, report = parse(text, year=year, month=mo)
-    if theme:
-        m.theme = theme
-    if tagline:
-        m.tagline = tagline
-
-    notes = []
-    if not report.clean:
-        notes.append(report.render())
-    issues = validate.check(m)
-    errors = [msg for sev, msg in issues if sev == "error"]
-    if issues:
-        notes.append(validate.report(issues))
-
-    return json.dumps({
-        "slug": m.slug,
-        "html": render_html(m, allow_fetch=False),
-        "notes": "\\n".join(n for n in notes if n.strip()),
-        "errors": errors,
-        "days": len(m.days),
-    })
-`);
+    pyodide.runPython("from browser_bridge import generate, regenerate");
 
     renderExampleButtons();
-    els.go.disabled = false;
+    syncControls();
     els.go.textContent = "Generate poster";
     status("Ready — paste a monthly thread and hit Generate.");
   } catch (err) {
     console.error(err);
+    pyodide = null;
     els.go.textContent = "Generate poster";
     status("Could not start: " + err.message, true);
   }
@@ -124,12 +110,13 @@ def generate(text, month=None, theme="", tagline=""):
 
 function renderExampleButtons() {
   const names = Object.keys(examples).sort().reverse();
-  els.examples.innerHTML = "";
+  els.examples.replaceChildren();
   for (const slug of names) {
     const b = document.createElement("button");
     b.type = "button";
     b.textContent = slug;
     b.onclick = () => {
+      if (editorState.busy) return;
       els.src.value = examples[slug];
       els.month.value = "";
       els.theme.value = "";
@@ -142,25 +129,37 @@ function renderExampleButtons() {
 }
 
 async function generate() {
+  if (!pyodide || editorState.busy) return;
   const text = els.src.value.trim();
   if (!text) { status("Paste the monthly thread first.", true); return; }
+  if (editorState.dirty && !confirm("Replace your pending edits with a newly parsed schedule?")) return;
+  await renderPoster("generate", [text, els.month.value.trim() || null,
+    els.theme.value.trim(), els.tagline.value.trim()]);
+}
 
-  els.go.disabled = true;
-  status("Parsing and rendering…");
-  showReport("");
-  els.png.hidden = els.html.hidden = true;
+async function regenerate() {
+  if (!editorState.draft || editorState.busy) return;
+  const errors = OTFEditor.validateDraft(editorState.draft);
+  if (errors.length) {
+    showReport(errors.join("\n"));
+    status("Fix the editor errors before regenerating.", true);
+    els.editStatus.textContent = errors.join(" ");
+    return;
+  }
+  await renderPoster("regenerate", [JSON.stringify(editorState.draft)]);
+}
 
-  // A tick, so the browser paints the status before Pyodide blocks the thread.
-  await new Promise((r) => setTimeout(r, 30));
-
+async function renderPoster(method, args) {
+  if (!editorState.begin()) return;
+  let failure = "";
+  syncControls();
+  status(method === "generate" ? "Parsing and rendering…" : "Rendering your edits…");
+  await new Promise(resolve => setTimeout(resolve, 30));
   try {
-    const fn = pyodide.globals.get("generate");
-    const raw = fn(text, els.month.value.trim() || null,
-                   els.theme.value.trim(), els.tagline.value.trim());
-    fn.destroy();
-    const res = JSON.parse(raw);
-
-    current = { html: res.html, slug: res.slug, days: res.days };
+    const fn = pyodide.globals.get(method);
+    let res;
+    try { res = JSON.parse(fn(...args)); }
+    finally { fn.destroy(); }
     els.previewWrap.hidden = false;
     await new Promise((resolve) => {
       els.preview.onload = resolve;
@@ -168,6 +167,9 @@ async function generate() {
     });
     const doc = els.preview.contentDocument;
     if (doc.fonts && doc.fonts.status !== "loaded") await doc.fonts.ready;
+    current = { html: res.html, slug: res.slug, days: res.days };
+    editorState.accept(res);
+    editor.render();
     fitPreview();
     els.png.hidden = els.html.hidden = false;
     showReport(res.notes);
@@ -182,9 +184,12 @@ async function generate() {
   } catch (err) {
     console.error(err);
     const msg = String(err.message || err).trim().split("\n").pop();
-    status("Could not parse that: " + msg, true);
+    failure = (method === "generate" ? "Could not parse that: " : "Could not regenerate: ") + msg;
+    status(failure, true);
   } finally {
-    els.go.disabled = false;
+    editorState.finish();
+    syncControls();
+    if (failure) els.editStatus.textContent = failure;
   }
 }
 
@@ -200,16 +205,19 @@ function download(blob, name) {
 }
 
 els.html.onclick = () => {
+  if (!editorState.canDownload) return;
   download(new Blob([current.html], { type: "text/html" }),
            `otf_${current.slug}.html`);
 };
 
 els.png.onclick = async () => {
+  if (!editorState.canDownload) return;
   const doc = els.preview.contentDocument;
   const node = doc && doc.querySelector(".poster");
   if (!node) { status("Preview isn't ready yet.", true); return; }
 
-  els.png.disabled = true;
+  if (!editorState.begin()) return;
+  syncControls();
   status("Rendering PNG…");
   try {
     // Wait for the inlined webfonts inside the iframe before rasterising,
@@ -229,11 +237,16 @@ els.png.onclick = async () => {
     console.error(err);
     status("PNG export failed — use Download HTML and print to PDF instead.", true);
   } finally {
-    els.png.disabled = false;
+    editorState.finish();
+    syncControls();
   }
 };
 
 els.go.onclick = generate;
+els.regenerate.onclick = regenerate;
+addEventListener('beforeunload', event => {
+  if (editorState.dirty) { event.preventDefault(); event.returnValue = ''; }
+});
 // Tracks the container, not just the window: catches the panel becoming
 // visible, a collapsed pane opening, and plain window resizes alike.
 new ResizeObserver(fitPreview).observe(els.stage);
