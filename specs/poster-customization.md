@@ -37,6 +37,35 @@ ID), `footnote_styles` (sparse patches keyed by automatic note ID), and `note_st
 (checklist icon/color). Defaults are empty. The Python renderer owns derivation;
 the browser receives current defaults and the registries from its Python bridge.
 
+## Simplified editing flow
+
+- After the first successful generation, hide the source inputs/examples and disable
+  Generate. Place PNG/HTML downloads before View full size in the Poster section.
+  Offer Restart from text beside Generate. Always confirm that restarting removes
+  customizations, including edits already regenerated. Cancel preserves everything;
+  confirm clears the preview/draft/selections, shows the original paste, and enables
+  Generate. A failed initial generation keeps the text available to correct.
+- Before the daily schedule, provide a collapsed Poster title & theme section for
+  theme, tagline, and subtitle. Below the daily editor, give Key Dates, Workout
+  Types, Strength & Tread 50 notes, Monthly notes, and Events separate collapsed
+  sections. Initialize them closed; preserve the user's expanded sections during
+  regeneration. Restart closes them for the next poster.
+- Select one Key Date by its description. Put Description first in its form, then
+  date links and styling. Adding selects a new entry with a default description
+  (`New key date`, numbered if needed) and the selected schedule date. Renaming
+  updates the dropdown immediately; switching entries preserves unsaved changes.
+  Hiding/removing an entry selects a remaining entry or shows an empty state.
+- Replace icon-name dropdowns everywhere with visual pickers using the actual
+  cached SVGs. Show the current icon and a grid of available icons, with accessible
+  names and selected states. Keyboard users can choose an icon and return to the
+  picker control. No user text is treated as SVG markup.
+- Rename Checklist notes to Strength & Tread 50 notes. Remove the highlights list
+  and its heading from the editor; retain the automatically derived panel in the
+  poster. Put a short explanation of the date links and regeneration beneath Edit
+  your schedule. Rename Workout Types & Highlights to Workout Types.
+- Keep phone layouts readable, with 44px controls, no page overflow, and clear
+  section labels. Editing alone does not update the preview or enable stale exports.
+
 ## Verification
 
 Verified locally on 2026-09-02:
@@ -71,3 +100,32 @@ Verified locally on 2026-09-02:
 
 CI and Pages run both suites before publishing. Commits use Mnm0720 as author and
 committer, with no co-author trailers.
+
+### Simplified flow verification, 2026-09-03
+
+- Red: eight Node cases and two Python cases failed against the previous UI,
+  covering restart safeguards, section structure, entry selection, visual icons,
+  and removal of the duplicate highlights list. Two restart cases also failed
+  before the explicit dialog was added. All pass after implementation.
+- A focused regression caught keyboard focus being lost after hiding the final
+  Key Date; focus now moves to Add key date when the picker is empty.
+- Green: 101 Python tests and 20 Node tests pass; all four stored schedules validate
+  and the static build succeeds. Static structure checks complement the Node DOM
+  adapter, checking initial collapse, section order, and download placement.
+- Actual browser: successful generation hides text inputs, disables Generate,
+  and reveals downloads before View full size. All six optional sections initially
+  remain closed. Title settings precede the daily schedule. Expanded sections
+  remain open after regeneration.
+- Added `Studio celebration`, linked it to days 5, 12, and 19, chose a teal star,
+  switched entries, and regenerated. The dropdown retained the description and
+  selected entry; the preview contained the linked dates. The new subtitle and
+  monthly-note icon also appeared after regeneration.
+- Actual SVG icon grid and selected artwork visually checked on desktop and phone.
+  At 320px and 390px, document width matched client width (305px and 375px), with
+  no overflowing editor controls. The 320px restart dialog fits and defaults focus
+  to Keep editing.
+- Actual popup: Keep editing preserved a regenerated subtitle and preview.
+  Confirming restart hid the old preview/editor, cleared customizations, retained
+  the original paste, closed all sections, enabled Generate, and focused the text.
+  Tests also cover failed regeneration, failed initial parsing, and blocked
+  overlapping actions. The original user tab was not modified.

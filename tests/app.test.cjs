@@ -45,7 +45,7 @@ test('generate → edit → regenerate updates preview and both downloads withou
   const a = await app();
   assert.equal(a.context.document.getElementById('navDays').hidden, true);
   await a.generate();
-  for (const id of ['navPoster', 'navDays', 'navCopy']) {
+  for (const id of ['navPoster', 'navDays']) {
     assert.equal(a.context.document.getElementById(id).hidden, false);
   }
   assert.equal(a.els.png.disabled, false); assert.equal(a.els.html.disabled, false);
@@ -58,24 +58,44 @@ test('generate → edit → regenerate updates preview and both downloads withou
   assert.equal(a.els.png.disabled, false); assert.equal(a.els.html.disabled, false);
 });
 
-test('failed regeneration and cancelled new parsing preserve pending edits and preview', async () => {
+test('failed regeneration and cancelled restart preserve pending edits and preview', async () => {
   const a = await app(); await a.generate(); const original = a.els.preview.srcdoc;
   a.editor.change(d => { d.subtitle = 'Keep edits'; });
   a.setFailure(true); await a.regenerate();
   assert.equal(a.editorState.draft.subtitle, 'Keep edits');
   assert.equal(a.els.preview.srcdoc, original); assert.equal(a.els.html.disabled, true);
   assert.match(a.els.editStatus.textContent, /Could not regenerate/);
-  a.context.confirm = () => false;
+  a.context.document.getElementById('restart').onclick();
+  assert.equal(a.context.document.getElementById('restartDialog').open, true);
+  a.context.document.getElementById('restartCancel').onclick();
   await a.generate(); assert.equal(a.calls.length, 2);
   assert.equal(a.editorState.draft.subtitle, 'Keep edits');
+  assert.equal(a.els.preview.srcdoc, original);
 });
 
-test('failed new parsing keeps the existing draft and allows a later successful replacement', async () => {
-  const a = await app(); await a.generate();
-  a.editor.change(d => { d.subtitle = 'Retain me'; });
+test('source is hidden after success and only confirmed restart permits a fresh generation', async () => {
+  const a = await app(); const doc = a.context.document;
+  await a.generate();
+  assert.equal(doc.getElementById('sourceInputs').hidden, true);
+  assert.equal(a.els.go.disabled, true);
+  await a.generate(); assert.equal(a.calls.length, 1);
+  a.editor.change(d => { d.subtitle = 'Already saved edit'; }); await a.regenerate();
+  doc.getElementById('restart').onclick();
+  assert.equal(doc.getElementById('restartDialog').open,true);
+  doc.getElementById('restartCancel').onclick();
+  assert.equal(a.editorState.draft.subtitle, 'Already saved edit');
+  assert.equal(doc.getElementById('restartDialog').open,false);
+  doc.getElementById('restart').onclick();
+  doc.getElementById('restartConfirm').onclick();
+  assert.equal(doc.getElementById('restartDialog').open,false);
+  assert.equal(a.editorState.draft, null); assert.equal(a.editorState.current, null);
+  assert.equal(doc.getElementById('sourceInputs').hidden, false);
+  assert.equal(a.els.previewWrap.hidden, true);
+  assert.equal(a.els.go.disabled, false); assert.equal(a.els.png.disabled, true);
+  assert.equal(a.els.src.value, 'A pasted thread');
   a.setFailure(true); await a.generate();
-  assert.equal(a.editorState.draft.subtitle, 'Retain me');
-  assert.equal(a.editorState.dirty, true); assert.equal(a.els.go.disabled, false);
+  assert.equal(a.editorState.draft, null); assert.equal(a.els.go.disabled, false);
+  assert.equal(doc.getElementById('sourceInputs').hidden, false);
   a.setFailure(false); await a.generate();
   assert.equal(a.editorState.draft.subtitle, 'Monthly Schedule Poster');
   assert.equal(a.editorState.dirty, false);
@@ -83,6 +103,9 @@ test('failed new parsing keeps the existing draft and allows a later successful 
 
 test('invalid events block rendering and overlapping requests are ignored', async () => {
   const a = await app(); await a.generate();
+  a.editorState.begin();
+  a.context.document.getElementById('restart').onclick();
+  assert.ok(a.editorState.draft); a.editorState.finish();
   a.editor.change(d => { d.events.push({name:'Invalid', start:5, end:2}); });
   await a.regenerate(); assert.equal(a.calls.length, 1);
   a.editor.change(d => { d.events = []; });

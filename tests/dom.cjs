@@ -11,6 +11,8 @@ class Element {
   setAttribute(key, value) { this[key] = value; }
   querySelectorAll() { return []; }
   focus() { this.focused = true; }
+  showModal() { this.open = true; }
+  close() { this.open = false; }
   remove() {}
 }
 class Document {

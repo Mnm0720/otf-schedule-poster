@@ -4,6 +4,7 @@
 
   class EditorState {
     constructor() { this.current = null; this.draft = null; this.dirty = false; this.busy = false; }
+    reset() { this.current = null; this.draft = null; this.dirty = false; }
     accept(result) {
       this.current = clone(result);
       this.draft = clone(result.schedule);

@@ -8,7 +8,7 @@ function setup() {
   const doc = new Document();
   const state = new EditorState();
   state.accept({categories:[{key:'std', label:'Standard',color:'#E4E7EB'}, {key:'bench', label:'Benchmark', titled:true,color:'#1A3A6B'}],
-    icons:[{key:'groups',label:'Groups'},{key:'bolt',label:'Bolt'},{key:'flag',label:'Flag'},{key:'check_circle',label:'Check Circle'}],
+    icons:['groups','bolt','flag','check_circle'].map(key => ({key,label:key,svg:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0z"/></svg>'})),
     defaults:{notes:['Automatic'], footnotes:[{id:'three_g',icon:'groups',color:'#8A919B',lead:'Default',text:'Default body'}],
       key_dates:[{id:'workout:8:bench:0',days:[8],detail:'Benchmark: Row',icon:'flag',color:'#1A3A6B'}]},
     schedule:{year:2026, month:9, theme:'Original', tagline:'', subtitle:'Monthly Schedule Poster',
@@ -41,20 +41,21 @@ test('day controls retain metadata and edit independent entries, repeats and 3G'
 
 test('copy controls seed defaults, edit events and preserve their kind', () => {
   const {doc, state} = setup();
-  const copy = doc.getElementById('copyEditor');
-  const theme = labelled(copy, 'Poster theme'); theme.value = 'Changed'; theme.oninput();
+  const copy = doc.getElementById('monthlyNotesEditor');
+  const theme = labelled(doc.getElementById('headingEditor'), 'Poster theme'); theme.value = 'Changed'; theme.oninput();
   const auto = labelled(copy, 'Automatic footnotes'); auto.checked = false; auto.onchange();
   const text = labelled(copy, 'Footnote 1 text'); text.value = '<b>Plain text</b>'; text.oninput();
   assert.equal(state.draft.footnotes[0].icon, 'groups');
-  const name = labelled(copy, 'Event 1 name'); name.value = 'Renamed'; name.oninput();
+  const events = doc.getElementById('eventsEditor');
+  const name = labelled(events, 'Event 1 name'); name.value = 'Renamed'; name.oninput();
   assert.equal(state.draft.events[0].kind, 'special');
-  const end = labelled(copy, 'Event 1 end day'); end.value = ''; end.oninput();
+  const end = labelled(events, 'Event 1 end day'); end.value = ''; end.oninput();
   assert.equal(state.draft.events[0].end, '');
   assert.equal(state.draft.theme, 'Changed');
   assert.equal(state.draft.footnotes[0].text, '<b>Plain text</b>');
   assert.ok(all(copy).every(e => !e.innerHTML));
-  labelled(copy, 'Remove event 1').onclick();
-  labelled(copy, 'Add event').onclick();
+  labelled(events, 'Remove event 1').onclick();
+  labelled(events, 'Add event').onclick();
   assert.deepEqual(state.draft.events, [{name:'', start:1, end:30, kind:'event'}]);
 });
 
@@ -90,23 +91,60 @@ test('workout legend defaults follow schedule edits and manual toggles retain co
   assert.deepEqual(state.draft.category_styles.bench,{color:'#123456'});
 });
 
-test('key-date overrides are sparse and new rows support date lists and styles', () => {
-  const {doc,state}=setup(); const dates=doc.getElementById('keyDatesEditor');
-  const icon=labelled(dates,'Key Date 1 icon'); icon.value='bolt'; icon.onchange();
+test('key dates select by description, keep edits across selections, and add a named entry', () => {
+  const {doc,state,editor}=setup(); const dates=doc.getElementById('keyDatesEditor');
+  let picker=labelled(dates,'Select key date');
+  assert.equal(picker.children[0].textContent,'Benchmark: Row');
+  assert.equal(state.dirty,false);
+  labelled(dates,'Key date icon: bolt').onclick();
   assert.deepEqual(state.draft.key_date_overrides,{'workout:8:bench:0':{icon:'bolt'}});
   labelled(dates,'Add key date').onclick();
-  const links=labelled(dates,'Custom Key Date 1 dates'); links.value='2, 8-10'; links.oninput();
-  const text=labelled(dates,'Custom Key Date 1 description'); text.value='Studio event'; text.oninput();
+  assert.equal(state.draft.key_dates[0].detail,'New key date');
+  assert.equal(labelled(dates,'Key date description').focused,true);
+  const links=labelled(dates,'Key date dates'); links.value='2, 8-10'; links.oninput();
+  const text=labelled(dates,'Key date description'); text.value='Studio event'; text.oninput();
   assert.deepEqual(state.draft.key_dates[0].days,[2,8,9,10]);
   assert.equal(state.draft.key_dates[0].detail,'Studio event');
-  labelled(dates,'Hide Key Date 1').onclick();
+  picker=labelled(dates,'Select key date');
+  assert.equal(picker.children[1].textContent,'Studio event');
+  assert.equal(all(dates).filter(e=>e['aria-label']==='Key date description').length,1);
+  picker.value='workout:8:bench:0'; picker.onchange();
+  picker.value='custom:0'; picker.onchange();
+  assert.equal(labelled(dates,'Key date description').value,'Studio event');
+  editor.render();
+  assert.equal(labelled(dates,'Select key date').value,'custom:0');
+  labelled(dates,'Remove key date').onclick();
+  labelled(dates,'Hide key date').onclick();
   assert.equal(state.draft.key_date_overrides['workout:8:bench:0'].hidden,true);
+  assert.equal(labelled(dates,'Select key date').disabled,true);
+  assert.equal(labelled(dates,'Add key date').focused,true);
+  labelled(dates,'Add key date').onclick();
+  assert.equal(labelled(dates,'Key date description').value,'New key date');
 });
 
 test('automatic monthly-note styling does not convert derived text to custom copy', () => {
-  const {doc,state}=setup(); const copy=doc.getElementById('copyEditor');
+  const {doc,state}=setup(); const copy=doc.getElementById('monthlyNotesEditor');
   const color=labelled(copy,'Monthly note 1 color'); color.value='#123456'; color.oninput();
-  const icon=labelled(copy,'Monthly note 1 icon'); icon.value='bolt'; icon.onchange();
+  const icon=labelled(copy,'Monthly note 1 icon: bolt'); icon.onclick();
   assert.deepEqual(state.draft.footnotes,[]);
   assert.deepEqual(state.draft.footnote_styles.three_g,{color:'#123456',icon:'bolt'});
+});
+
+test('icon choices show actual artwork and keep accessible selection and focus', () => {
+  const {doc,state}=setup(); const dates=doc.getElementById('keyDatesEditor');
+  const choice=labelled(dates,'Key date icon: bolt');
+  assert.ok(choice.children.some(e=>e.tagName==='img' && e.src.startsWith('data:image/svg+xml,')));
+  assert.equal(choice.textContent, '');
+  choice.onclick();
+  assert.equal(choice['aria-pressed'],'true');
+  assert.equal(labelled(dates,'Key date icon').focused,true);
+  assert.equal(all(dates).filter(e=>e.tagName==='select').length,1);
+  assert.equal(state.draft.key_date_overrides['workout:8:bench:0'].icon,'bolt');
+});
+
+test('workout controls no longer repeat the poster highlight text or dates', () => {
+  const {doc,state,editor}=setup();
+  state.current.highlights=[{label:'Run/Rows',value:'9/3, 9/8'}]; editor.renderWorkoutTypes();
+  const text=all(doc.getElementById('workoutTypesEditor')).map(e=>e.textContent||'').join(' ');
+  assert.doesNotMatch(text,/highlights|9\/3|9\/8/i);
 });

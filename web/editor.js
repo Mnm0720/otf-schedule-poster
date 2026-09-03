@@ -62,6 +62,7 @@
       const grid = this.doc.getElementById('calendarEditor'); grid.replaceChildren();
       const m = this.state.draft;
       const month = `${m.year}-${m.month}`;
+      if (this.selectionMonth !== month) this.selectedKeyDate = null;
       if (this.selectionMonth !== month || !m.days.some(d => d.day === this.selectedDay)) this.selectedDay = m.days[0].day;
       this.selectionMonth = month;
       const jump = this.doc.getElementById('dayJump'); jump.replaceChildren();
@@ -116,17 +117,48 @@
     }
     styleControls(parent, value, label, update, defaults = {}) {
       const row = this.node('div', undefined, 'style-controls');
-      this.select(row, 'Icon', `${label} icon`, (this.state.current.icons || []).map(i => [i.key,i.label]),
-        value.icon || defaults.icon || 'groups', icon => update('icon',icon));
-      this.field(row, 'Color', `${label} color`, value.color || defaults.color || '#8A919B',
-        color => update('color',color), 'color');
+      let selected = value.icon || defaults.icon || 'groups';
+      let color = value.color || defaults.color || '#8A919B';
+      const icons = this.state.current.icons || [];
+      const wrap = this.node('div', undefined, 'editor-field');
+      wrap.append(this.node('span', 'Icon', 'field-caption'));
+      const picker = this.node('details', undefined, 'icon-picker');
+      const summary = this.node('summary'); summary.setAttribute('aria-label',`${label} icon`);
+      const grid = this.node('div', undefined, 'icon-options');
+      grid.setAttribute('role','group'); grid.setAttribute('aria-label',`${label} icon choices`);
+      const artwork = (item) => {
+        const img = this.node('img'); img.alt = ''; img.setAttribute('aria-hidden','true');
+        // SVG comes only from the Python bridge's cached icon catalog, never user copy.
+        img.src = `data:image/svg+xml,${encodeURIComponent((item?.svg || '').replace('currentColor', color))}`;
+        return img;
+      };
+      const buttons = icons.map(item => {
+        const button = this.button('',`${label} icon: ${item.label}`,() => {
+          this.change(() => update('icon',item.key)); selected = item.key;
+          paint(); picker.open = false; summary.focus();
+        });
+        button.className = 'icon-option'; button.title = item.label;
+        grid.append(button); return {item,button};
+      });
+      const paint = () => {
+        summary.replaceChildren(artwork(icons.find(i=>i.key===selected)));
+        for (const {item,button} of buttons) {
+          button.replaceChildren(artwork(item)); button.setAttribute('aria-pressed',String(item.key===selected));
+        }
+      };
+      picker.onkeydown = event => {
+        if (event.key === 'Escape') { event.preventDefault(); picker.open = false; summary.focus(); }
+      };
+      paint(); picker.append(summary,grid); wrap.append(picker); row.append(wrap);
+      this.field(row, 'Color', `${label} color`, color,
+        next => { color=next; update('color',color); paint(); }, 'color');
       parent.append(row);
     }
     renderWorkoutTypes() {
       const root = this.doc.getElementById('workoutTypesEditor'); root.replaceChildren();
       const m = this.state.draft;
       const used = new Set(m.days.flatMap(d => d.entries.map(e => e.category)));
-      root.append(this.node('p','Selections start with the types used this month. Colors apply across the poster; toggles change the legend only.','hint'));
+      root.append(this.node('p','Choose which types appear in the Workout Types section of your poster. Types used this month start selected. Each color applies throughout the poster.','hint'));
       const list = this.node('div', undefined, 'workout-types'); root.append(list);
       for (const cat of this.state.current.categories) {
         const row = this.node('div', undefined, 'type-setting');
@@ -145,63 +177,73 @@
         this.change(() => { for (const settings of Object.values(m.category_styles)) delete settings.color; });
         this.renderWorkoutTypes();
       }));
-      root.append(this.node('h3','Template & equipment highlights'));
-      root.append(this.node('p','Dates are linked to your schedule. Regenerate to refresh the list below.','hint'));
-      const highlights = this.node('ul',undefined,'automatic-copy');
-      for (const row of this.state.current.highlights || []) highlights.append(this.node('li',`${row.label}: ${row.value}`));
-      root.append(highlights);
     }
     renderKeyDates() {
       const root = this.doc.getElementById('keyDatesEditor'); root.replaceChildren();
       const m = this.state.draft;
-      root.append(this.node('p','Workouts and events stay linked to the schedule. Customize a field to override it, or add your own dates. Regenerate to refresh linked rows.','hint'));
-      const renderRow = (value,label,set,remove) => {
-        const row = this.node('section',undefined,'copy-item');
-        row.append(this.node('h3',label));
-        this.field(row,'Date(s)',`${label} dates`,Array.isArray(value.days) ? value.days.join(', ') : value.days,
-          input => set('days',parseDayList(input,m.days.length) ?? input));
-        row.append(this.node('p','Day numbers or ranges, e.g. 8, 18, 24-28.','hint'));
-        this.field(row,'Description',`${label} description`,value.detail,input => set('detail',input));
-        this.styleControls(row,value,label,set,{icon:'flag',color:'#F4511E'});
-        row.append(remove); root.append(row);
+      const entries = [];
+      for (const source of this.state.current.defaults.key_dates || []) {
+        if (m.key_date_overrides[source.id]?.hidden) continue;
+        entries.push({id:source.id, value:()=>({...source,...m.key_date_overrides[source.id]}),
+          set:(key,value)=>{ (m.key_date_overrides[source.id] ??= {})[key]=value; },
+          remove:()=>{ (m.key_date_overrides[source.id] ??= {}).hidden=true; }, automatic:true});
+      }
+      m.key_dates.forEach((row,index) => entries.push({id:`custom:${index}`,value:()=>row,
+        set:(key,value)=>{ row[key]=value; },remove:()=>m.key_dates.splice(index,1)}));
+      if (!entries.some(e=>e.id===this.selectedKeyDate)) this.selectedKeyDate=entries[0]?.id;
+      const toolbar = this.node('div',undefined,'key-date-toolbar'); root.append(toolbar);
+      const picker = this.select(toolbar,'Choose an entry','Select key date',
+        entries.map(e=>[e.id,e.value().detail || 'Untitled key date']),this.selectedKeyDate,()=>{});
+      picker.disabled = !entries.length;
+      const form = this.node('div',undefined,'key-date-form');
+      const show = () => {
+        form.replaceChildren();
+        const entry=entries.find(e=>e.id===this.selectedKeyDate);
+        if (!entry) { form.append(this.node('p','No key dates to edit. Add an entry to get started.','hint')); return; }
+        const value=entry.value();
+        this.keyDateDescription=this.field(form,'Description','Key date description',value.detail,input=>{
+          entry.set('detail',input);
+          for (const option of picker.children) if (option.value===entry.id) option.textContent=input || 'Untitled key date';
+        });
+        this.field(form,'Date(s)','Key date dates',Array.isArray(value.days) ? value.days.join(', ') : value.days,
+          input=>entry.set('days',parseDayList(input,m.days.length) ?? input));
+        form.append(this.node('p','Enter day numbers, separated by commas, or a range. For example: 8, 18, 24-28.','hint'));
+        this.styleControls(form,value,'Key date',entry.set,{icon:'flag',color:'#F4511E'});
+        form.append(this.button(entry.automatic ? 'Hide this entry' : 'Remove this entry',
+          entry.automatic ? 'Hide key date' : 'Remove key date',()=>{
+            this.change(entry.remove); this.selectedKeyDate=null; this.renderKeyDates();
+            (this.keyDatePicker.disabled ? this.keyDateAdd : this.keyDatePicker).focus();
+          }));
       };
-      (this.state.current.defaults.key_dates || []).forEach((source,index) => {
-        const label = `Key Date ${index+1}`;
-        const patch = m.key_date_overrides[source.id] || {};
-        if (patch.hidden) return;
-        const set = (key,value) => { (m.key_date_overrides[source.id] ??= {})[key]=value; };
-        renderRow({...source,...patch},label,set,this.button('Hide linked entry',`Hide ${label}`,() => {
-          this.change(() => set('hidden',true)); this.renderKeyDates();
-        }));
+      this.keyDatePicker=picker;
+      // Selecting an entry navigates the draft; it is not an edit.
+      picker.onchange=()=>{ this.selectedKeyDate=picker.value; show(); };
+      this.keyDateAdd=this.button('+ Add key date','Add key date',()=>{
+        const descriptions=new Set(entries.map(e=>e.value().detail));
+        let detail='New key date', number=2;
+        while (descriptions.has(detail)) detail=`New key date ${number++}`;
+        this.change(()=>m.key_dates.push({days:[this.selectedDay],detail,icon:'flag',color:'#F4511E'}));
+        this.selectedKeyDate=`custom:${m.key_dates.length-1}`; this.renderKeyDates();
+        this.keyDateDescription.focus();
       });
-      m.key_dates.forEach((row,index) => {
-        const label = `Custom Key Date ${index+1}`;
-        renderRow(row,label,(key,value) => { row[key]=value; },this.button('Remove entry',`Remove ${label}`,() => {
-          this.change(() => m.key_dates.splice(index,1)); this.renderKeyDates();
-        }));
-      });
-      root.append(this.button('+ Key date','Add key date',() => {
-        this.change(() => m.key_dates.push({days:[this.selectedDay],detail:'',icon:'flag',color:'#F4511E'}));
-        this.renderKeyDates();
-      }));
-      root.append(this.button('Restore linked entries','Restore linked key dates',() => {
+      toolbar.append(this.keyDateAdd);
+      root.append(form); show();
+      root.append(this.button('Reset linked entries','Restore linked key dates',() => {
         this.change(() => { m.key_date_overrides={}; }); this.renderKeyDates();
       }));
     }
     renderCopy() {
-      const root = this.doc.getElementById('copyEditor'); root.replaceChildren();
       const m = this.state.draft;
-      const headings = this.node('div', undefined, 'copy-headings');
+      const headings = this.doc.getElementById('headingEditor'); headings.replaceChildren();
       for (const key of ['theme', 'tagline', 'subtitle']) {
         this.field(headings, key[0].toUpperCase() + key.slice(1), `Poster ${key}`, m[key], value => { m[key] = value; });
       }
-      root.append(headings);
       for (const key of ['notes', 'footnotes']) {
-        const section = this.node('section', undefined, 'copy-section'); root.append(section);
+        const section = this.doc.getElementById(key==='notes' ? 'notesEditor' : 'monthlyNotesEditor');
         const renderSection = () => {
           section.replaceChildren();
-          section.append(this.node('h3', key === 'notes' ? 'Checklist notes' : 'Monthly notes'));
-          if (key === 'notes') this.styleControls(section,m.note_style,'Checklist notes',
+          section.append(this.node('p', key === 'notes' ? 'The reminders beside the weekly Strength 50 / Tread 50 split.' : 'The callouts at the bottom of your poster.','hint'));
+          if (key === 'notes') this.styleControls(section,m.note_style,'Strength & Tread 50 notes',
             (key,value) => { m.note_style[key]=value; },{icon:'check_circle',color:'#F4511E'});
           const automatic = m[key].length === 0;
           const toggle = this.checkbox(section, 'Use automatic copy', `Automatic ${key}`, automatic, checked => {
@@ -247,9 +289,9 @@
         };
         renderSection();
       }
-      const events = this.node('section', undefined, 'copy-section events'); root.append(events);
+      const events = this.doc.getElementById('eventsEditor');
       const renderEvents = () => {
-        events.replaceChildren(); events.append(this.node('h3', 'Events'));
+        events.replaceChildren();
         events.append(this.node('p', 'Add a day range for each event ribbon. Use day numbers within this month.', 'hint'));
         m.events.forEach((event, index) => {
           const row = this.node('div', undefined, 'event-item');

@@ -20,10 +20,9 @@
 <main class="wrap">
 
   <nav class="section-nav" aria-label="Page sections">
-    <a href="#pastePanel">Paste</a>
+    <a href="#pastePanel">Start</a>
     <a id="navPoster" href="#previewWrap" hidden>Poster</a>
-    <a id="navDays" href="#editorWrap" hidden>Days</a>
-    <a id="navCopy" href="#copySection" hidden>Copy</a>
+    <a id="navDays" href="#editorWrap" hidden>Edit</a>
     <a href="#help">Help</a>
   </nav>
 
@@ -34,6 +33,8 @@
   </p>
 
   <section id="pastePanel" class="panel">
+    <fieldset id="sourceInputs" class="source-inputs">
+    <legend class="visually-hidden">Start with a monthly thread</legend>
     <div class="panel-head">
       <label for="src">Monthly thread text</label>
       <div class="examples">
@@ -52,20 +53,13 @@
         <label for="month">Month <span class="hint">optional &mdash; read from the text</span></label>
         <input id="month" type="text" placeholder="2026-09" autocomplete="off">
       </div>
-      <div class="field">
-        <label for="theme">Theme <span class="hint">optional &mdash; read from the text</span></label>
-        <input id="theme" type="text" placeholder="Rhythm &amp; Routine" autocomplete="off">
-      </div>
-      <div class="field grow">
-        <label for="tagline">Tagline <span class="hint">optional</span></label>
-        <input id="tagline" type="text" placeholder="A line under the theme" autocomplete="off">
-      </div>
     </div>
+    </fieldset>
+    <p id="sourceComplete" hidden>Your poster is ready. Make changes in the editor below, or restart with your original text.</p>
 
     <div class="actions">
       <button id="go" class="primary" disabled>Loading&hellip;</button>
-      <button id="png" class="ghost" hidden>Download PNG</button>
-      <button id="html" class="ghost" hidden>Download HTML</button>
+      <button id="restart" class="ghost" type="button" hidden>Restart from text</button>
       <span id="status" class="status" role="status" aria-live="polite"></span>
     </div>
 
@@ -73,7 +67,10 @@
   </section>
 
   <section id="previewWrap" class="panel preview" hidden>
-    <div class="panel-head"><h2>Poster</h2><span class="hint" id="dims"></span>
+    <div class="panel-head"><h2 id="posterTitle" tabindex="-1">Poster</h2><span class="hint" id="dims"></span></div>
+    <div class="preview-actions">
+      <button id="png" class="primary" hidden>Download PNG</button>
+      <button id="html" class="ghost" hidden>Download HTML</button>
       <button id="previewZoom" class="ghost" type="button" aria-pressed="false">View full size</button>
     </div>
     <p class="hint preview-hint">Use full size to read the details, then scroll within the preview.</p>
@@ -82,32 +79,44 @@
 
   <section id="editorWrap" class="panel schedule-editor" aria-labelledby="editorTitle" hidden>
     <div class="panel-head">
-      <h2 id="editorTitle">Edit your schedule</h2>
+      <h2 id="editorTitle">Customize your poster</h2>
       <a href="#previewWrap">Back to poster ↑</a>
     </div>
-    <p class="editor-intro">Choose a date to edit, or customize the poster sections below, then regenerate.
-      Repeat links leave each day's templates as you set them. Your edits stay in this tab.</p>
+    <p class="editor-intro">Open a section to make changes, then select Regenerate poster to see the result. Your edits stay in this tab.</p>
     <fieldset id="editorFields" class="editor-fields">
       <legend class="visually-hidden">Schedule and poster settings</legend>
+      <details id="titleSection" class="copy-details">
+        <summary>Poster title &amp; theme</summary>
+        <div id="headingEditor" class="copy-headings"></div>
+      </details>
+      <section class="schedule-section" aria-labelledby="scheduleTitle">
+      <h3 id="scheduleTitle">Edit your schedule</h3>
+      <p class="editor-intro">Choose a date to change its workouts. Key Dates and template highlights are linked to your schedule and update when you regenerate.</p>
       <div class="editor-toolbar">
         <label for="dayJump">Select date</label>
         <select id="dayJump"></select>
-        <a href="#keyDateSection">Key Dates</a>
-        <a href="#workoutSection">Workout Types</a>
-        <a href="#copySection">Copy &amp; notes</a>
       </div>
       <div id="calendarEditor" class="calendar-editor"></div>
+      </section>
       <details id="keyDateSection" class="copy-details">
         <summary>Key Dates</summary>
         <div id="keyDatesEditor"></div>
       </details>
       <details id="workoutSection" class="copy-details">
-        <summary>Workout Types &amp; Highlights</summary>
+        <summary>Workout Types</summary>
         <div id="workoutTypesEditor"></div>
       </details>
-      <details id="copySection" class="copy-details" open>
-        <summary>Poster copy, monthly notes &amp; events</summary>
-        <div id="copyEditor" class="copy-editor"></div>
+      <details id="notesSection" class="copy-details">
+        <summary>Strength &amp; Tread 50 notes</summary>
+        <div id="notesEditor"></div>
+      </details>
+      <details id="monthlyNotesSection" class="copy-details">
+        <summary>Monthly notes</summary>
+        <div id="monthlyNotesEditor"></div>
+      </details>
+      <details id="eventsSection" class="copy-details">
+        <summary>Events</summary>
+        <div id="eventsEditor"></div>
       </details>
     </fieldset>
     <div class="actions editor-actions">
@@ -143,6 +152,15 @@ Key Dates for The Month
     Schedule data comes from the r/orangetheory monthly threads.
   </p>
 </main>
+
+<dialog id="restartDialog" aria-labelledby="restartTitle" aria-describedby="restartExplanation">
+  <h2 id="restartTitle">Restart from text?</h2>
+  <p id="restartExplanation">This will remove all customizations made below, including changes already applied to the poster. Your original text will be kept so you can edit it and generate a fresh poster.</p>
+  <div class="actions">
+    <button id="restartCancel" class="ghost" type="button" autofocus>Keep editing</button>
+    <button id="restartConfirm" class="primary" type="button">Restart from text</button>
+  </div>
+</dialog>
 
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>

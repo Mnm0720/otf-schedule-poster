@@ -34,9 +34,10 @@ The existing GitHub Pages build and Python category registry remain authoritativ
 6. Invalid repeats (self/future/missing source) and event ranges (outside month,
    reversed, fractional, or blank dates) block regeneration with useful errors.
    Existing repeat-template mismatches and unknown categories remain warnings.
-7. Generating a new paste replaces the draft only on success. If there are pending
-   edits, require confirmation before replacing them. Cancel/failure preserves
-   those edits. Loading example text alone does not discard the editor.
+7. After successful generation, hide source inputs and disable Generate. Restart
+   from text opens a popup explaining that all customization will be removed.
+   Cancel preserves the draft and preview; confirmation clears them and restores
+   the original paste. Failed initial parsing keeps that text available to correct.
 8. All controls have labels, feedback is announced, keyboard focus remains usable,
    and user copy is rendered as text, not injected HTML. No persistence or accounts.
 9. The header keeps a dark charcoal background and contrasting text in either color
@@ -45,7 +46,7 @@ The existing GitHub Pages build and Python category registry remain authoritativ
    at least 44px in height. The entire checkbox label is a touch target.
 10. At 320px, 390px, 768px, and desktop widths, the page fits without horizontal
     scrolling. Phone day cards and copy fields use a single column. Section links
-    reach paste, poster, days, copy, and help; generated sections appear in navigation
+    reach Start, Poster, Edit, and Help; generated sections appear in navigation
     only after generation. A day picker replaces the form with the requested day.
     Sticky navigation must not cover the destination or keyboard focus.
 11. The poster preview defaults to fit-to-width. A full-size view lets people read

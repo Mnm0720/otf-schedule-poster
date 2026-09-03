@@ -3,7 +3,7 @@ import json
 
 from otfposter.categories import CATEGORIES
 from otfposter.derive import default_notes, default_footnotes, automatic_key_dates, highlights
-from otfposter.assets import ICON_NAMES
+from otfposter.assets import ICON_NAMES, make_icon_fn
 from otfposter.models import Month
 from otfposter.parse import parse
 from otfposter.render import render_html
@@ -29,7 +29,8 @@ def _result(m, parse_notes="", *, edited=False):
         "defaults": {"notes": default_notes(m), "footnotes": default_footnotes(m),
                      "key_dates": automatic_key_dates(m)},
         "highlights": highlights(m),
-        "icons": [{"key": name, "label": name.replace('_', ' ').title()} for name in ICON_NAMES],
+        "icons": [{"key": name, "label": name.replace('_', ' ').title(),
+                   "svg": str(make_icon_fn(allow_fetch=False)(name))} for name in ICON_NAMES],
         "categories": [{"key": c.key, "label": c.label, "titled": c.titled, "color": c.color}
                        for c in sorted(CATEGORIES, key=lambda c: c.order)],
     })

@@ -12,6 +12,16 @@ from otfposter.render import render_html
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_browser_icon_catalog_contains_cached_artwork(bridge):
+    from otfposter.assets import ICON_NAMES
+    data = Month.load(ROOT / 'schedules/2026-09.json').to_dict()
+    result = json.loads(bridge['regenerate'](json.dumps(data)))
+    assert {row['key'] for row in result['icons']} == set(ICON_NAMES)
+    for row in result['icons']:
+        assert '<svg' in row['svg'] and '<path' in row['svg']
+        assert row['label']
+
+
 @pytest.fixture
 def bridge():
     return runpy.run_path(str(ROOT / "web" / "bridge.py"))

@@ -7,7 +7,7 @@
  */
 const $ = (id) => document.getElementById(id);
 const els = {
-  src: $("src"), month: $("month"), theme: $("theme"), tagline: $("tagline"),
+  src: $("src"), month: $("month"), sourceInputs: $("sourceInputs"), restart: $("restart"),
   go: $("go"), png: $("png"), html: $("html"), status: $("status"),
   report: $("report"), preview: $("preview"), previewWrap: $("previewWrap"),
   examples: $("examples"), dims: $("dims"), stage: $("stage"),
@@ -47,8 +47,14 @@ const editor = new ScheduleEditor(document, editorState, () => {
 });
 
 function syncControls() {
-  for (const id of ['navPoster', 'navDays', 'navCopy']) $(id).hidden = !editorState.current;
-  els.go.disabled = !pyodide || editorState.busy;
+  const generated = Boolean(editorState.current);
+  for (const id of ['navPoster', 'navDays']) $(id).hidden = !generated;
+  els.sourceInputs.hidden = generated;
+  els.sourceInputs.disabled = editorState.busy;
+  $('sourceComplete').hidden = !generated;
+  els.restart.hidden = !generated;
+  els.restart.disabled = editorState.busy;
+  els.go.disabled = !pyodide || editorState.busy || generated;
   els.regenerate.disabled = !editorState.draft || editorState.busy;
   els.editorFields.disabled = editorState.busy;
   els.png.disabled = els.html.disabled = !editorState.canDownload;
@@ -118,11 +124,9 @@ function renderExampleButtons() {
     b.type = "button";
     b.textContent = slug;
     b.onclick = () => {
-      if (editorState.busy) return;
+      if (editorState.busy || editorState.current) return;
       els.src.value = examples[slug];
       els.month.value = "";
-      els.theme.value = "";
-      els.tagline.value = "";
       status(`Loaded the ${slug} thread — hit Generate.`);
       showReport("");
     };
@@ -131,12 +135,34 @@ function renderExampleButtons() {
 }
 
 async function generate() {
-  if (!pyodide || editorState.busy) return;
+  if (!pyodide || editorState.busy || editorState.current) return;
   const text = els.src.value.trim();
   if (!text) { status("Paste the monthly thread first.", true); return; }
-  if (editorState.dirty && !confirm("Replace your pending edits with a newly parsed schedule?")) return;
-  await renderPoster("generate", [text, els.month.value.trim() || null,
-    els.theme.value.trim(), els.tagline.value.trim()]);
+  await renderPoster("generate", [text, els.month.value.trim() || null]);
+}
+
+function restartFromText() {
+  if (editorState.busy || !editorState.current) return;
+  $('restartDialog').showModal();
+}
+
+function confirmRestart() {
+  if (editorState.busy || !editorState.current) return;
+  $('restartDialog').close();
+  editorState.reset();
+  current = {html:'', slug:'poster', days:0};
+  editor.selectedDay = editor.selectedKeyDate = editor.selectionMonth = null;
+  for (const id of ['titleSection','keyDateSection','workoutSection','notesSection','monthlyNotesSection','eventsSection']) $(id).open = false;
+  els.previewWrap.hidden = $('editorWrap').hidden = true;
+  els.preview.srcdoc = '';
+  els.png.hidden = els.html.hidden = true;
+  previewFullSize = false;
+  els.stage.classList.toggle('full-size', false);
+  $('previewZoom').textContent = 'View full size';
+  $('previewZoom').setAttribute('aria-pressed', 'false');
+  showReport(''); syncControls();
+  status('Edit your original text, then select Generate poster to start again.');
+  els.src.focus();
 }
 
 async function regenerate() {
@@ -183,6 +209,7 @@ async function renderPoster(method, args) {
     } else {
       status("Rendered cleanly.");
     }
+    if (method === 'generate') $('posterTitle').focus();
   } catch (err) {
     console.error(err);
     const msg = String(err.message || err).trim().split("\n").pop();
@@ -245,6 +272,9 @@ els.png.onclick = async () => {
 };
 
 els.go.onclick = generate;
+els.restart.onclick = restartFromText;
+$('restartCancel').onclick = () => $('restartDialog').close();
+$('restartConfirm').onclick = confirmRestart;
 els.regenerate.onclick = regenerate;
 $('previewZoom').onclick = () => {
   previewFullSize = !previewFullSize;
@@ -255,7 +285,7 @@ $('previewZoom').onclick = () => {
   fitPreview();
 };
 // Open disclosures before following their section anchors.
-for (const anchor of document.querySelectorAll('a[href="#copySection"], a[href="#help"], a[href="#keyDateSection"], a[href="#workoutSection"]')) {
+for (const anchor of document.querySelectorAll('a[href="#help"]')) {
   anchor.onclick = () => { $(anchor.getAttribute('href').slice(1)).open = true; };
 }
 addEventListener('beforeunload', event => {

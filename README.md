@@ -11,33 +11,40 @@ Paste the monthly r/orangetheory thread, get a printable schedule poster.
 1. Open the monthly thread on r/orangetheory and copy the entire post
 2. Paste it into the text box on the site
 3. Hit **Generate** — the poster appears in seconds
-4. Download the **PNG** (for printing or sharing) or the **HTML** (opens in any browser)
+4. Review the poster and use **Download PNG** (for printing or sharing) or
+   **Download HTML** (opens in any browser) beside **View full size**
 
 Everything runs in your browser. Nothing is uploaded, and you don't need an account.
 
 ### Fix or customize your poster
 
-After generating, use **Edit your schedule** below the poster. **Select date**
+After generating, the text inputs are hidden and Generate is disabled. Use
+**Customize your poster** below the preview. Optional sections start collapsed;
+open only what you want to change. **Poster title & theme** comes first, with
+separate fields for theme, tagline, and subtitle.
+
+In **Edit your schedule**, **Select date**
 shows one day at a time and keeps your edits when you switch dates. Each day supports
 multiple templates, a title for each workout, an earlier **Repeat of** day, and a
 **3G template** checkbox. Adding a repeat link leaves the day's templates as you
 set them; mismatches appear as warnings when you regenerate.
 
-Under **Key Dates**, edit linked workout/event callouts or add your own. Link an
+Under **Key Dates**, choose an entry by its description or select **Add key date**.
+New entries start with a default description and the selected schedule date. Link an
 entry to one date, several dates, or a range using day numbers such as `8, 18, 24-28`.
-Choose an icon and color for each entry. Unedited fields continue to follow the
-schedule; hide an automatic entry or restore linked entries when needed.
+Use the visual icon picker and color control for each entry. Unedited fields continue
+to follow the schedule; hide an automatic entry or reset linked entries when needed.
 
-Under **Workout Types & Highlights**, all workout types have a legend toggle and
+Under **Workout Types**, all workout types have a legend toggle and
 color picker. Types used in the month are selected automatically until you override
 them. Changing a color updates calendar pills, highlights, the legend, and linked
 Key Date icons without an individual color override. Highlights always derive from
 the schedule. **Use automatic selections** restores the month-based toggles;
 **Reset type colors** restores the original palette.
 
-Under **Poster copy, monthly notes & events**, edit the theme, tagline, subtitle,
-checklist notes, monthly note headings and text, or event names and date ranges.
-Choose icons and colors for checklist notes and each monthly note. Notes use automatic
+**Strength & Tread 50 notes**, **Monthly notes**, and **Events** each have their own
+collapsed section. Edit reminders, callout headings and text, or event names and date
+ranges. Choose icons and colors for the reminders and each monthly note. Notes use automatic
 copy by default. Turn off **Use automatic copy** to customize the displayed text;
 clearing all notes or removing all footnotes restores automatic copy. Events use
 day numbers within the displayed month, including a single day or the whole month.
@@ -46,8 +53,12 @@ Click **Regenerate poster** to apply your edits. Downloads stay disabled while t
 preview is out of date. If an edit is invalid, the draft stays available to fix.
 Edits live in this tab only; download the finished poster before closing it.
 
-Use the section links to move between the paste, poster, days, copy, and help,
-with direct links to Key Dates and Workout Types inside the editor. On phones,
+To start over, select **Restart from text** beside the disabled Generate button.
+The popup explains that this removes all customizations, including regenerated
+changes. **Keep editing** cancels; **Restart from text** restores the original paste
+and lets you generate a fresh poster.
+
+Use **Start**, **Poster**, **Edit**, and **Help** to navigate. On phones,
 day cards and copy fields stack into one column with larger touch controls. **View full size**
 lets you scroll across the poster to read its details; **Fit to width** restores
 the overview. Both views export the same full-resolution poster.
@@ -68,11 +79,11 @@ are flagged in the output rather than silently dropped.
 A plain day-list format (`9/1 - Standard`, `9/2 - Lift More + Elevation Gain`) also
 works and is detected automatically.
 
-### Optional fields
+### Month override
 
-- **Month** — normally read from the text; override if detection fails
-- **Theme** — same; type your own if you want to change the poster's theme line
-- **Tagline** — a subtitle under the theme (e.g. "Three marked dates and a steady repeat cycle")
+The month is normally read from the text. Use the optional **Month** field before
+generating if detection fails. After generating, change theme, tagline, and subtitle
+under **Poster title & theme**.
 
 ### Example posts
 
