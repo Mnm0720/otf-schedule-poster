@@ -60,34 +60,34 @@ def check(m: Month) -> list[tuple[str, str]]:
         issues.append((WARN, f"unrecognised template {name!r} - it will render in "
                              f"grey; add it to categories.py to give it a colour"))
 
-    # -- "templates never repeat inside the same Mon-Sun week" -------------
-    for a, b in _same_week_pairs(m):
-        if _signature(by_day[a]) and _signature(by_day[a]) == _signature(by_day[b]):
-            issues.append((WARN, f"{m.mmdd(a)} and {m.mmdd(b)} share a template set "
-                                 f"inside the same Mon-Sun week"))
+    # -- a repeat day must carry its source day's templates ---------------
+    # Checked against Apr 2026, Aug 2026, Sep 2026 and Oct 2025: 45 repeat
+    # pairs, zero mismatches. So a mismatch means the paste lost a category
+    # line or a repeat pair, which is exactly the typo worth catching.
+    for day in m.days:
+        src = by_day.get(day.repeat_of) if day.repeat_of else None
+        if src is None:
+            continue
+        here, there = _template_set(day), _template_set(src)
+        if here != there:
+            issues.append((WARN, f"{m.mmdd(day.day)} repeats {m.mmdd(src.day)} but "
+                                 f"lists {_fmt_set(here)} vs {_fmt_set(there)}"))
 
     return issues
 
 
-def _signature(day) -> tuple:
-    """What makes two days 'the same template'. Standard days are excluded --
-    a month is mostly Standard and those genuinely do recur."""
-    keys = tuple(sorted(e.label for e in day.entries))
-    if not keys or keys == ("Standard",):
-        return ()
-    return keys
+def _template_set(day) -> tuple:
+    """The equipment/format templates on a day.
+
+    Named workouts are excluded: a signature lands on top of whatever template
+    the day was already running, so 8/7 (Catch Me If You Can + Run/Row) still
+    counts as a Run/Row day for repeat purposes.
+    """
+    return tuple(sorted(e.label for e in day.entries if not e.cat.titled))
 
 
-def _same_week_pairs(m: Month):
-    weeks: dict[date, list[int]] = {}
-    for day in m.days:
-        d = date(m.year, m.month, day.day)
-        monday = d - timedelta(days=d.weekday())
-        weeks.setdefault(monday, []).append(day.day)
-    for days in weeks.values():
-        for i, a in enumerate(days):
-            for b in days[i + 1:]:
-                yield a, b
+def _fmt_set(s: tuple) -> str:
+    return " + ".join(s) if s else "nothing"
 
 
 def _fmt(m: Month, days) -> str:

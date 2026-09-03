@@ -1,8 +1,8 @@
 {
   "year": 2026,
-  "month": 9,
-  "theme": "Rhythm & Routine",
-  "tagline": "No month-long event &mdash; <b>three marked dates</b> and a steady repeat cycle",
+  "month": 8,
+  "theme": "Balance & Stability",
+  "tagline": "",
   "subtitle": "Monthly Schedule Poster",
   "source_url": "reddit.com/r/orangetheory",
   "strength_split": [
@@ -21,10 +21,48 @@
   ],
   "notes": [],
   "footnotes": [],
-  "events": [],
+  "events": [
+    {
+      "name": "Marathon Month",
+      "start": 1,
+      "end": 31,
+      "kind": "event"
+    }
+  ],
   "days": [
     {
       "day": 1,
+      "entries": [
+        {
+          "category": "spec",
+          "title": "Start Line",
+          "raw": "August 1 (Saturday): Start Line; specialty. See our wiki or search the sub for details (maybe try Starting Line if searching). This template is designed to kick off Marathon Month."
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 2,
+      "entries": [
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Rows"
+        },
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 3,
       "entries": [
         {
           "category": "std",
@@ -37,7 +75,92 @@
       "three_g": false
     },
     {
-      "day": 2,
+      "day": 4,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "bosu",
+          "title": "",
+          "raw": "BOSU"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 5,
+      "entries": [
+        {
+          "category": "switch",
+          "title": "",
+          "raw": "Switch"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 6,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 7,
+      "entries": [
+        {
+          "category": "sig",
+          "title": "Catch Me If You Can",
+          "raw": "August 7 (Friday): Catch Me If You Can; signature. See our wiki for details."
+        },
+        {
+          "category": "runrow",
+          "title": "",
+          "raw": "Run/Rows"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 8,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "band",
+          "title": "",
+          "raw": "Minibands"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 9,
       "entries": [
         {
           "category": "lift",
@@ -55,118 +178,12 @@
       "three_g": false
     },
     {
-      "day": 3,
-      "entries": [
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 4,
-      "entries": [
-        {
-          "category": "lowbench",
-          "title": "",
-          "raw": "Low bench"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 5,
-      "entries": [
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        },
-        {
-          "category": "incline",
-          "title": "",
-          "raw": "Incline bench"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 6,
-      "entries": [
-        {
-          "category": "std",
-          "title": "",
-          "raw": "(not listed)"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 7,
-      "entries": [
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 8,
-      "entries": [
-        {
-          "category": "bench",
-          "title": "1000 Meter Row",
-          "raw": "September 8 (Tuesday): 1000 Meter Row; benchmark. See our wiki for details."
-        },
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 9,
-      "entries": [
-        {
-          "category": "std",
-          "title": "",
-          "raw": "(not listed)"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
       "day": 10,
       "entries": [
         {
-          "category": "switch",
+          "category": "bosu",
           "title": "",
-          "raw": "Switch"
-        },
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
+          "raw": "BOSU"
         }
       ],
       "repeat_of": null,
@@ -190,16 +207,6 @@
       "day": 12,
       "entries": [
         {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        },
-        {
-          "category": "elev",
-          "title": "",
-          "raw": "Elevation Gain"
-        },
-        {
           "category": "band",
           "title": "",
           "raw": "Minibands"
@@ -213,14 +220,14 @@
       "day": 13,
       "entries": [
         {
+          "category": "sig",
+          "title": "Inferno",
+          "raw": "August 13 (Thursday): Inferno; signature. See our wiki for details."
+        },
+        {
           "category": "runrow",
           "title": "",
           "raw": "Run/Rows"
-        },
-        {
-          "category": "lowbench",
-          "title": "",
-          "raw": "Low bench"
         }
       ],
       "repeat_of": null,
@@ -230,6 +237,11 @@
     {
       "day": 14,
       "entries": [
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        },
         {
           "category": "bosu",
           "title": "",
@@ -247,6 +259,11 @@
           "category": "lift",
           "title": "",
           "raw": "Lift More"
+        },
+        {
+          "category": "incline",
+          "title": "",
+          "raw": "Incline bench"
         }
       ],
       "repeat_of": null,
@@ -262,12 +279,79 @@
           "raw": "(not listed)"
         }
       ],
-      "repeat_of": 1,
+      "repeat_of": null,
       "note": "",
       "three_g": false
     },
     {
       "day": 17,
+      "entries": [
+        {
+          "category": "sig",
+          "title": "Orange Everest",
+          "raw": "August 17 (Monday): Orange Everest; signature. See our wiki for details."
+        },
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 18,
+      "entries": [
+        {
+          "category": "switch",
+          "title": "",
+          "raw": "Switch"
+        }
+      ],
+      "repeat_of": 5,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 19,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low bench"
+        }
+      ],
+      "repeat_of": 6,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 20,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "band",
+          "title": "",
+          "raw": "Minibands"
+        }
+      ],
+      "repeat_of": 8,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 21,
       "entries": [
         {
           "category": "lift",
@@ -280,69 +364,7 @@
           "raw": "Elevation Gain"
         }
       ],
-      "repeat_of": 2,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 18,
-      "entries": [
-        {
-          "category": "sig",
-          "title": "OTF Foundations",
-          "raw": "September 18 (Friday): OTF Foundations; signature. See our wiki for details."
-        },
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 19,
-      "entries": [
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        }
-      ],
-      "repeat_of": 3,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 20,
-      "entries": [
-        {
-          "category": "lowbench",
-          "title": "",
-          "raw": "Low bench"
-        }
-      ],
-      "repeat_of": 4,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 21,
-      "entries": [
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        },
-        {
-          "category": "incline",
-          "title": "",
-          "raw": "Incline bench"
-        }
-      ],
-      "repeat_of": 5,
+      "repeat_of": 9,
       "note": "",
       "three_g": false
     },
@@ -350,66 +372,9 @@
       "day": 22,
       "entries": [
         {
-          "category": "std",
+          "category": "bosu",
           "title": "",
-          "raw": "(not listed)"
-        }
-      ],
-      "repeat_of": 6,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 23,
-      "entries": [
-        {
-          "category": "sig",
-          "title": "The Chipper",
-          "raw": "September 23 (Wednesday): The Chipper; signature. See our wiki for details."
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 24,
-      "entries": [
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        }
-      ],
-      "repeat_of": 7,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 25,
-      "entries": [
-        {
-          "category": "std",
-          "title": "",
-          "raw": "(not listed)"
-        }
-      ],
-      "repeat_of": 9,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 26,
-      "entries": [
-        {
-          "category": "switch",
-          "title": "",
-          "raw": "Switch"
-        },
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
+          "raw": "BOSU"
         }
       ],
       "repeat_of": 10,
@@ -417,7 +382,7 @@
       "three_g": false
     },
     {
-      "day": 27,
+      "day": 23,
       "entries": [
         {
           "category": "std",
@@ -430,18 +395,8 @@
       "three_g": false
     },
     {
-      "day": 28,
+      "day": 24,
       "entries": [
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        },
-        {
-          "category": "elev",
-          "title": "",
-          "raw": "Elevation Gain"
-        },
         {
           "category": "band",
           "title": "",
@@ -453,7 +408,56 @@
       "three_g": false
     },
     {
-      "day": 29,
+      "day": 25,
+      "entries": [
+        {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
+          "category": "incline",
+          "title": "",
+          "raw": "Incline bench"
+        }
+      ],
+      "repeat_of": 15,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 26,
+      "entries": [
+        {
+          "category": "elev",
+          "title": "",
+          "raw": "Elevation Gain"
+        },
+        {
+          "category": "bosu",
+          "title": "",
+          "raw": "BOSU"
+        }
+      ],
+      "repeat_of": 14,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 27,
+      "entries": [
+        {
+          "category": "spec",
+          "title": "PSL",
+          "raw": "August 27 (Thursday): PSL; specialty. This is a 3G only template, regardless of whether your studio lists 2G classes. You can search the sub for previous versions of this class; it typically involves variations of presses, squats, and lunges, and has coincided with the release of Starbucks fall menu."
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": true
+    },
+    {
+      "day": 28,
       "entries": [
         {
           "category": "runrow",
@@ -466,7 +470,20 @@
           "raw": "Low bench"
         }
       ],
-      "repeat_of": 13,
+      "repeat_of": 2,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 29,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "(not listed)"
+        }
+      ],
+      "repeat_of": 3,
       "note": "",
       "three_g": false
     },
@@ -474,12 +491,30 @@
       "day": 30,
       "entries": [
         {
+          "category": "lift",
+          "title": "",
+          "raw": "Lift More"
+        },
+        {
           "category": "bosu",
           "title": "",
           "raw": "BOSU"
         }
       ],
-      "repeat_of": 14,
+      "repeat_of": 4,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 31,
+      "entries": [
+        {
+          "category": "spec",
+          "title": "Finish Line",
+          "raw": "August 31 (Monday): Finish Line; specialty. See our wiki or search the sub for details. This template is designed to wrap up Marathon Month and is typically a repeat of August 1."
+        }
+      ],
+      "repeat_of": null,
       "note": "",
       "three_g": false
     }

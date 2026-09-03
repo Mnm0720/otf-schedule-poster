@@ -47,11 +47,26 @@ class Entry:
 
 
 @dataclass
+class Event:
+    """A multi-day or month-long happening (Marathon Month, Hell Week, Dri Tri)."""
+    name: str
+    start: int
+    end: int
+    kind: str = "event"
+
+    def label(self, month: int) -> str:
+        if self.start == self.end:
+            return f"{month}/{self.start} {self.name}"
+        return f"{month}/{self.start}-{month}/{self.end} {self.name}"
+
+
+@dataclass
 class Day:
     day: int
     entries: list[Entry] = field(default_factory=list)
     repeat_of: int | None = None   # this day re-runs the template from day N
     note: str = ""                 # free-text override for the cell footnote
+    three_g: bool = False          # runs 3G-style even where 2G is listed
 
     @property
     def is_marked(self) -> bool:
@@ -69,6 +84,7 @@ class Month:
     strength_split: list[dict] = field(default_factory=lambda: list(DEFAULT_STRENGTH_SPLIT))
     notes: list[str] = field(default_factory=list)     # checklist beside the split
     footnotes: list[dict] = field(default_factory=list)  # bottom-right callouts
+    events: list[Event] = field(default_factory=list)
     days: list[Day] = field(default_factory=list)
     schema_version: int = SCHEMA_VERSION
 
@@ -121,12 +137,14 @@ class Month:
                 entries=[Entry(**e) for e in d.get("entries", [])],
                 repeat_of=d.get("repeat_of"),
                 note=d.get("note", ""),
+                three_g=d.get("three_g", False),
             )
             for d in data.get("days", [])
         ]
-        known = {f for f in cls.__dataclass_fields__ if f != "days"}
+        events = [Event(**e) for e in data.get("events", [])]
+        known = {f for f in cls.__dataclass_fields__ if f not in ("days", "events")}
         kwargs = {k: v for k, v in data.items() if k in known}
-        return cls(days=days, **kwargs)
+        return cls(days=days, events=events, **kwargs)
 
     @classmethod
     def load(cls, path: Path) -> "Month":

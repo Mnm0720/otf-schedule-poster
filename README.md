@@ -1,15 +1,13 @@
 # OTF Schedule Poster
 
-Turn the monthly Orangetheory template post into a printable PNG schedule poster.
-
-Paste the month's template list in, get this out:
+Paste the monthly r/orangetheory thread in, get a printable schedule poster out.
 
 ![Example poster](out/otf_2026-09.png)
 
-The schedule data comes from the monthly template posts on
-[r/orangetheory](https://www.reddit.com/r/orangetheory/) (typically posted by
-[u/Rizzah319](https://www.reddit.com/user/Rizzah319/)). This repo is an
-unofficial fan tool and is not affiliated with Orangetheory Fitness.
+Schedule data comes from the monthly template threads on
+[r/orangetheory](https://www.reddit.com/r/orangetheory/), curated by the
+subreddit mods. This is an unofficial fan tool, not affiliated with
+Orangetheory Fitness.
 
 ---
 
@@ -19,82 +17,104 @@ unofficial fan tool and is not affiliated with Orangetheory Fitness.
 pip install -e ".[dev]" && python -m playwright install chromium
 ```
 
-Then paste a month in:
+Copy the whole monthly thread — headers, prose, links, all of it — and pipe it in:
 
 ```bash
-python -m otfposter build schedules/raw/2026-09.txt --theme "Rhythm & Routine"
+python -m otfposter build - < month.txt
 ```
 
-That writes three things:
+That writes:
 
 | File | What it is |
 | --- | --- |
 | `schedules/2026-09.json` | the structured schedule — **the source of truth** |
+| `schedules/raw/2026-09.txt` | the paste it came from |
 | `out/otf_2026-09.html` | a standalone HTML poster (fonts and icons inlined) |
 | `out/otf_2026-09.png` | the 2400px-wide poster image |
 
-You can also pipe it in:
-
-```bash
-pbpaste | python -m otfposter build - --month 2026-10
-```
-
 ## Generating a poster from GitHub (no local setup)
 
-Go to **Actions → Build poster → Run workflow**, paste the month's post into the
-`schedule_text` box, and run it. The poster is attached to the run as an
-artifact and (unless you untick `commit`) committed back to `out/`.
+**Actions → Build poster → Run workflow**, paste the thread into the
+`schedule_text` box, run. The poster is attached to the run as an artifact and
+(unless you untick `commit`) committed to `out/`.
 
-Pull requests that touch `schedules/` render a preview artifact without
-committing, so you can eyeball a month before it lands.
+PRs touching `schedules/` render a preview artifact without committing.
 
-## The paste format
+## What it reads
 
-The parser is deliberately forgiving — it looks for "a date, then some template
-names" and ignores prose around it. All of these work:
+The monthly threads describe a month **by category, not day by day**, so the
+schedule is assembled by inverting those lists. Four things are read; the rest
+of the post is ignored.
+
+**1. The month and theme**, from the title and the prose:
+
+```
+Welcome to the September 2026 Monthly Thread!
+... for September it is Rhythm & Routine.
+```
+
+**2. Key Dates** — signatures, benchmarks, specialties, and events:
+
+```
+* September 8 (Tuesday): 1000 Meter Row; benchmark. See our wiki for details.
+* September 18 (Friday): OTF Foundations; signature. ...
+* August 1 (Saturday) - August 31 (Monday): Marathon Month; event. ...
+* August 27 (Thursday): PSL; specialty. This is a 3G only template, ...
+```
+
+Single days become pills on the calendar. Date ranges become an event ribbon.
+"3G only" marks the day with a `3G` badge.
+
+**3. The category lists**:
+
+```
+* Run/Rows on 9/3, 9/5, 9/8 (benchmark), 9/13, 9/19, 9/21, 9/29.
+* Lift More templates on 9/2, 9/7, 9/10, 9/12, ...
+* Minibands on 9/12, 9/28.
+```
+
+The parentheticals (`(benchmark)`, `(signature)`) are cross-references to Key
+Dates, not extra templates, so they're read for corroboration and otherwise
+ignored. **Any day no category names is a Standard template.**
+
+**4. The repeat map**:
+
+```
+* Repeat templates are as follows: 9/16 = 9/1, 9/17 = 9/2, 9/19 = 9/3, ...
+* 10/24 and 10/31 are 3G style templates, meaning that even if your class ...
+```
+
+Nothing is silently dropped: an unrecognised category label is reported, and
+`--strict` turns any such report into a non-zero exit.
+
+### The day-list format
+
+For hand-written months, a plain day list is also accepted and detected
+automatically:
 
 ```
 9/1 - Standard
-9/2 — Lift More + Elevation Gain
-09/03: Run/Row
-Sept 4 - Low Bench
+9/2 - Lift More + Elevation Gain
 9/8 - Benchmark: 1000 Meter Row + Run/Row
 9/16 - Standard (repeat of 9/1)
 9/15 - Lift More (not a repeat)
-9/17 - repeat of 9/2            # inherits 9/2's templates
 ```
 
-or a date header with its templates underneath:
-
-```
-Tuesday, September 1
-  Standard
-  Lift More
-```
-
-Details:
-
-- **Separators between templates**: `+`, `,`, `&`, `;`, `and`, `·`, `|`.
-  Note `/` is *not* one — it lives inside `Run/Row`.
-- **Named workouts**: `Signature: <name>`, `Benchmark: <name>`,
-  `Specialty: <name>` keep their name on the pill.
-- **The month** is read from a line like `September 2026`. If the post doesn't
-  say, pass `--month 2026-09`.
-- Anything the parser can't place is printed as a note; nothing is silently
-  dropped. Use `--strict` to turn those notes into a non-zero exit.
+Separators between templates are `+`, `,`, `&`, `;`, `and`. Note `/` is *not*
+one — it lives inside `Run/Row`.
 
 ## Editing after parsing
 
-The parse is a starting point, not a straitjacket. If a month has a quirk,
-edit `schedules/YYYY-MM.json` by hand and re-render:
+The parse is a starting point. If a month has a quirk, edit
+`schedules/YYYY-MM.json` and re-render:
 
 ```bash
 python -m otfposter render --month 2026-09
 ```
 
 The JSON also carries the poster's copy — `theme`, `tagline`, `notes`,
-`footnotes`, `strength_split`. Leave them out and sensible values are derived
-from the schedule itself.
+`footnotes`, `strength_split`, `events`. Leave them out and sensible values are
+derived from the schedule.
 
 ## Commands
 
@@ -107,20 +127,28 @@ from the schedule itself.
 | `fetch-assets` | refresh the cached icons and fonts under `assets/` |
 
 Useful flags: `--strict`, `--offline`, `--html-only` (skip the browser),
-`--scale N` (pixel density, default 2), `--out DIR`.
+`--scale N` (pixel density, default 2), `--theme`, `--tagline`, `--out DIR`.
 
 ## What gets checked
 
-`validate` encodes the rules the poster itself asserts, so a typo in the paste
-fails the build instead of quietly producing a wrong poster:
+`validate` catches the ways a paste goes wrong:
 
 - every day of the month is present, and none fall outside it
 - every `repeat of N` points at a real, *earlier* day
 - nothing repeats a day that is itself a repeat
-- no template set recurs inside the same Monday–Sunday week
+- **a repeat day carries its source day's templates** — the strong one; see below
 - unrecognised template names are surfaced (they render grey rather than vanish)
 
 Errors fail the build; warnings only fail under `--strict`.
+
+That fourth rule is not a convention someone hoped for — it holds across all 45
+repeat pairs in the four months in `schedules/raw/`. So when `8/20 = 8/8` but
+8/20 lists Lift More and 8/8 lists Lift More + Minibands, a category line got
+lost in the paste, and you hear about it.
+
+Named workouts are excluded from that comparison: a signature lands *on top of*
+whatever template the day was already running, so 8/7 (Catch Me If You Can +
+Run/Row) still counts as a Run/Row day.
 
 ## Adding a new template type
 
@@ -136,31 +164,40 @@ Category(
 ),
 ```
 
-The pill colour, the highlights row, and the legend at the bottom of the poster
-all follow from that. Nothing else needs touching.
+Pill colour, highlights row, and the legend all follow. Nothing else changes.
+`order` also sets the order pills stack within a day.
 
 ## How it fits together
 
 ```
-raw paste ──▶ parse.py ──▶ Month (schedules/*.json) ──▶ derive.py ──▶ poster.html.j2 ──▶ PNG
-                              │                            │
-                         validate.py            highlights, repeat map,
-                                                key dates, legend, notes
+monthly thread ──▶ thread.py ──┐
+                               ├──▶ Month (schedules/*.json) ──▶ derive.py ──▶ poster.html.j2 ──▶ PNG
+day list      ──▶ parse.py  ───┘         │                          │
+                                    validate.py          highlights, repeat map,
+                                                      key dates, legend, notes
 ```
 
 The day list is the only thing anyone edits. Everything the poster says *about*
-the month — which dates are Run/Rows, what repeats what, which days aren't
-repeats, how many bonus templates the month has — is computed in `derive.py`.
+the month is computed in `derive.py`.
 
 ## Design notes
 
 - **The rendered HTML is standalone.** Fonts (woff2) and icons (SVG) are cached
   under `assets/` and inlined as data URIs, so a poster opens correctly offline
-  and CI needs no network at render time. `--offline` makes a missing asset an
-  error rather than a silent fetch.
-- **Fonts are asserted, not assumed.** `document.fonts.status` is `'loaded'`
+  and CI needs no network. `--offline` makes a missing asset an error rather
+  than a silent fetch.
+- **Fonts are asserted, not assumed.** `document.fonts.status` reads `'loaded'`
   even when zero faces registered, so the renderer checks `document.fonts.size`
   too — otherwise a CSS mistake silently ships a poster in system fallbacks.
+- **"Not a repeat" is suppressed when the cycle is loose.** Oct 2025 repeats
+  only 7 of its last 20 days; labelling the other 13 "not a repeat" would mark
+  most of the calendar and say nothing. Below 60% coverage the label is dropped
+  and the notes say how many days repeat instead.
+- **Rules the poster asserts are not always checkable.** The threads say
+  templates never repeat inside a Mon–Sun week, and an early version validated
+  it — but it flagged four false positives on real months, because two days can
+  both be "Low Bench" without being the same workout. The claim stayed as poster
+  copy; the check was dropped.
 
 ## Licence
 

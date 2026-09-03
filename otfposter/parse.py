@@ -27,6 +27,7 @@ import calendar
 import re
 from dataclasses import dataclass, field
 
+from . import thread
 from .categories import lookup
 from .models import Day, Entry, Month, make_entry
 
@@ -150,7 +151,29 @@ def _read_entries(text: str, report: ParseReport, lineno: int) -> list[Entry]:
 def parse(
     text: str, year: int | None = None, month: int | None = None
 ) -> tuple[Month, ParseReport]:
-    """Parse a pasted post into a Month plus a report of anything unclear."""
+    """Parse a pasted post into a Month plus a report of anything unclear.
+
+    Two input shapes are accepted, picked automatically:
+
+    * an r/orangetheory **monthly thread**, which describes the month by
+      category ("Lift More templates on 9/2, 9/7, ...") -- see :mod:`.thread`;
+    * a plain **day list** ("9/1 - Standard"), handy for hand-written months
+      and for fixing one up by hand.
+    """
+    if thread.looks_like_thread(text):
+        m, treport = thread.parse_thread(text, year=year, month=month)
+        report = ParseReport(
+            unknown_templates=[(0, l) for l in treport.unknown_labels],
+            warnings=list(treport.warnings),
+        )
+        return m, report
+    return parse_day_list(text, year=year, month=month)
+
+
+def parse_day_list(
+    text: str, year: int | None = None, month: int | None = None
+) -> tuple[Month, ParseReport]:
+    """Parse the simple one-line-per-day format."""
     report = ParseReport()
     hint_month, hint_year = _month_year_hint(text)
     month = month or hint_month

@@ -62,6 +62,9 @@
   .ribbon .tag{background:var(--orange);color:#fff;font-family:'Anton',sans-serif;font-size:19px;letter-spacing:.6px;padding:4px 13px;border-radius:6px;white-space:nowrap;}
   .ribbon .txt{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.3px;}
   .ribbon .txt em{color:#FFB59A;font-style:italic;}
+  .ribbon.event{background:var(--orange);margin-bottom:8px;}
+  .ribbon.event:before{background:linear-gradient(90deg,#16181D 0 6px,transparent 6px);}
+  .ribbon.event .tag{background:#16181D;}
 
   /* ---------- calendar ---------- */
   .cal{border:2px solid #16181D;border-radius:12px;overflow:hidden;position:relative;z-index:4;}
@@ -80,6 +83,9 @@
     color:#fff;text-align:center;border-radius:5px;padding:3px 4px;line-height:1.12;
   }
   .pill.two{font-size:13.5px;}
+  .g3{float:right;background:#16181D;color:#fff;font-family:'Barlow Condensed',sans-serif;
+      font-size:11px;font-weight:700;letter-spacing:.5px;padding:1px 5px;border-radius:4px;
+      line-height:1.35;}
   .note{font-size:12.5px;color:#8A919B;font-style:italic;margin-top:4px;text-align:center;font-weight:500;}
   .note.flag{color:var(--orange);font-weight:600;}
 
@@ -167,6 +173,13 @@
     <div class="hero-icon accent">{{ icon("fitness_center") }}</div>
   </header>
 
+  {% if events %}
+  <div class="ribbon event">
+    <span class="tag">EVENT</span>
+    <span class="txt">{% for e in events %}{% if not loop.first %} &middot; {% endif %}{{ e.label }}{% endfor %}</span>
+  </div>
+  {% endif %}
+
   {% if marked %}
   <div class="ribbon">
     <span class="tag">MARKED DATES</span>
@@ -189,7 +202,7 @@
           {% if cell is none %}<td class="blank"></td>
           {% else %}
           <td{% if cell.weekend %} class="weekend"{% endif %}>
-            <div class="dnum">{{ cell.day }}</div>
+            <div class="dnum">{{ cell.day }}{% if cell.three_g %}<span class="g3">3G</span>{% endif %}</div>
             <div class="pills">
               {% for p in cell.pills %}
               <div class="pill{% if cell.two %} two{% endif %}" style="background:{{ p.color }};color:{{ p.fg }}">{{ p.label }}</div>

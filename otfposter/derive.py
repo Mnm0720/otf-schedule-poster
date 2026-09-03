@@ -113,10 +113,34 @@ def repeat_window_start(m: Month) -> int | None:
     return min(min(repeats), max(sources) + 1)
 
 
-def non_repeat_days(m: Month) -> list[int]:
-    """Days inside the repeat window that are *not* repeats."""
+# Below this share of the repeat window actually being repeats, the month has
+# no tight cycle (Oct 2025 has only 7 repeats across 20 days). Calling the rest
+# "not a repeat" then labels most of the calendar and says nothing.
+TIGHT_CYCLE = 0.6
+
+
+def repeat_coverage(m: Month) -> float:
+    """Share of the repeat window that actually repeats something."""
     start = repeat_window_start(m)
     if start is None:
+        return 0.0
+    window = [d for d in m.days if d.day >= start]
+    if not window:
+        return 0.0
+    return sum(1 for d in window if d.repeat_of) / len(window)
+
+
+def has_tight_cycle(m: Month) -> bool:
+    return repeat_coverage(m) >= TIGHT_CYCLE
+
+
+def non_repeat_days(m: Month) -> list[int]:
+    """Days inside the repeat window that are *not* repeats.
+
+    Empty when the month has no tight repeat cycle -- see TIGHT_CYCLE.
+    """
+    start = repeat_window_start(m)
+    if start is None or not has_tight_cycle(m):
         return []
     return [d.day for d in m.days if d.day >= start and not d.repeat_of]
 
@@ -138,6 +162,18 @@ def key_dates(m: Month) -> list[dict]:
             "detail": md["title"] and f"{md['label']}: {md['title']}" or md["label"],
         })
 
+    for ev in m.events:
+        d = date(m.year, m.month, ev.start)
+        end = date(m.year, m.month, ev.end)
+        heading = (f"{d.strftime('%B')} {ev.start}" if ev.start == ev.end
+                   else f"{d.strftime('%B')} {ev.start} - {end.strftime('%B')} {ev.end}")
+        rows.insert(0, {
+            "icon": "flag", "color": "#F4511E",
+            "heading": heading,
+            "detail": f"{ev.name}; month-long event" if _is_whole_month(m, ev)
+                      else f"{ev.name}; event",
+        })
+
     nrd = non_repeat_days(m)
     if nrd:
         rows.append({
@@ -150,6 +186,10 @@ def key_dates(m: Month) -> list[dict]:
 
 
 RSQ = "’"
+
+
+def _is_whole_month(m: Month, ev) -> bool:
+    return ev.start == 1 and ev.end == m.length
 
 
 def _join_days(m: Month, days: list[int]) -> str:
@@ -168,10 +208,15 @@ def default_notes(m: Month) -> list[str]:
         "Templates never repeat inside the same Monday-Sunday week",
     ]
     start = repeat_window_start(m)
-    if start:
+    if start and has_tight_cycle(m):
         notes.append(
             f"Repeating starts after the first {start - 1} days "
             "and runs close to in order"
+        )
+    elif start:
+        notes.append(
+            f"Only {sum(1 for d in m.days if d.repeat_of)} days repeat an "
+            "earlier template this month"
         )
     for md in marked_dates(m):
         if md["category"] == "bench":
@@ -203,16 +248,24 @@ def _ordinal(n: int) -> str:
 def default_footnotes(m: Month) -> list[dict]:
     """Bottom-right callouts. Some are evergreen, some depend on the month."""
     out = []
-    specialties = [d for d in m.days
-                   for e in d.entries if e.category == "spec"]
-    if specialties:
-        days = ", ".join(m.mmdd(d.day) for d in specialties)
-        out.append({"icon": "groups", "lead": "Specialty workouts this month.",
-                    "text": f"Scheduled on {days}."})
+    three_g = [m.mmdd(d.day) for d in m.days if d.three_g]
+    if three_g:
+        out.append({"icon": "groups", "lead": "3G-only templates:",
+                    "text": f"{', '.join(three_g)} run 3G-style with about 14 "
+                            "minutes at each station, even where 2G is listed."})
     else:
         out.append({"icon": "groups", "lead": "No 3G-only templates this month.",
                     "text": f"{date(m.year, m.month, 1).strftime('%B')} has no "
-                            "specialty workouts on the calendar."})
+                            "3G-only templates on the calendar."})
+
+    specialties = [d for d in m.days
+                   for e in d.entries if e.category == "spec"]
+    if specialties:
+        days = ", ".join(sorted({m.mmdd(d.day) for d in specialties},
+                                key=lambda x: int(x.split("/")[1])))
+        out.append({"icon": "local_fire_department",
+                    "lead": "Specialty workouts this month.",
+                    "text": f"Scheduled on {days}."})
 
     bench_bits = []
     for key, name in (("lowbench", "Low bench"), ("incline", "Incline bench")):
@@ -273,6 +326,7 @@ def build_context(m: Month) -> dict:
                 "note": note,
                 "flag": flagged,
                 "weekend": m.weekday_of(d) in (0, 6),
+                "three_g": day.three_g,
             })
         weeks.append(cells)
 
@@ -290,6 +344,7 @@ def build_context(m: Month) -> dict:
         "theme": m.theme,
         "tagline": m.tagline,
         "marked": marked_dates(m),
+        "events": [{"label": e.label(m.month), "name": e.name} for e in m.events],
         "weeks": weeks,
         "strength_split": m.strength_split,
         "notes": m.notes or default_notes(m),

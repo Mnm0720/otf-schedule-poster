@@ -108,12 +108,32 @@ def test_forward_repeat_is_an_error():
     assert any("not earlier" in msg for _, msg in issues)
 
 
-def test_same_week_duplicate_is_warned():
+def test_repeat_that_lost_its_templates_is_warned():
+    """A dropped category line shows up as a repeat that no longer matches."""
     text = "September 2026\n" + "\n".join(f"9/{d} - Standard" for d in range(1, 31))
-    text = text.replace("9/1 - Standard", "9/1 - BOSU").replace("9/2 - Standard", "9/2 - BOSU")
+    text = text.replace("9/2 - Standard", "9/2 - BOSU")
+    text = text.replace("9/17 - Standard", "9/17 - Standard (repeat of 9/2)")
     m, _ = parse(text)
     issues = validate.check(m)
-    assert any("same Mon-Sun week" in msg for _, msg in issues)
+    assert any("repeats 9/2 but lists Standard vs BOSU" in msg for _, msg in issues)
+
+
+def test_matching_repeat_is_not_warned():
+    text = "September 2026\n" + "\n".join(f"9/{d} - Standard" for d in range(1, 31))
+    text = text.replace("9/2 - Standard", "9/2 - BOSU")
+    text = text.replace("9/17 - Standard", "9/17 - BOSU (repeat of 9/2)")
+    m, _ = parse(text)
+    assert not any("repeats 9/2" in msg for _, msg in validate.check(m))
+
+
+def test_a_signature_does_not_break_repeat_matching():
+    """Named workouts sit on top of the day's template, so they don't count."""
+    text = "September 2026\n" + "\n".join(f"9/{d} - Standard" for d in range(1, 31))
+    text = text.replace("9/2 - Standard", "9/2 - BOSU")
+    text = text.replace("9/17 - Standard",
+                        "9/17 - Signature: Inferno + BOSU (repeat of 9/2)")
+    m, _ = parse(text)
+    assert not any("repeats 9/2" in msg for _, msg in validate.check(m))
 
 
 # --------------------------------------------------------------- render ----

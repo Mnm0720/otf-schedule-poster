@@ -1,8 +1,8 @@
 {
-  "year": 2026,
-  "month": 9,
-  "theme": "Rhythm & Routine",
-  "tagline": "No month-long event &mdash; <b>three marked dates</b> and a steady repeat cycle",
+  "year": 2025,
+  "month": 10,
+  "theme": "",
+  "tagline": "",
   "subtitle": "Monthly Schedule Poster",
   "source_url": "reddit.com/r/orangetheory",
   "strength_split": [
@@ -21,7 +21,14 @@
   ],
   "notes": [],
   "footnotes": [],
-  "events": [],
+  "events": [
+    {
+      "name": "Hell Week",
+      "start": 24,
+      "end": 31,
+      "kind": "event"
+    }
+  ],
   "days": [
     {
       "day": 1,
@@ -40,14 +47,9 @@
       "day": 2,
       "entries": [
         {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        },
-        {
-          "category": "elev",
-          "title": "",
-          "raw": "Elevation Gain"
+          "category": "spec",
+          "title": "Drop It Like a Squat",
+          "raw": "October 2 (Thursday): Drop It Like a Squat; specialty. Prepare for squats in many variations. See our wiki or try the search tool for details."
         }
       ],
       "repeat_of": null,
@@ -58,9 +60,9 @@
       "day": 3,
       "entries": [
         {
-          "category": "runrow",
+          "category": "std",
           "title": "",
-          "raw": "Run/Rows"
+          "raw": "(not listed)"
         }
       ],
       "repeat_of": null,
@@ -73,7 +75,7 @@
         {
           "category": "lowbench",
           "title": "",
-          "raw": "Low bench"
+          "raw": "Low Bench"
         }
       ],
       "repeat_of": null,
@@ -89,9 +91,9 @@
           "raw": "Run/Rows"
         },
         {
-          "category": "incline",
+          "category": "bosu",
           "title": "",
-          "raw": "Incline bench"
+          "raw": "BOSU"
         }
       ],
       "repeat_of": null,
@@ -102,9 +104,14 @@
       "day": 6,
       "entries": [
         {
-          "category": "std",
+          "category": "spec",
+          "title": "Coach Day",
+          "raw": "October 6 (Monday): Coach Day; specialty. Celebrate \"National Coaches Day\" with a special workout."
+        },
+        {
+          "category": "incline",
           "title": "",
-          "raw": "(not listed)"
+          "raw": "Incline Bench"
         }
       ],
       "repeat_of": null,
@@ -115,9 +122,9 @@
       "day": 7,
       "entries": [
         {
-          "category": "lift",
+          "category": "std",
           "title": "",
-          "raw": "Lift More"
+          "raw": "(not listed)"
         }
       ],
       "repeat_of": null,
@@ -129,13 +136,13 @@
       "entries": [
         {
           "category": "bench",
-          "title": "1000 Meter Row",
-          "raw": "September 8 (Tuesday): 1000 Meter Row; benchmark. See our wiki for details."
+          "title": "1000 meter row",
+          "raw": "October 8 (Wednesday): 1000 meter row; benchmark. See our wiki for details."
         },
         {
-          "category": "runrow",
+          "category": "switch",
           "title": "",
-          "raw": "Run/Rows"
+          "raw": "Switch"
         }
       ],
       "repeat_of": null,
@@ -146,9 +153,14 @@
       "day": 9,
       "entries": [
         {
-          "category": "std",
+          "category": "switch",
           "title": "",
-          "raw": "(not listed)"
+          "raw": "Switch"
+        },
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
         }
       ],
       "repeat_of": null,
@@ -158,47 +170,6 @@
     {
       "day": 10,
       "entries": [
-        {
-          "category": "switch",
-          "title": "",
-          "raw": "Switch"
-        },
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 11,
-      "entries": [
-        {
-          "category": "std",
-          "title": "",
-          "raw": "(not listed)"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 12,
-      "entries": [
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        },
-        {
-          "category": "elev",
-          "title": "",
-          "raw": "Elevation Gain"
-        },
         {
           "category": "band",
           "title": "",
@@ -210,17 +181,38 @@
       "three_g": false
     },
     {
-      "day": 13,
+      "day": 11,
       "entries": [
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        },
         {
           "category": "lowbench",
           "title": "",
-          "raw": "Low bench"
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 12,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "(not listed)"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 13,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "(not listed)"
         }
       ],
       "repeat_of": null,
@@ -231,9 +223,14 @@
       "day": 14,
       "entries": [
         {
-          "category": "bosu",
+          "category": "sig",
+          "title": "Catch Me If You Can",
+          "raw": "October 14 (Tuesday): Catch Me If You Can; signature. See our Wiki for more info."
+        },
+        {
+          "category": "runrow",
           "title": "",
-          "raw": "BOSU"
+          "raw": "Run/Rows"
         }
       ],
       "repeat_of": null,
@@ -244,12 +241,12 @@
       "day": 15,
       "entries": [
         {
-          "category": "lift",
+          "category": "std",
           "title": "",
-          "raw": "Lift More"
+          "raw": "(not listed)"
         }
       ],
-      "repeat_of": null,
+      "repeat_of": 3,
       "note": "",
       "three_g": false
     },
@@ -270,17 +267,12 @@
       "day": 17,
       "entries": [
         {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        },
-        {
-          "category": "elev",
-          "title": "",
-          "raw": "Elevation Gain"
+          "category": "sig",
+          "title": "Capture the Flag",
+          "raw": "October 17 (Friday): Capture the Flag; signature. See our Wiki for more info."
         }
       ],
-      "repeat_of": 2,
+      "repeat_of": null,
       "note": "",
       "three_g": false
     },
@@ -288,58 +280,14 @@
       "day": 18,
       "entries": [
         {
-          "category": "sig",
-          "title": "OTF Foundations",
-          "raw": "September 18 (Friday): OTF Foundations; signature. See our wiki for details."
-        },
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        }
-      ],
-      "repeat_of": null,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 19,
-      "entries": [
-        {
-          "category": "runrow",
-          "title": "",
-          "raw": "Run/Rows"
-        }
-      ],
-      "repeat_of": 3,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 20,
-      "entries": [
-        {
-          "category": "lowbench",
-          "title": "",
-          "raw": "Low bench"
-        }
-      ],
-      "repeat_of": 4,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 21,
-      "entries": [
-        {
           "category": "runrow",
           "title": "",
           "raw": "Run/Rows"
         },
         {
-          "category": "incline",
+          "category": "bosu",
           "title": "",
-          "raw": "Incline bench"
+          "raw": "BOSU"
         }
       ],
       "repeat_of": 5,
@@ -347,25 +295,25 @@
       "three_g": false
     },
     {
-      "day": 22,
+      "day": 19,
       "entries": [
         {
-          "category": "std",
+          "category": "lowbench",
           "title": "",
-          "raw": "(not listed)"
+          "raw": "Low Bench"
         }
       ],
-      "repeat_of": 6,
+      "repeat_of": 4,
       "note": "",
       "three_g": false
     },
     {
-      "day": 23,
+      "day": 20,
       "entries": [
         {
-          "category": "sig",
-          "title": "The Chipper",
-          "raw": "September 23 (Wednesday): The Chipper; signature. See our wiki for details."
+          "category": "bench",
+          "title": "200 meter row",
+          "raw": "October 20 (Monday): 200 meter row; benchmark. See our Wiki for more info."
         }
       ],
       "repeat_of": null,
@@ -373,33 +321,7 @@
       "three_g": false
     },
     {
-      "day": 24,
-      "entries": [
-        {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        }
-      ],
-      "repeat_of": 7,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 25,
-      "entries": [
-        {
-          "category": "std",
-          "title": "",
-          "raw": "(not listed)"
-        }
-      ],
-      "repeat_of": 9,
-      "note": "",
-      "three_g": false
-    },
-    {
-      "day": 26,
+      "day": 21,
       "entries": [
         {
           "category": "switch",
@@ -407,12 +329,77 @@
           "raw": "Switch"
         },
         {
-          "category": "lift",
+          "category": "lowbench",
           "title": "",
-          "raw": "Lift More"
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": 9,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 22,
+      "entries": [
+        {
+          "category": "band",
+          "title": "",
+          "raw": "Minibands"
         }
       ],
       "repeat_of": 10,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 23,
+      "entries": [
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": 11,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 24,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "(not listed)"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": true
+    },
+    {
+      "day": 25,
+      "entries": [
+        {
+          "category": "lowbench",
+          "title": "",
+          "raw": "Low Bench"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": false
+    },
+    {
+      "day": 26,
+      "entries": [
+        {
+          "category": "bosu",
+          "title": "",
+          "raw": "BOSU"
+        }
+      ],
+      "repeat_of": null,
       "note": "",
       "three_g": false
     },
@@ -425,7 +412,7 @@
           "raw": "(not listed)"
         }
       ],
-      "repeat_of": 11,
+      "repeat_of": null,
       "note": "",
       "three_g": false
     },
@@ -433,22 +420,12 @@
       "day": 28,
       "entries": [
         {
-          "category": "lift",
-          "title": "",
-          "raw": "Lift More"
-        },
-        {
-          "category": "elev",
-          "title": "",
-          "raw": "Elevation Gain"
-        },
-        {
           "category": "band",
           "title": "",
           "raw": "Minibands"
         }
       ],
-      "repeat_of": 12,
+      "repeat_of": null,
       "note": "",
       "three_g": false
     },
@@ -456,17 +433,12 @@
       "day": 29,
       "entries": [
         {
-          "category": "runrow",
+          "category": "std",
           "title": "",
-          "raw": "Run/Rows"
-        },
-        {
-          "category": "lowbench",
-          "title": "",
-          "raw": "Low bench"
+          "raw": "(not listed)"
         }
       ],
-      "repeat_of": 13,
+      "repeat_of": null,
       "note": "",
       "three_g": false
     },
@@ -474,14 +446,27 @@
       "day": 30,
       "entries": [
         {
-          "category": "bosu",
+          "category": "std",
           "title": "",
-          "raw": "BOSU"
+          "raw": "(not listed)"
         }
       ],
-      "repeat_of": 14,
+      "repeat_of": null,
       "note": "",
       "three_g": false
+    },
+    {
+      "day": 31,
+      "entries": [
+        {
+          "category": "std",
+          "title": "",
+          "raw": "(not listed)"
+        }
+      ],
+      "repeat_of": null,
+      "note": "",
+      "three_g": true
     }
   ],
   "schema_version": 1
