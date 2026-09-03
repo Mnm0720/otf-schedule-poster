@@ -25,6 +25,7 @@ def test_customization_sections_start_collapsed_and_titles_precede_schedule():
     assert ids.index('go') < ids.index('restart') < ids.index('previewWrap')
     assert 'sourceInputs' in ids
     assert ids.index('eventsSection') < ids.index('additionalInfoSection') < ids.index('creditsSection')
+    assert ids.index('examples') < ids.index('savedPicker') < ids.index('sourceInputs') < ids.index('src')
 
 
 def test_restart_popup_explains_loss_and_defaults_to_keep_editing():

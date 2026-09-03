@@ -91,7 +91,8 @@ class ParseReport:
         for ln, text in self.unparsed:
             out.append(f"  line {ln}: could not read -- {text!r}")
         for ln, text in self.unknown_templates:
-            out.append(f"  line {ln}: unknown template {text!r} (add it to categories.py)")
+            where = f'line {ln}: ' if ln else ''
+            out.append(f"  {where}Unknown template {text!r} kept on its dates with a new color. Check spelling; if it is new, let the developer know.")
         out += [f"  {w}" for w in self.warnings]
         return "\n".join(out)
 

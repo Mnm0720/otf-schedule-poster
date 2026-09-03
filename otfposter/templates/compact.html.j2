@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><title>OTF {{ title_month }}</title>
+<style>{{ font_css }}
+*{box-sizing:border-box;margin:0}body{background:#fff;font-family:'Inter',Arial,sans-serif;color:#202732}
+.poster{width:1080px;height:{{ height }}px;background:#F1F3F5;padding:{{ '200px 48px 100px' if layout=='phone' else '42px 40px' }};overflow:hidden;border-top:16px solid #F4511E}
+.compact-content{transform-origin:top left;width:100%}
+header{margin-bottom:24px}h1{font-size:48px;letter-spacing:-1px;line-height:1.1}h1 span{color:#D6420E}
+.theme{font-size:27px;margin-top:12px;font-weight:700}.subtitle{font-size:19px;margin-top:8px;color:#5C6470}
+.event{background:#202732;color:white;padding:10px 16px;margin-bottom:10px;border-radius:8px;font-size:19px}
+table{width:100%;border-collapse:separate;border-spacing:5px;table-layout:fixed}th{font-size:20px;padding:10px;color:#5C6470}
+td{vertical-align:top;background:#fff;border:1px solid #DDE1E6;border-radius:10px;padding:9px 6px;height:{{ 175 if layout=='phone' else 122 }}px}
+td.empty{background:transparent;border:0}.date{font-size:29px;font-weight:800;margin-bottom:7px}
+.pill{font-size:17px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px;margin-top:4px;overflow-wrap:anywhere}
+.note{font-size:14px;color:#5C6470;margin-top:6px}.three-g{font-size:15px;font-weight:700;color:#D6420E}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 5px;font-size:17px;font-weight:600}
+.dot{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:6px}
+footer{font-size:16px;line-height:1.6;border-top:1px solid #CCD2D9;margin-top:16px;padding-top:12px;color:#4A5360;overflow-wrap:anywhere}
+footer a{color:inherit;text-decoration:none}.credit-line{white-space:pre-wrap}
+</style></head><body><div class="poster"><div class="compact-content">
+<header><h1><span>OTF</span> {{ title_month }}</h1>{% if theme %}<div class="theme">{{ theme }}</div>{% endif %}
+<div class="subtitle">{{ subtitle }}{% if tagline %} · {{ tagline }}{% endif %}</div></header>
+{% for e in m.events %}<div class="event">{{ e.label(m.month) }}</div>{% endfor %}
+<table><thead><tr>{% for name in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<th>{{ name }}</th>{% endfor %}</tr></thead><tbody>
+{% for week in weeks %}<tr>{% for day in week %}{% if day %}<td class="compact-day"><div class="date">{{ day.day }}</div>
+{% for pill in day.pills %}<div class="pill" style="background:{{ pill.color }};color:{{ pill.fg }}">{{ pill.label }}</div>{% endfor %}
+{% if day.three_g %}<div class="three-g">3G</div>{% endif %}{% if day.note %}<div class="note">{{ day.note }}</div>{% endif %}</td>
+{% else %}<td class="empty"></td>{% endif %}{% endfor %}</tr>{% endfor %}</tbody></table>
+<div class="key">{% for type in legend %}<span><i class="dot" style="background:{{ type.color }}"></i>{{ type.label }}</span>{% endfor %}</div>
+{% if credit_lines %}<footer>{% for line in credit_lines %}<div class="credit-line">{% for part in line %}{{ part.text }}{% endfor %}</div>{% endfor %}</footer>{% endif %}
+</div></div></body></html>

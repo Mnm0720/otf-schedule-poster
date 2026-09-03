@@ -58,8 +58,8 @@ the browser receives current defaults and the registries from its Python bridge.
   fields receive defaults; existing custom or explicitly empty values survive
   round trips. Keep the defaults in Python, not a separate JavaScript copy.
 - Restart closes the new editor sections and returns to the initial defaults.
-  This feature does not add browser persistence. Existing drafts still live only
-  in the current tab; saved-data migrations/backups remain future work.
+  Persistence and backups now follow [saved workspaces](saved-workspaces.md);
+  restart keeps saved posters while clearing the active editing session.
 
 ## Simplified editing flow
 

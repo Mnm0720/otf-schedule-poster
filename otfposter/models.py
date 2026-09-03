@@ -8,13 +8,14 @@ from __future__ import annotations
 
 import calendar
 import json
+import hashlib
 from dataclasses import dataclass, field, asdict
 from datetime import date
 from pathlib import Path
 
-from .categories import BY_KEY, Category, lookup
+from .categories import BY_KEY, CATEGORIES, Category, lookup
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 DEFAULT_CREDITS = (
     "Image: u/MnM0720\n"
@@ -38,6 +39,8 @@ class Entry:
 
     @property
     def cat(self) -> Category:
+        if self.category.startswith('custom_'):
+            return Category(self.category, self.title or self.raw or 'Custom workout', '#8A919B', '')
         return BY_KEY.get(self.category, BY_KEY["unknown"])
 
     @property
@@ -97,10 +100,40 @@ class Month:
     note_style: dict = field(default_factory=dict)
     additional_info: str = ""
     credits: str = DEFAULT_CREDITS
+    custom_categories: dict[str, dict] = field(default_factory=dict)
     days: list[Day] = field(default_factory=list)
     schema_version: int = SCHEMA_VERSION
 
     # ---- derived helpers -------------------------------------------------
+    def register_unknowns(self):
+        """Promote unknown labels without changing the shared category registry."""
+        for day in self.days:
+            for entry in day.entries:
+                if entry.category != 'unknown':
+                    continue
+                label = (entry.title or entry.raw or 'Other').strip()
+                digest = hashlib.sha256(label.casefold().encode()).hexdigest()
+                key = 'custom_' + digest[:12]
+                if key not in self.custom_categories:
+                    used = {c.color.upper() for c in CATEGORIES} | {c['color'].upper() for c in self.custom_categories.values()}
+                    attempt = 0
+                    while True:
+                        seed = hashlib.sha256(f'{label.casefold()}:{attempt}'.encode()).hexdigest()
+                        color = '#' + ''.join(f'{40 + int(seed[i:i+2], 16) % 145:02X}' for i in (0, 2, 4))
+                        if color not in used:
+                            break
+                        attempt += 1
+                    self.custom_categories[key] = {'label': label, 'color': color}
+                entry.category = key
+
+    def categories(self):
+        return (*CATEGORIES, *(Category(key, value['label'], value['color'],
+            'Custom workout from this month’s schedule.', order=200)
+            for key, value in self.custom_categories.items()))
+
+    def category(self, key):
+        return next((c for c in self.categories() if c.key == key), BY_KEY['unknown'])
+
     @property
     def length(self) -> int:
         return calendar.monthrange(self.year, self.month)[1]
@@ -156,6 +189,7 @@ class Month:
         events = [Event(**e) for e in data.get("events", [])]
         known = {f for f in cls.__dataclass_fields__ if f not in ("days", "events")}
         kwargs = {k: v for k, v in data.items() if k in known}
+        kwargs['schema_version'] = SCHEMA_VERSION
         return cls(days=days, events=events, **kwargs)
 
     @classmethod

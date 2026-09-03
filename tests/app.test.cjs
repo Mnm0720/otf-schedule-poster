@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {Document} = require('./dom.cjs');
 
-async function app() {
+async function app(storageMap=new Map()) {
   const document = new Document();
   const iframe = document.getElementById('preview');
   iframe.contentDocument = {querySelector:() => null, fonts:{status:'loaded'}};
@@ -17,6 +17,9 @@ async function app() {
     notes:[], footnotes:[], events:[], days:Array.from({length:30}, (_,i) =>
       ({day:i+1, entries:[{category:'std', title:''}], repeat_of:null, three_g:false}))};
   const context = vm.createContext({document, console:{error:error => errors.push(error)}, setTimeout, clearTimeout, Blob, URL,
+    crypto:require('node:crypto').webcrypto,
+    localStorage:{get length(){return storageMap.size},key:i=>[...storageMap.keys()][i],getItem:k=>storageMap.get(k)??null,setItem:(k,v)=>storageMap.set(k,v),removeItem:k=>storageMap.delete(k)},
+    location:{hash:'',href:'https://example.test/'},history:{replaceState(){}},
     confirm:() => true, addEventListener:() => {},
     ResizeObserver:class { observe() {} },
     fetch:async () => ({ok:true, json:async () => ({files:{}, examples:{}})}),
@@ -32,7 +35,7 @@ async function app() {
         }; fn.destroy = () => {}; return fn;
       }}}),
   });
-  for (const name of ['editor-state.js','editor.js','app.js']) {
+  for (const name of ['editor-state.js','editor.js','workspace.js','app.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../web', name), 'utf8'), context);
   }
   await new Promise(resolve => setTimeout(resolve, 0));
@@ -56,6 +59,19 @@ test('generate → edit → regenerate updates preview and both downloads withou
   assert.equal(a.els.preview.srcdoc, '<p>Edited subtitle</p>');
   assert.equal(a.editorState.current.html, a.els.preview.srcdoc);
   assert.equal(a.els.png.disabled, false); assert.equal(a.els.html.disabled, false);
+});
+
+test('autosave restores pending edits after reopening and restart keeps the saved poster',async()=>{
+ const storage=new Map(); const a=await app(storage); await a.generate();
+ a.editor.change(d=>{d.subtitle='Pending across refresh';});
+ const saved=[...storage.entries()].find(([k])=>k.startsWith('otf-draft:'));
+ assert.ok(saved);assert.equal(JSON.parse(saved[1]).state.draft.subtitle,'Pending across refresh');
+ const b=await app(storage);await new Promise(resolve=>setTimeout(resolve,80));
+ assert.equal(b.editorState.draft.subtitle,'Pending across refresh');assert.equal(b.editorState.dirty,true);
+ b.context.document.getElementById('undo').onclick();assert.equal(b.editorState.draft.subtitle,'Monthly Schedule Poster');
+ b.context.document.getElementById('redo').onclick();assert.equal(b.editorState.draft.subtitle,'Pending across refresh');
+ b.context.document.getElementById('restartConfirm').onclick();
+ assert.ok(storage.has(saved[0]));assert.equal(storage.has('otf-active'),false);
 });
 
 test('failed regeneration and cancelled restart preserve pending edits and preview', async () => {
@@ -126,4 +142,10 @@ test('full-size preview is readable without changing the exported poster', async
   assert.equal(a.els.preview.style.transform, `scale(${320 / 1200})`);
   assert.equal(a.editorState.dirty, false);
   assert.equal(a.editorState.current.html, '<p>Monthly Schedule Poster</p>');
+});
+
+test('downloads also provide an open-file link for preview or saving manually',async()=>{
+ const a=await app();await a.generate();a.els.html.onclick();
+ const link=a.context.document.getElementById('lastDownload');
+ assert.equal(link.hidden,false);assert.match(link.href,/^blob:/);assert.match(link.textContent,/otf_2026-09.html/);
 });

@@ -57,17 +57,51 @@ linked to their profiles in the HTML poster. Edit or clear the credit text as ne
 
 Click **Regenerate poster** to apply your edits. Downloads stay disabled while the
 preview is out of date. If an edit is invalid, the draft stays available to fix.
-Edits live in this tab only; download the finished poster before closing it.
+Edits and undo history save automatically on this device, even before regeneration.
+After reopening, the last active draft is restored. An unfinished paste is also saved.
+Use **Undo**, **Redo**, or a section’s **Reset** button to experiment. Resets return
+only that section to its starting version and can be undone (up to 100 changes).
 
 To start over, select **Restart from text** beside the disabled Generate button.
-The popup explains that this removes all customizations, including regenerated
-changes. **Keep editing** cancels; **Restart from text** restores the original paste
-and lets you generate a fresh poster.
+The popup explains that this clears the current editing session. Your saved poster
+is retained. **Keep editing** cancels; **Restart from text** restores the original
+paste and lets you generate a separate fresh poster.
 
 Use **Start**, **Poster**, **Edit**, and **Help** to navigate. On phones,
 day cards and copy fields stack into one column with larger touch controls. **View full size**
 lets you scroll across the poster to read its details; **Fit to width** restores
 the overview. Both views export the same full-resolution poster.
+
+### Save and share editable posters
+
+**Saved posters** appears below the examples and above the text box. Give your
+poster a name, reopen a saved poster, or **Save a copy** before experimenting.
+**Download draft** and **Back up selected** save editable JSON, including pending
+edits and history. Use **Import draft file** on another device. Browser storage can
+be cleared or run out of space: the page reports failures and preserves the draft
+for download. Saved-data versions protect newer backups from being silently
+rewritten by older app versions. Invalid/unreadable saved files stay available for backup.
+
+**Share editable copy** creates a compressed snapshot link. Send it to another mod;
+it opens as a separate local draft without replacing existing saved posters. After
+editing, send a new link or JSON file back. **Copies do not synchronize live.** This
+workflow runs entirely on GitHub Pages, with no accounts, database, or uploads.
+If a snapshot is too large for a reliable URL, use a draft file instead.
+
+### More export formats
+
+Select a format beside the normal PNG/HTML downloads:
+
+- **Printable PDF (A4):** the full poster across pages, favoring section boundaries.
+- **Phone wallpaper:** 1080 × 1920 calendar and workout color key.
+- **Social calendar:** 1080 × 1350 calendar and workout color key.
+- **Calendar file (.ics):** daily all-day workouts and monthly events, with repeat
+  notes and 3G flags. These are schedule dates, not studio class times. Calendar
+  apps differ in whether repeat imports update entries or require removing a prior import.
+
+Compact images include attribution; use the full poster/PDF for detailed notes.
+Visual exports stay disabled while edits are pending. The last downloaded file
+also has an Open link for viewing or saving manually.
 
 ### What to paste
 
@@ -80,7 +114,9 @@ and ignores the rest:
 - **Repeat map** — which days re-run an earlier template
 
 Any day that no category mentions becomes **Standard**. Unrecognised category names
-are flagged in the output rather than silently dropped.
+are kept on their dates as custom workout types with distinct colors. They appear
+in template selectors, Workout Types, highlights, and the poster. Check spelling;
+if the type is new, let the developer know. Change its color like any other type.
 
 A plain day-list format (`9/1 - Standard`, `9/2 - Lift More + Elevation Gain`) also
 works and is detected automatically.

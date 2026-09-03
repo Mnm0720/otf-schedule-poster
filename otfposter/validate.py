@@ -60,8 +60,9 @@ def check(m: Month) -> list[tuple[str, str]]:
                       for day in m.days for e in day.entries
                       if e.category == "unknown"})
     for name in unknown:
-        issues.append((WARN, f"unrecognised template {name!r} - it will render in "
-                             f"grey; add it to categories.py to give it a colour"))
+        issues.append((WARN, f"Unknown template {name!r}. Check spelling; if new, let the developer know."))
+    for value in m.custom_categories.values():
+        issues.append((WARN, f"Custom workout {value['label']!r} is included. Check spelling; if new, let the developer know."))
 
     # -- a repeat day must carry its source day's templates ---------------
     # Checked against Apr 2026, Aug 2026, Sep 2026 and Oct 2025: 45 repeat
@@ -108,6 +109,15 @@ def customization_errors(m: Month) -> list[tuple[str, str]]:
                 or any(type(day) is not int or not 1 <= day <= m.length for day in value)):
             error(label, f'choose one or more dates between 1 and {m.length}')
 
+    if not isinstance(m.custom_categories, dict):
+        error('Custom workouts', 'settings must be an object')
+    else:
+        for key, value in m.custom_categories.items():
+            if not re.fullmatch(r'custom_[a-z0-9_]+', key):
+                error('Custom workouts', 'invalid type key')
+            if style(value, 'Custom workout') and (not isinstance(value.get('label'), str) or not value['label'].strip() or 'color' not in value):
+                error('Custom workout', 'enter a label and color')
+
     for name in ('category_styles', 'key_date_overrides', 'footnote_styles'):
         mapping = getattr(m, name)
         if not isinstance(mapping, dict):
@@ -115,7 +125,7 @@ def customization_errors(m: Month) -> list[tuple[str, str]]:
             continue
         for key, value in mapping.items():
             label = f'{name} {key}'
-            if name == 'category_styles' and key not in BY_KEY:
+            if name == 'category_styles' and key not in BY_KEY and key not in m.custom_categories:
                 error(label, 'unknown workout type')
             if style(value, label) and name == 'key_date_overrides' and 'days' in value:
                 dates(value['days'], label)

@@ -173,3 +173,15 @@ test('key date subheader explains every source of automatic entries', () => {
   const text=all(doc.getElementById('keyDatesEditor')).map(e=>e.textContent||'').join(' ');
   for (const name of ['Benchmark','Signature','Specialty','events','non-repeat']) assert.ok(text.includes(name));
 });
+
+test('every section has an undoable reset that leaves unrelated fields alone',()=>{
+  const {doc,state,editor}=setup();
+  state.edit(d=>{d.subtitle='Changed';d.additional_info='Keep me';});editor.render();
+  labelled(doc.getElementById('headingEditorReset'),'Reset title & theme section').onclick();
+  assert.equal(state.draft.subtitle,'Monthly Schedule Poster');assert.equal(state.draft.additional_info,'Keep me');
+  state.undo();assert.equal(state.draft.subtitle,'Changed');
+  for(const [id,label] of [['calendarEditor','schedule'],['keyDatesEditor','Key Dates'],['workoutTypesEditor','Workout Types'],
+    ['notesEditor','Strength & Tread 50 notes'],['monthlyNotesEditor','Monthly notes'],['eventsEditor','Events'],
+    ['additionalInfoEditor','Additional info'],['creditsEditor','Credits & team']])
+    assert.match(labelled(doc.getElementById(id+'Reset'),'Reset '+label+' section')?.textContent||'',/Reset/);
+});

@@ -34,4 +34,4 @@ jobs:
         with:
           node-version: '22'
       - name: Editor state, controls, and application flow
-        run: node --test tests/editor.test.cjs tests/editor-ui.test.cjs tests/app.test.cjs
+        run: node --test tests/*.test.cjs

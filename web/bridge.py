@@ -11,6 +11,10 @@ from otfposter import validate
 
 
 def _result(m, parse_notes="", *, edited=False):
+    errors = validate.customization_errors(m)
+    if errors:
+        raise ValueError('\n'.join(message for _, message in errors))
+    m.register_unknowns()
     issues = validate.check(m)
     for index, event in enumerate(m.events, 1):
         if (type(event.start) is not int or type(event.end) is not int
@@ -33,7 +37,7 @@ def _result(m, parse_notes="", *, edited=False):
         "icons": [{"key": name, "label": name.replace('_', ' ').title(),
                    "svg": str(make_icon_fn(allow_fetch=False)(name))} for name in ICON_NAMES],
         "categories": [{"key": c.key, "label": c.label, "titled": c.titled, "color": c.color}
-                       for c in sorted(CATEGORIES, key=lambda c: c.order)],
+                       for c in sorted(m.categories(), key=lambda c: c.order)],
     })
 
 
@@ -51,3 +55,12 @@ def generate(text, month=None, theme="", tagline=""):
 
 def regenerate(schedule_json):
     return _result(Month.from_dict(json.loads(schedule_json)), edited=True)
+
+
+def export_schedule(schedule_json, kind):
+    from otfposter.exports import calendar_file, compact_html
+    m = Month.from_dict(json.loads(schedule_json))
+    _result(m, edited=True)
+    if kind == 'ics':
+        return json.dumps({'text': calendar_file(m)})
+    return json.dumps(compact_html(m, kind))

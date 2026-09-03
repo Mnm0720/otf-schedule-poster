@@ -28,20 +28,36 @@
 
   <p class="lede">
     Paste the monthly <strong>r/orangetheory</strong> thread below and get a printable
-    schedule poster. Everything runs in your browser &mdash; nothing is uploaded,
-    and you don't need a GitHub account.
+    schedule poster. Drafts save in this browser. Share an editable copy with a link
+    or file &mdash; no uploads or account needed.
   </p>
 
   <section id="pastePanel" class="panel">
-    <fieldset id="sourceInputs" class="source-inputs">
-    <legend class="visually-hidden">Start with a monthly thread</legend>
     <div class="panel-head">
-      <label for="src">Monthly thread text</label>
+      <h2>Start a poster</h2>
       <div class="examples">
         <span>Try an example:</span>
         <span id="examples"></span>
       </div>
     </div>
+    <section class="saved-posters" aria-labelledby="savedTitle">
+      <h3 id="savedTitle">Saved posters</h3>
+      <p class="hint">Saved on this device. Download a draft backup to keep it if browser data is cleared.</p>
+      <div class="actions">
+        <label for="savedPicker">Choose a saved poster</label>
+        <select id="savedPicker"><option value="">No saved posters yet</option></select>
+        <button id="openSaved" type="button" class="ghost">Open</button>
+        <button id="backupSaved" type="button" class="ghost">Back up selected</button>
+        <button id="deleteSaved" type="button" class="ghost">Delete selected</button>
+      </div>
+      <div class="actions">
+        <label class="ghost file-label">Import draft file<input id="importDraft" type="file" accept=".json,application/json"></label>
+        <span id="saveStatus" class="status" role="status" aria-live="polite"></span>
+      </div>
+    </section>
+    <fieldset id="sourceInputs" class="source-inputs">
+    <legend class="visually-hidden">Start with a monthly thread</legend>
+    <label for="src">Monthly thread text</label>
     <textarea id="src" spellcheck="false" placeholder="Welcome to the September 2026 Monthly Thread!
 &#10;...paste the whole post here, prose and all...&#10;
 * Run/Rows on 9/3, 9/5, 9/8 (benchmark), 9/13, 9/19, 9/21, 9/29.
@@ -54,6 +70,7 @@
         <input id="month" type="text" placeholder="2026-09" autocomplete="off">
       </div>
     </div>
+
     </fieldset>
     <p id="sourceComplete" hidden>Your poster is ready. Make changes in the editor below, or restart with your original text.</p>
 
@@ -71,9 +88,19 @@
     <div class="preview-actions">
       <button id="png" class="primary" hidden>Download PNG</button>
       <button id="html" class="ghost" hidden>Download HTML</button>
+      <label for="exportFormat" class="visually-hidden">More export formats</label>
+      <select id="exportFormat">
+        <option value="pdf">Printable PDF (A4)</option>
+        <option value="phone">Phone wallpaper (1080 × 1920)</option>
+        <option value="social">Social calendar (1080 × 1350)</option>
+        <option value="ics">Calendar file (.ics)</option>
+      </select>
+      <button id="exportMore" class="ghost" type="button">Download format</button>
+      <a id="lastDownload" target="_blank" rel="noopener" hidden>Open last downloaded file</a>
       <button id="previewZoom" class="ghost" type="button" aria-pressed="false">View full size</button>
     </div>
     <p class="hint preview-hint">Use full size to read the details, then scroll within the preview.</p>
+    <p class="hint">Wallpaper and social images show the calendar and workout color key. PDF includes the full poster. Calendar files contain all-day entries, not class times.</p>
     <div class="stage" id="stage" tabindex="0" role="region" aria-label="Scrollable poster preview"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
   </section>
 
@@ -82,12 +109,23 @@
       <h2 id="editorTitle">Customize your poster</h2>
       <a href="#previewWrap">Back to poster ↑</a>
     </div>
-    <p class="editor-intro">Open a section to make changes, then select Regenerate poster to see the result. Your edits stay in this tab.</p>
+    <p class="editor-intro">Edits save automatically on this device. Select Regenerate poster to update the preview. Section resets return to the starting version and can be undone.</p>
+    <div class="draft-tools">
+      <label for="draftName">Saved poster name</label><input id="draftName" type="text" maxlength="120">
+      <div class="actions">
+        <button id="undo" type="button" class="ghost">Undo</button>
+        <button id="redo" type="button" class="ghost">Redo</button>
+        <button id="saveCopy" type="button" class="ghost">Save a copy</button>
+        <button id="backupDraft" type="button" class="ghost">Download draft</button>
+        <button id="shareDraft" type="button" class="ghost">Share editable copy</button>
+      </div>
+    </div>
     <fieldset id="editorFields" class="editor-fields">
       <legend class="visually-hidden">Schedule and poster settings</legend>
       <details id="titleSection" class="copy-details">
         <summary>Poster title &amp; theme</summary>
         <div id="headingEditor" class="copy-headings"></div>
+        <div id="headingEditorReset"></div>
       </details>
       <section class="schedule-section" aria-labelledby="scheduleTitle">
       <h3 id="scheduleTitle">Edit your schedule</h3>
@@ -97,34 +135,42 @@
         <select id="dayJump"></select>
       </div>
       <div id="calendarEditor" class="calendar-editor"></div>
+        <div id="calendarEditorReset"></div>
       </section>
       <details id="keyDateSection" class="copy-details">
         <summary>Key Dates</summary>
         <div id="keyDatesEditor"></div>
+        <div id="keyDatesEditorReset"></div>
       </details>
       <details id="workoutSection" class="copy-details">
         <summary>Workout Types</summary>
         <div id="workoutTypesEditor"></div>
+        <div id="workoutTypesEditorReset"></div>
       </details>
       <details id="notesSection" class="copy-details">
         <summary>Strength &amp; Tread 50 notes</summary>
         <div id="notesEditor"></div>
+        <div id="notesEditorReset"></div>
       </details>
       <details id="monthlyNotesSection" class="copy-details">
         <summary>Monthly notes</summary>
         <div id="monthlyNotesEditor"></div>
+        <div id="monthlyNotesEditorReset"></div>
       </details>
       <details id="eventsSection" class="copy-details">
         <summary>Events</summary>
         <div id="eventsEditor"></div>
+        <div id="eventsEditorReset"></div>
       </details>
       <details id="additionalInfoSection" class="copy-details">
         <summary>Additional info</summary>
         <div id="additionalInfoEditor"></div>
+        <div id="additionalInfoEditorReset"></div>
       </details>
       <details id="creditsSection" class="copy-details">
         <summary>Credits &amp; team</summary>
         <div id="creditsEditor"></div>
+        <div id="creditsEditorReset"></div>
       </details>
     </fieldset>
     <div class="actions editor-actions">
@@ -151,8 +197,8 @@ Key Dates for The Month
        <code>(benchmark)</code> hints cross-reference Key Dates and don't add a second pill.
        A plain day list (<code>9/1 - Standard</code>) is also accepted and detected
        automatically.</p>
-    <p>Nothing is guessed. If a category label isn't recognised it's reported above the
-       poster rather than quietly dropped.</p>
+    <p>Unknown workout types are kept on their dates and receive a new color. Check
+       spelling; if it is a new type, let the developer know so it can become a default.</p>
   </details>
 
   <p class="foot">
@@ -163,17 +209,33 @@ Key Dates for The Month
 
 <dialog id="restartDialog" aria-labelledby="restartTitle" aria-describedby="restartExplanation">
   <h2 id="restartTitle">Restart from text?</h2>
-  <p id="restartExplanation">This will remove all customizations made below, including changes already applied to the poster. Your original text will be kept so you can edit it and generate a fresh poster.</p>
+  <p id="restartExplanation">This will remove all customizations from the current editing session, including changes already applied to the poster. Your saved poster and original text will be kept so you can return to them. Generate again to start a separate fresh poster.</p>
   <div class="actions">
     <button id="restartCancel" class="ghost" type="button" autofocus>Keep editing</button>
     <button id="restartConfirm" class="primary" type="button">Restart from text</button>
   </div>
 </dialog>
 
+<dialog id="deleteDialog" aria-labelledby="deleteTitle">
+  <h2 id="deleteTitle">Delete this saved poster?</h2>
+  <p>This removes the selected draft from this browser. Download a backup first if you want to keep it.</p>
+  <div class="actions"><button id="deleteCancel" class="ghost" autofocus>Keep poster</button><button id="deleteConfirm" class="primary">Delete saved poster</button></div>
+</dialog>
+<dialog id="shareDialog" aria-labelledby="shareTitle">
+  <h2 id="shareTitle">Share an editable copy</h2>
+  <p>Anyone with this link can open and edit a copy. Copies do not sync automatically: send a new link or draft file back after editing.</p>
+  <label for="shareLink">Editable snapshot link</label><textarea id="shareLink" readonly rows="4"></textarea>
+  <div class="actions"><button id="copyShare" class="primary">Copy link</button><button id="closeShare" class="ghost">Done</button></div>
+  <p id="shareStatus" role="status"></p>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 <script src="editor-state.js"></script>
 <script src="editor.js"></script>
+<script src="workspace.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="exports.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

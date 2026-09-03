@@ -7,6 +7,8 @@ show an editor below the poster backed by a separate in-memory copy of
 `Month.to_dict()`. Regenerate reconstructs `Month.from_dict()` and calls the same
 `render_html()` as the CLI; it must never parse the original paste again.
 The existing GitHub Pages build and Python category registry remain authoritative.
+The persistence, sharing, history, and export extensions are specified in
+[saved workspaces](saved-workspaces.md), which supersedes the original no-storage scope.
 
 ## Acceptance criteria
 
@@ -39,7 +41,8 @@ The existing GitHub Pages build and Python category registry remain authoritativ
    Cancel preserves the draft and preview; confirmation clears them and restores
    the original paste. Failed initial parsing keeps that text available to correct.
 8. All controls have labels, feedback is announced, keyboard focus remains usable,
-   and user copy is rendered as text, not injected HTML. No persistence or accounts.
+   and user copy is escaped; tagline supports attribute-free emphasis only. Local
+   persistence and account-free sharing follow the saved-workspaces specification.
 9. The header keeps a dark charcoal background and contrasting text in either color
    scheme. Main text and editable fields are at least 16px; secondary labels are
    at least 14px. Links and buttons have readable contrast and touch targets of

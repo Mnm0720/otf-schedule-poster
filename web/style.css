@@ -220,6 +220,22 @@ html{scroll-padding-top:80px;scroll-padding-bottom:130px;}
 .key-date-toolbar>.editor-field{flex:1 1 240px;}
 .key-date-form{max-width:800px;margin:8px 0 12px;}
 .section-subheading{margin:2px 0 6px;}
+.saved-posters{padding:16px 0 20px;margin-bottom:20px;border-bottom:1px solid var(--line);}
+.saved-posters select{flex:1 1 200px;min-width:0;}
+.saved-posters h3{margin-bottom:6px;}
+.draft-tools{margin-bottom:20px;}
+.draft-tools>input{max-width:600px;margin:6px 0 12px;}
+.file-label{position:relative;display:inline-flex;align-items:center;min-height:44px;cursor:pointer;overflow:hidden;padding:10px 14px;border:1px solid var(--line);border-radius:8px;}
+.file-label:focus-within{outline:2px solid var(--orange);outline-offset:2px;}
+.file-label input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+#shareLink{font-size:16px;min-height:120px;overflow-wrap:anywhere;}
+.preview-actions{flex-wrap:wrap;}
+.preview-actions select{max-width:100%;}
+#lastDownload{display:inline-flex;align-items:center;min-height:44px;overflow-wrap:anywhere;max-width:100%;}
+.saved-posters select,.preview-actions select{min-height:44px;font:inherit;font-size:16px;background:var(--bg);color:var(--body);padding:9px;border:1px solid var(--line);border-radius:8px;}
+.type-setting{flex-wrap:wrap;}
+.type-setting>p{flex-basis:100%;}
+.section-reset{margin:8px 0 14px;}
 .section-explanation{margin-bottom:16px;max-width:80ch;}
 #additionalInfoEditor .editor-field,#creditsEditor .editor-field{max-width:900px;}
 #additionalInfoEditor textarea,#creditsEditor textarea{min-height:140px;}

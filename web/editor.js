@@ -56,6 +56,13 @@
     }
     render() {
       this.renderCalendar(); this.renderCopy(); this.renderKeyDates(); this.renderWorkoutTypes();
+      for(const [id,key,label] of [['headingEditor','title','title & theme'],['calendarEditor','schedule','schedule'],
+        ['keyDatesEditor','keyDates','Key Dates'],['workoutTypesEditor','workouts','Workout Types'],
+        ['notesEditor','notes','Strength & Tread 50 notes'],['monthlyNotesEditor','monthlyNotes','Monthly notes'],
+        ['eventsEditor','events','Events'],['additionalInfoEditor','additionalInfo','Additional info'],['creditsEditor','credits','Credits & team']]) {
+        const reset=this.button(`Reset ${label}`,`Reset ${label} section`,()=>{this.state.resetSection(key);this.render();this.changed();});
+        reset.className='small-button section-reset';this.doc.getElementById(id+'Reset').replaceChildren(reset);
+      }
       this.doc.getElementById('editorWrap').hidden = false;
     }
     renderCalendar() {
@@ -167,6 +174,7 @@
         this.checkbox(row, cat.label, `Show ${cat.label} in workout types`, settings.visible ?? used.has(cat.key),
           checked => this.change(() => set('visible',checked)));
         this.field(row,'Color',`${cat.label} color`,settings.color || cat.color || '#8A919B', color => set('color',color),'color');
+        if (cat.key.startsWith('custom_')) row.append(this.node('p','Added from your text. Check spelling; if this is a new workout type, let the developer know.','hint'));
         list.append(row);
       }
       root.append(this.button('Use automatic selections','Use automatic workout selections',() => {

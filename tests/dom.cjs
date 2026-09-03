@@ -11,6 +11,7 @@ class Element {
   setAttribute(key, value) { this[key] = value; }
   querySelectorAll() { return []; }
   focus() { this.focused = true; }
+  click() { this.onclick?.(); }
   showModal() { this.open = true; }
   close() { this.open = false; }
   remove() {}

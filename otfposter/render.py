@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import html
+import re
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from markupsafe import Markup
@@ -11,6 +13,11 @@ from .derive import build_context
 from .models import Month
 
 TEMPLATE_DIR = Path(__file__).parent / "templates"
+
+
+def safe_tagline(text):
+    return Markup(re.sub(r'&lt;(/?)(b|strong|em|i|br)\s*/?&gt;',
+        lambda match: '<' + match.group(1) + match.group(2) + '>', html.escape(html.unescape(text))))
 
 
 def render_html(m: Month, *, allow_fetch: bool = True) -> str:
@@ -27,6 +34,8 @@ def render_html(m: Month, *, allow_fetch: bool = True) -> str:
     )
     tpl = env.get_template("poster.html.j2")
     ctx = build_context(m)
+    # Shared snapshots are untrusted. Retain the original emphasis-only copy style.
+    ctx['tagline'] = safe_tagline(m.tagline)
     ctx["icon"] = assets.make_icon_fn(allow_fetch=allow_fetch)
     # Markup, not a plain str: autoescaping would turn the quotes in the
     # @font-face rules into entities and the browser would drop every face.

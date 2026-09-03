@@ -3,8 +3,8 @@
   const clone = (value) => JSON.parse(JSON.stringify(value));
 
   class EditorState {
-    constructor() { this.current = null; this.draft = null; this.dirty = false; this.busy = false; }
-    reset() { this.current = null; this.draft = null; this.dirty = false; }
+    constructor() { this.busy = false; this.reset(); }
+    reset() { this.current = null; this.draft = null; this.dirty = false; this.initial=null; this.past=[]; this.future=[]; this.rendered=null; }
     accept(result) {
       this.current = clone(result);
       this.draft = clone(result.schedule);
@@ -12,12 +12,48 @@
       this.draft.key_dates ??= [];
       this.draft.additional_info ??= '';
       this.draft.credits ??= result.defaults.credits || '';
+      this.draft.custom_categories ??= {};
+      this.initial ??= clone(this.draft);
+      this.rendered = clone(this.draft);
       this.dirty = false;
     }
     edit(change) {
       if (this.busy) throw new Error('Editor is busy.');
-      change(this.draft);
-      this.dirty = true;
+      const before=clone(this.draft);
+      try { change(this.draft); } catch (err) { this.draft=before; throw err; }
+      if (JSON.stringify(before)===JSON.stringify(this.draft)) return;
+      this.past.push(before); if(this.past.length>100)this.past.shift(); this.future=[];
+      this.updateDirty();
+    }
+    updateDirty() { this.dirty=JSON.stringify(this.draft)!==JSON.stringify(this.rendered); }
+    get canUndo() { return !this.busy && this.past.length>0; }
+    get canRedo() { return !this.busy && this.future.length>0; }
+    undo() { if(!this.canUndo)return;this.future.push(clone(this.draft));this.draft=this.past.pop();this.updateDirty(); }
+    redo() { if(!this.canRedo)return;this.past.push(clone(this.draft));this.draft=this.future.pop();this.updateDirty(); }
+    resetSection(section) {
+      const keys={title:['theme','tagline','subtitle'],schedule:['days'],keyDates:['key_dates','key_date_overrides'],
+        workouts:['category_styles'],notes:['notes','note_style'],monthlyNotes:['footnotes','footnote_styles'],
+        events:['events'],additionalInfo:['additional_info'],credits:['credits']}[section];
+      if(!keys)throw new Error('Unknown section');
+      this.edit(d=>{for(const key of keys){if(key in this.initial)d[key]=clone(this.initial[key]);else delete d[key];}});
+    }
+    snapshot() { return clone({draft:this.draft,initial:this.initial,rendered:this.rendered,past:this.past,future:this.future}); }
+    restore(snapshot) {
+      const defaults=clone(this.draft), normalize=d=>{
+        const value={...clone(defaults),...clone(d),schema_version:defaults.schema_version};
+        value.custom_categories={...defaults.custom_categories,...d.custom_categories};
+        value.days=value.days.map(day=>({...{repeat_of:null,note:'',three_g:false},...day,entries:day.entries.map(entry=>{
+          const e={title:'',...entry};
+          if(e.category==='unknown'){
+            const known=Object.entries(value.custom_categories).find(([,type])=>type.label.toLowerCase()===(e.title||e.raw||'Other').toLowerCase());
+            if(known)e.category=known[0];
+          }return e;
+        })}));
+        return value;
+      };
+      for(const key of ['draft','initial','rendered'])this[key]=normalize(snapshot[key]);
+      for(const key of ['past','future'])this[key]=snapshot[key].map(normalize);
+      this.updateDirty();
     }
     setAutomatic(key, automatic) {
       this.edit(d => {

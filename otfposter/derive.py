@@ -59,7 +59,7 @@ def highlights(m: Month) -> list[dict]:
                 titles.setdefault(e.category, []).append(f"{m.mmdd(day.day)} {e.title}")
 
     rows = []
-    for cat in sorted(CATEGORIES, key=lambda c: c.order):
+    for cat in sorted(m.categories(), key=lambda c: c.order):
         if cat.key == "std":
             continue  # every month is mostly Standard; listing them is noise
         dates = hits.get(cat.key, [])
@@ -336,7 +336,7 @@ def cell_note(m: Month, day) -> tuple[str, bool]:
 
 
 def category_color(m: Month, key: str) -> str:
-    return m.category_styles.get(key, {}).get('color', BY_KEY[key].color)
+    return m.category_styles.get(key, {}).get('color', m.category(key).color)
 
 
 def category_foreground(m: Month, key: str) -> str:
@@ -350,9 +350,9 @@ def category_foreground(m: Month, key: str) -> str:
 
 
 def pill(entry, m: Month) -> dict:
-    cat = entry.cat
+    cat = m.category(entry.category)
     return {
-        "label": entry.label,
+        "label": entry.title or cat.label if entry.category.startswith('custom_') else entry.label,
         "color": category_color(m, cat.key),
         "fg": category_foreground(m, cat.key),
     }
@@ -397,11 +397,11 @@ def build_context(m: Month) -> dict:
             })
         weeks.append(cells)
 
-    used = {entry.cat.key for day in m.days for entry in day.entries}
+    used = {entry.category for day in m.days for entry in day.entries}
     legend = [
         {"label": c.label, "color": category_color(m, c.key), "blurb": c.blurb,
          "fg": category_foreground(m, c.key)}
-        for c in sorted(CATEGORIES, key=lambda c: c.order)
+        for c in sorted(m.categories(), key=lambda c: c.order)
         if m.category_styles.get(c.key, {}).get('visible', c.key in used)
     ]
 

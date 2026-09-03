@@ -43,7 +43,7 @@ jobs:
         with:
           node-version: '22'
       - name: Browser editor regressions
-        run: node --test tests/editor.test.cjs tests/editor-ui.test.cjs tests/app.test.cjs
+        run: node --test tests/*.test.cjs
 
       - run: python scripts/build_site.py
 

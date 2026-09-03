@@ -35,7 +35,7 @@ SITE = ROOT / "site"
 # called there -- its Playwright import is lazy, inside render_png().
 PY_MODULES = [
     "__init__.py", "assets.py", "categories.py", "derive.py", "models.py",
-    "parse.py", "render.py", "thread.py", "validate.py",
+    "parse.py", "render.py", "thread.py", "validate.py", "exports.py",
 ]
 
 
@@ -51,6 +51,7 @@ def build() -> Path:
     files["otfposter/templates/poster.html.j2"] = (
         ROOT / "otfposter" / "templates" / "poster.html.j2"
     ).read_text(encoding="utf-8")
+    files['otfposter/templates/compact.html.j2'] = (ROOT / 'otfposter/templates/compact.html.j2').read_text(encoding='utf-8')
 
     # Pre-inline the fonts: fonts.css arrives already carrying data: URIs, so
     # assets.font_css() finds nothing left to substitute and returns it as-is.

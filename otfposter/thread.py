@@ -231,6 +231,10 @@ def parse_thread(
         cat = lookup(label) or lookup(label.rstrip("s"))
         if cat is None or cat.key in ("unknown", "std"):
             report.unknown_labels.append(label)
+            for mo, d in dates:
+                if mo == month and 1 <= d <= length:
+                    if not any(e.category == 'unknown' and e.title == label for e in days[d].entries):
+                        days[d].entries.append(make_entry(label))
             continue
         for mo, d in dates:
             if mo == month and 1 <= d <= length:
