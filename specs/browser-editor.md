@@ -29,18 +29,24 @@ The persistence, sharing, history, and export extensions are specified in
    the currently displayed defaults when there is no override. Empty custom lists
    restore automatic copy, matching the existing model. Subtitle initially reads
    “Monthly Schedule Poster” when no override exists.
-5. Editing marks the preview as out of date and disables poster and calendar exports until a
+5. Editing marks the preview as out of date and disables the unified Download button until a
    successful regeneration. Regeneration updates preview, dimensions, report, and
-   the schedule used for PNG, HTML, PDF, compact images, and ICS together. Draft
-   backups and editable snapshots remain available with pending edits. Failed
-   regeneration retains the draft and last preview.
+   the schedule used for all export formats (PNG, HTML, PDF, compact images, ICS)
+   together. Draft backups and editable snapshots remain available with pending edits.
+   Failed regeneration retains the draft and last preview.
    Controls cannot launch overlapping renders or edits during rendering/export.
 6. Invalid repeats (self/future/missing source) and event ranges (outside month,
    reversed, fractional, or blank dates) block regeneration with useful errors.
    Existing repeat-template mismatches and unknown categories remain warnings.
-7. After successful generation, hide source inputs and disable Generate. Restart
-   from text opens a popup explaining that the current editing session will be
-   cleared while saved posters remain. Warn when autosave is unavailable; if a
+7. After successful generation, hide source inputs, examples, and disable Generate.
+   Undo/redo buttons appear next to Regenerate, checkpointed only at each
+   successful regeneration (not at each field edit), with labels describing the
+   captured change (e.g. "Undo: subtitle"); they are disabled when no checkpoint
+   is available.
+   A unified format dropdown and Download button replace the separate PNG/HTML
+   buttons. The poster preview is capped at 1080px wide.
+   Restart from text opens a popup explaining that the current editing session will
+   be cleared while saved drafts remain. Warn when autosave is unavailable; if a
    previously working save fails during confirmation, keep the editor open for
    backup. Cancel preserves the draft and preview; successful confirmation clears
    them and restores the original paste. Failed initial parsing keeps that text

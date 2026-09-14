@@ -174,12 +174,12 @@ test('key date subheader explains every source of automatic entries', () => {
   for (const name of ['Benchmark','Signature','Specialty','events','non-repeat']) assert.ok(text.includes(name));
 });
 
-test('every section has an undoable reset that leaves unrelated fields alone',()=>{
+test('every section has a reset that restores its fields and leaves unrelated fields alone',()=>{
   const {doc,state,editor}=setup();
   state.edit(d=>{d.subtitle='Changed';d.additional_info='Keep me';});editor.render();
   labelled(doc.getElementById('headingEditorReset'),'Reset title & theme section').onclick();
   assert.equal(state.draft.subtitle,'Monthly Schedule Poster');assert.equal(state.draft.additional_info,'Keep me');
-  state.undo();assert.equal(state.draft.subtitle,'Changed');
+  assert.equal(state.canUndo,false,'a reset is a pending edit, not an individually undoable step');
   for(const [id,label] of [['calendarEditor','schedule'],['keyDatesEditor','Key Dates'],['workoutTypesEditor','Workout Types'],
     ['notesEditor','Strength & Tread 50 notes'],['monthlyNotesEditor','Monthly notes'],['eventsEditor','Events'],
     ['additionalInfoEditor','Additional info'],['creditsEditor','Credits & team']])

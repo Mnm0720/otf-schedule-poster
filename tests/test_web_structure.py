@@ -21,11 +21,14 @@ def test_customization_sections_start_collapsed_and_titles_precede_schedule():
         tag, attrs = next((tag, attrs) for tag, attrs in page.nodes if attrs.get('id') == section)
         assert tag == 'details' and 'open' not in attrs
     assert ids.index('headingEditor') < ids.index('calendarEditor')
-    assert ids.index('previewWrap') < ids.index('png') < ids.index('html') < ids.index('previewZoom')
+    assert ids.index('previewWrap') < ids.index('exportFormat') < ids.index('exportBtn') < ids.index('previewZoom')
     assert ids.index('go') < ids.index('restart') < ids.index('previewWrap')
     assert 'sourceInputs' in ids
     assert ids.index('eventsSection') < ids.index('additionalInfoSection') < ids.index('creditsSection')
-    assert ids.index('examples') < ids.index('savedPicker') < ids.index('sourceInputs') < ids.index('src')
+    # savedPicker now lives inside the drafts <dialog> (near end of body), so it
+    # is no longer ordered before sourceInputs; assert the real source-panel order.
+    assert ids.index('examples') < ids.index('sourceInputs') < ids.index('src')
+    assert 'savedPicker' in ids
 
 
 def test_restart_popup_explains_loss_and_defaults_to_keep_editing():

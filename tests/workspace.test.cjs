@@ -4,18 +4,44 @@ const {EditorState}=require('../web/editor-state.js');
 const schedule=()=>({year:2026,month:9,subtitle:'Original',theme:'',events:[],notes:[],footnotes:[],days:[{day:1,entries:[{category:'std'}],repeat_of:null}]});
 const result=d=>({schedule:d,defaults:{credits:'Default'},categories:[]});
 
-test('undo and redo survive regeneration; reset section preserves other edits and is undoable',()=>{
+test('undo and redo checkpoint only at regenerate, not per edit or reset',()=>{
  const s=new EditorState(); s.accept(result(schedule()));
+ assert.equal(s.canUndo,false);
+
  s.edit(d=>{d.subtitle='Changed';}); s.edit(d=>{d.credits='Team';});
- s.accept(result(s.draft)); s.undo(); assert.equal(s.draft.credits,'Default');
- assert.equal(s.draft.subtitle,'Changed'); assert.equal(s.dirty,true);
- s.redo(); assert.equal(s.draft.credits,'Team'); assert.equal(s.dirty,false);
- s.resetSection('title'); assert.equal(s.draft.subtitle,'Original'); assert.equal(s.draft.credits,'Team');
- s.undo(); assert.equal(s.draft.subtitle,'Changed');
- s.edit(d=>{d.theme='New branch';}); assert.equal(s.canRedo,false);
+ assert.equal(s.canUndo,false,'pending edits are not individually undoable');
+
+ s.accept(result(s.draft),{checkpoint:true}); // simulates hitting Regenerate
+ assert.equal(s.canUndo,true); assert.equal(s.dirty,false);
+
+ s.resetSection('title'); // pending, not checkpointed on its own
+ assert.equal(s.draft.subtitle,'Original'); assert.equal(s.draft.credits,'Team');
+ assert.equal(s.past.length,1);
+
+ s.accept(result(s.draft),{checkpoint:true}); // regenerate again
+ assert.equal(s.past.length,2);
+
+ s.undo();
+ assert.equal(s.draft.subtitle,'Changed'); assert.equal(s.draft.credits,'Team'); assert.equal(s.dirty,true);
+ s.accept(result(s.draft),{checkpoint:false}); // app's silent re-render to sync the preview
+ assert.equal(s.dirty,false);
+
+ s.undo();
+ assert.equal(s.draft.subtitle,'Original'); assert.equal(s.draft.credits,'Default');
+ s.accept(result(s.draft),{checkpoint:false});
+
+ s.redo(); assert.equal(s.draft.subtitle,'Changed'); assert.equal(s.draft.credits,'Team');
+ s.accept(result(s.draft),{checkpoint:false});
+
+ s.edit(d=>{d.theme='New branch';});
+ s.accept(result(s.draft),{checkpoint:true});
+ assert.equal(s.canRedo,false,'a fresh regenerate clears the redo stack');
 });
 test('snapshot restores pending changes, original baseline, and history',()=>{
- const s=new EditorState();s.accept(result(schedule()));s.edit(d=>{d.subtitle='Pending';});
+ const s=new EditorState();s.accept(result(schedule()));
+ s.edit(d=>{d.subtitle='Checkpoint 1';});
+ s.accept(result(s.draft),{checkpoint:true});
+ s.edit(d=>{d.subtitle='Pending';});
  const snapshot=s.snapshot(); const restored=new EditorState();restored.accept(result(snapshot.rendered));restored.restore(snapshot);
  assert.equal(restored.draft.subtitle,'Pending');assert.equal(restored.dirty,true);
  restored.undo();assert.equal(restored.draft.subtitle,'Original');

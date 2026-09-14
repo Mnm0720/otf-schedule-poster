@@ -10,6 +10,28 @@ from otfposter.render import render_html
 from otfposter import validate
 
 
+_EMPTY_MSG = (
+    "Paste the monthly thread first. Copy the whole Reddit post "
+    "\u2014 title, prose, and the category lists \u2014 and try again."
+)
+_NO_SCHEDULE_MSG = (
+    "That didn't look like a monthly Orangetheory thread. Copy the entire post (title + lists) "
+    "\u2014 it's fine to include links and prose; the tool ignores the rest. "
+    "You can also type the month manually (e.g. 2026-09) and try again."
+)
+_NO_MONTH_MSG = (
+    "Couldn't read the month from that text. Paste the full post, or set the Month field "
+    "(e.g. 2026-09) and retry."
+)
+_MONTH_ERROR_HINTS = ("could not tell which month", "could not find a line like")
+
+
+def _friendly_parse_error(err):
+    msg = str(err)
+    friendly = _NO_MONTH_MSG if any(h in msg for h in _MONTH_ERROR_HINTS) else _NO_SCHEDULE_MSG
+    return friendly + "\nTechnical detail: " + msg
+
+
 def _result(m, parse_notes="", *, edited=False):
     errors = validate.customization_errors(m)
     if errors:
@@ -42,10 +64,17 @@ def _result(m, parse_notes="", *, edited=False):
 
 
 def generate(text, month=None, theme="", tagline=""):
+    if not text or not text.strip():
+        raise ValueError(_EMPTY_MSG)
     year = mo = None
     if month:
         year, mo = (int(p) for p in month.split("-"))
-    m, report = parse(text, year=year, month=mo)
+    try:
+        m, report = parse(text, year=year, month=mo)
+    except ValueError as err:
+        raise ValueError(_friendly_parse_error(err)) from None
+    if not m.days:
+        raise ValueError(_NO_SCHEDULE_MSG)
     if theme:
         m.theme = theme
     if tagline:

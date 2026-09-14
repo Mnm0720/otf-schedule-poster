@@ -32,29 +32,28 @@
     or file &mdash; no uploads or account needed.
   </p>
 
+  <div class="how-to-card">
+    <h2 class="how-to-heading">How to use (30 seconds)</h2>
+    <ol class="how-to">
+      <li>Copy the whole monthly thread</li>
+      <li>Paste it in the box</li>
+      <li>Hit Generate</li>
+      <li>Download the PNG</li>
+    </ol>
+  </div>
+
   <section id="pastePanel" class="panel">
     <div class="panel-head">
       <h2>Start a poster</h2>
-      <div class="examples">
-        <span>Try an example:</span>
+      <div class="examples" id="examplesWrap">
+        <span>Try an example (loads a sample thread &mdash; then hit Generate):</span>
         <span id="examples"></span>
       </div>
     </div>
-    <section class="saved-posters" aria-labelledby="savedTitle">
-      <h3 id="savedTitle">Saved posters</h3>
-      <p class="hint">Saved on this device. Download a draft backup to keep it if browser data is cleared.</p>
-      <div class="actions">
-        <label for="savedPicker">Choose a saved poster</label>
-        <select id="savedPicker"><option value="">No saved posters yet</option></select>
-        <button id="openSaved" type="button" class="ghost">Open</button>
-        <button id="backupSaved" type="button" class="ghost">Back up selected</button>
-        <button id="deleteSaved" type="button" class="ghost">Delete selected</button>
-      </div>
-      <div class="actions">
-        <label class="ghost file-label">Import draft file<input id="importDraft" type="file" accept=".json,application/json"></label>
-        <span id="saveStatus" class="status" role="status" aria-live="polite"></span>
-      </div>
-    </section>
+    <div class="draft-bar">
+      <button id="openDrafts" type="button" class="ghost">Saved Drafts</button>
+      <span id="draftStatus" class="draft-status" role="status" aria-live="polite"></span>
+    </div>
     <fieldset id="sourceInputs" class="source-inputs">
     <legend class="visually-hidden">Start with a monthly thread</legend>
     <label for="src">Monthly thread text</label>
@@ -63,10 +62,11 @@
 * Run/Rows on 9/3, 9/5, 9/8 (benchmark), 9/13, 9/19, 9/21, 9/29.
 * Lift More templates on 9/2, 9/7, 9/10, 9/12, ...
 * Repeat templates are as follows: 9/16 = 9/1, 9/17 = 9/2, ..."></textarea>
+    <p class="hint">Copy the entire Reddit post — title, prose, and lists. Links and extra text are fine; the tool ignores what it doesn’t need.</p>
 
     <div class="row">
       <div class="field">
-        <label for="month">Month <span class="hint">optional &mdash; read from the text</span></label>
+        <label for="month">Month <span class="hint">optional &mdash; read from the text (use if the month looks wrong after generating)</span></label>
         <input id="month" type="text" placeholder="2026-09" autocomplete="off">
       </div>
     </div>
@@ -86,36 +86,34 @@
   <section id="previewWrap" class="panel preview" hidden>
     <div class="panel-head"><h2 id="posterTitle" tabindex="-1">Poster</h2><span class="hint" id="dims"></span></div>
     <div class="preview-actions">
-      <button id="png" class="primary" hidden>Download PNG</button>
-      <button id="html" class="ghost" hidden>Download HTML</button>
-      <label for="exportFormat" class="visually-hidden">More export formats</label>
+      <label for="exportFormat" class="visually-hidden">Download format</label>
       <select id="exportFormat">
+        <option value="png">PNG (Recommended)</option>
+        <option value="html">HTML</option>
         <option value="pdf">Printable PDF (A4)</option>
-        <option value="phone">Phone wallpaper (1080 × 1920)</option>
-        <option value="social">Social calendar (1080 × 1350)</option>
+        <option value="phone">Phone wallpaper (1080 &times; 1920)</option>
+        <option value="social">Social calendar (1080 &times; 1350)</option>
         <option value="ics">Calendar file (.ics)</option>
       </select>
-      <button id="exportMore" class="ghost" type="button">Download format</button>
+      <button id="exportBtn" class="primary" type="button">Download</button>
       <a id="lastDownload" target="_blank" rel="noopener" hidden>Open last downloaded file</a>
       <button id="previewZoom" class="ghost" type="button" aria-pressed="false">View full size</button>
     </div>
+    <p id="exportConfirm" class="hint" role="status" aria-live="polite" hidden></p>
     <p class="hint preview-hint">Use full size to read the details, then scroll within the preview.</p>
-    <p class="hint">Wallpaper and social images show the calendar and workout color key. PDF includes the full poster. Calendar files contain all-day entries, not class times.</p>
+    <p class="hint">Wallpaper and social images show the calendar and workout color key. PDF fits the full poster on a single page. Calendar files contain all-day entries, not class times.</p>
     <div class="stage" id="stage" tabindex="0" role="region" aria-label="Scrollable poster preview"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
   </section>
 
   <section id="editorWrap" class="panel schedule-editor" aria-labelledby="editorTitle" hidden>
     <div class="panel-head">
       <h2 id="editorTitle">Customize your poster</h2>
-      <a href="#previewWrap">Back to poster ↑</a>
+      <a href="#previewWrap">Back to poster &uarr;</a>
     </div>
-    <p class="editor-intro">Edits save automatically on this device. Select Regenerate poster to update the preview. Section resets return to the starting version and can be undone.</p>
+    <p class="editor-intro">Edits save automatically on this device. Select Regenerate poster to update the preview. Undo and Redo step through your regenerated versions, not individual field edits.</p>
     <div class="draft-tools">
-      <label for="draftName">Saved poster name</label><input id="draftName" type="text" maxlength="120">
+      <label for="draftName">Draft name</label><input id="draftName" type="text" maxlength="120">
       <div class="actions">
-        <button id="undo" type="button" class="ghost">Undo</button>
-        <button id="redo" type="button" class="ghost">Redo</button>
-        <button id="saveCopy" type="button" class="ghost">Save a copy</button>
         <button id="backupDraft" type="button" class="ghost">Download draft</button>
         <button id="shareDraft" type="button" class="ghost">Share editable copy</button>
       </div>
@@ -174,6 +172,8 @@
       </details>
     </fieldset>
     <div class="actions editor-actions">
+      <button id="undo" type="button" class="ghost" disabled>Undo</button>
+      <button id="redo" type="button" class="ghost" disabled>Redo</button>
       <button id="regenerate" class="primary" type="button">Regenerate poster</button>
       <span id="editStatus" class="status" role="status" aria-live="polite"></span>
     </div>
@@ -209,7 +209,7 @@ Key Dates for The Month
 
 <dialog id="restartDialog" aria-labelledby="restartTitle" aria-describedby="restartExplanation">
   <h2 id="restartTitle">Restart from text?</h2>
-  <p id="restartExplanation">This will remove all customizations from the current editing session, including changes already applied to the poster. Your saved poster and original text will be kept so you can return to them. Generate again to start a separate fresh poster.</p>
+  <p id="restartExplanation">This will remove all customizations from the current editing session, including changes already applied to the poster. Your saved draft and original text will be kept so you can return to them. Generate again to start a separate fresh poster.</p>
   <div class="actions">
     <button id="restartCancel" class="ghost" type="button" autofocus>Keep editing</button>
     <button id="restartConfirm" class="primary" type="button">Restart from text</button>
@@ -217,10 +217,32 @@ Key Dates for The Month
 </dialog>
 
 <dialog id="deleteDialog" aria-labelledby="deleteTitle">
-  <h2 id="deleteTitle">Delete this saved poster?</h2>
+  <h2 id="deleteTitle">Delete this saved draft?</h2>
   <p>This removes the selected draft from this browser. Download a backup first if you want to keep it.</p>
-  <div class="actions"><button id="deleteCancel" class="ghost" autofocus>Keep poster</button><button id="deleteConfirm" class="primary">Delete saved poster</button></div>
+  <div class="actions"><button id="deleteCancel" class="ghost" autofocus>Keep draft</button><button id="deleteConfirm" class="primary">Delete draft</button></div>
 </dialog>
+
+<dialog id="draftsDialog" aria-labelledby="draftsTitle">
+  <h2 id="draftsTitle">Saved Drafts</h2>
+  <p class="hint">Saved in this browser. Download a backup file to keep it forever or move it to another computer.</p>
+  <div class="actions">
+    <label for="savedPicker">Choose a saved draft</label>
+    <select id="savedPicker"><option value="">No saved drafts yet</option></select>
+  </div>
+  <div class="actions">
+    <button id="openSaved" type="button" class="primary">Load Draft</button>
+    <button id="backupSaved" type="button" class="ghost">Download draft</button>
+    <button id="deleteSaved" type="button" class="ghost">Delete</button>
+  </div>
+  <div class="actions">
+    <label class="ghost file-label">Import draft file<input id="importDraft" type="file" accept=".json,application/json"></label>
+  </div>
+  <div class="actions">
+    <button id="closeDrafts" type="button" class="ghost">Done</button>
+    <span id="saveStatus" class="status" role="status" aria-live="polite"></span>
+  </div>
+</dialog>
+
 <dialog id="shareDialog" aria-labelledby="shareTitle">
   <h2 id="shareTitle">Share an editable copy</h2>
   <p>Anyone with this link can open and edit a copy. Copies do not sync automatically: send a new link or draft file back after editing.</p>
@@ -228,6 +250,8 @@ Key Dates for The Month
   <div class="actions"><button id="copyShare" class="primary">Copy link</button><button id="closeShare" class="ghost">Done</button></div>
   <p id="shareStatus" role="status"></p>
 </dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>

@@ -8,7 +8,7 @@
 const $ = (id) => document.getElementById(id);
 const els = {
   src: $("src"), month: $("month"), sourceInputs: $("sourceInputs"), restart: $("restart"),
-  go: $("go"), png: $("png"), html: $("html"), status: $("status"),
+  go: $("go"), status: $("status"),
   report: $("report"), preview: $("preview"), previewWrap: $("previewWrap"),
   examples: $("examples"), dims: $("dims"), stage: $("stage"),
   regenerate: $("regenerate"), editorFields: $("editorFields"), editStatus: $("editStatus"),
@@ -22,9 +22,6 @@ function fitPreview() {
   const doc = els.preview.contentDocument;
   const poster = doc && doc.querySelector(".poster");
   if (!poster) return;
-  // A zero-width container (hidden tab, collapsed pane, print) would scale the
-  // poster to nothing and it would never come back. Wait for a real width --
-  // the ResizeObserver below calls again once there is one.
   const available = els.stage.clientWidth;
   if (available < 1) return;
 
@@ -42,6 +39,7 @@ let examples = {};
 let current = { html: "", slug: "poster", days: 0 };
 const editorState = new OTFEditor.EditorState();
 let draftStore=null, activeDraftId=null, savedSuccessfully=false, openingDraft=false;
+let draftsDisabledThisSession = false;
 try { draftStore=new OTFWorkspace.DraftStore(localStorage); } catch { /* Storage may be disabled. */ }
 const editor = new ScheduleEditor(document, editorState, () => {
   saveLocal();
@@ -49,9 +47,23 @@ const editor = new ScheduleEditor(document, editorState, () => {
   status("Edits pending — regenerate to update the poster and downloads.");
 });
 
+let toastTimer = null;
+function showToast(text) {
+  const el = $('toast');
+  el.textContent = text;
+  el.hidden = false;
+  el.classList.remove('fade-out');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    el.classList.add('fade-out');
+    setTimeout(() => { el.hidden = true; el.classList.remove('fade-out'); }, 300);
+  }, 3000);
+}
+
 function syncControls() {
   const generated = Boolean(editorState.current);
   for (const id of ['navPoster', 'navDays']) $(id).hidden = !generated;
+  $('examplesWrap').hidden = generated;
   els.sourceInputs.hidden = generated;
   els.sourceInputs.disabled = editorState.busy;
   $('sourceComplete').hidden = !generated;
@@ -60,15 +72,31 @@ function syncControls() {
   els.go.disabled = !pyodide || editorState.busy || generated;
   els.regenerate.disabled = !editorState.draft || editorState.busy;
   els.editorFields.disabled = editorState.busy;
-  els.png.disabled = els.html.disabled = !editorState.canDownload;
-  $('exportMore').disabled=!editorState.canDownload;
-  $('undo').disabled=!editorState.canUndo; $('redo').disabled=!editorState.canRedo;
-  for(const id of ['draftName','saveCopy','backupDraft','shareDraft'])$(id).disabled=editorState.busy||!generated;
+  $('exportBtn').disabled=!editorState.canDownload;
+  const undoBtn=$('undo'), redoBtn=$('redo');
+  undoBtn.disabled=!editorState.canUndo;
+  redoBtn.disabled=!editorState.canRedo;
+  undoBtn.textContent=editorState.undoLabel ? `Undo: ${editorState.undoLabel}` : 'Undo';
+  redoBtn.textContent=editorState.redoLabel ? `Redo: ${editorState.redoLabel}` : 'Redo';
+  for(const id of ['draftName','backupDraft','shareDraft'])$(id).disabled=editorState.busy||!generated;
+  $('openDrafts').disabled = draftsDisabledThisSession;
   for(const id of ['openSaved','deleteSaved','backupSaved'])$(id).disabled=editorState.busy||!$('savedPicker').value;
   $('importDraft').disabled=editorState.busy;
   els.editStatus.textContent = editorState.busy ? "Working…" : editorState.dirty
     ? "Edits pending — regenerate before downloading." : "Preview is up to date.";
   for (const button of els.examples.querySelectorAll('button')) button.disabled = editorState.busy;
+  updateDraftStatus();
+}
+
+function updateDraftStatus() {
+  const el = $('draftStatus');
+  if (!editorState.current) { el.textContent = ''; return; }
+  const name = $('draftName').value.trim() || current.slug;
+  if (activeDraftId && savedSuccessfully) {
+    el.textContent = `✔ "${name}" loaded`;
+  } else {
+    el.textContent = `✔ Poster generated from text`;
+  }
 }
 
 function status(text, isError = false) {
@@ -147,14 +175,17 @@ function renderExampleButtons() {
 async function generate() {
   if (!pyodide || editorState.busy || editorState.current) return;
   const text = els.src.value.trim();
-  if (!text) { status("Paste the monthly thread first.", true); return; }
+  if (!text) {
+    status("Paste the monthly thread first. Copy the whole Reddit post \u2014 title, prose, and the category lists \u2014 and try again.", true);
+    return;
+  }
   await renderPoster("generate", [text, els.month.value.trim() || null]);
 }
 
 function restartFromText() {
   if (editorState.busy || !editorState.current) return;
   $('restartExplanation').textContent=savedSuccessfully
-    ? 'This clears the current editing session. Your saved poster and original text will be kept, so you can return to them. Generate again to start a separate fresh poster.'
+    ? 'This clears the current editing session. Your saved draft and original text will be kept, so you can return to them. Generate again to start a separate fresh poster.'
     : 'This removes the current customizations. Autosave is unavailable: download a draft backup first if you want to keep these edits. Your original text will stay in the text box.';
   $('restartDialog').showModal();
 }
@@ -165,7 +196,7 @@ function confirmRestart() {
   const previouslySaved=savedSuccessfully;
   saveLocal();
   if(previouslySaved && !savedSuccessfully){status('Autosave failed. Your draft is still open; download a backup before restarting.',true);return;}
-  activeDraftId=null; savedSuccessfully=false;
+  activeDraftId=null; savedSuccessfully=false; draftsDisabledThisSession=false;
   $('draftName').value='';
   $('lastDownload').hidden=true;
   try { draftStore?.clearActive(); } catch { /* Previous save message already explains failure. */ }
@@ -176,7 +207,6 @@ function confirmRestart() {
   for (const id of ['titleSection','keyDateSection','workoutSection','notesSection','monthlyNotesSection','eventsSection','additionalInfoSection','creditsSection']) $(id).open = false;
   els.previewWrap.hidden = $('editorWrap').hidden = true;
   els.preview.srcdoc = '';
-  els.png.hidden = els.html.hidden = true;
   previewFullSize = false;
   els.stage.classList.toggle('full-size', false);
   $('previewZoom').textContent = 'View full size';
@@ -218,11 +248,11 @@ async function renderPoster(method, args, options={}) {
     if (doc.fonts && doc.fonts.status !== "loaded") await doc.fonts.ready;
     current = { html: res.html, slug: res.slug, days: res.days };
     if(options.fresh)editorState.reset();
-    editorState.accept(res);
+    const checkpoint = options.checkpoint ?? (method === 'regenerate' && !options.fresh);
+    editorState.accept(res, {checkpoint});
     if(options.state)editorState.restore(options.state);
     editor.render();
     fitPreview();
-    els.png.hidden = els.html.hidden = false;
     showReport(res.notes);
 
     if (res.errors.length) {
@@ -236,9 +266,13 @@ async function renderPoster(method, args, options={}) {
     if(!openingDraft)saveLocal();
   } catch (err) {
     console.error(err);
-    const msg = String(err.message || err).trim().split("\n").pop();
-    failure = (method === "generate" ? "Could not parse that: " : "Could not regenerate: ") + msg;
+    const rawMsg = String(err.message || err).trim();
+    const isFriendlyParseError = method === "generate" && rawMsg.includes("Technical detail:");
+    const msg = isFriendlyParseError ? rawMsg : rawMsg.split("\n").pop();
+    const prefix = method === "generate" ? (isFriendlyParseError ? "" : "Could not parse that: ") : "Could not regenerate: ";
+    failure = prefix + msg;
     status(failure, true);
+    showReport(failure);
   } finally {
     editorState.finish();
     syncControls();
@@ -267,25 +301,26 @@ function refreshSaved() {
   try {
     const picker=$('savedPicker'), selected=activeDraftId || picker.value;
     picker.replaceChildren();
-    const blank=document.createElement('option');blank.value='';blank.textContent='Choose a saved poster';picker.append(blank);
+    const blank=document.createElement('option');blank.value='';blank.textContent='Choose a saved draft';picker.append(blank);
     const documents=draftStore.list();
     for(const doc of documents){
       const option=document.createElement('option');option.value=doc.id;
-      option.textContent=doc.name+(doc.updatedAt?' · '+new Date(doc.updatedAt).toLocaleDateString():'');picker.append(option);
+      option.textContent=doc.name+(doc.updatedAt?' \xb7 '+new Date(doc.updatedAt).toLocaleDateString():'');picker.append(option);
     }
     picker.value=documents.some(doc=>doc.id===selected)?selected:'';syncControls();
-  }catch(err){$('saveStatus').textContent='Cannot read saved posters: '+err.message;}
+  }catch(err){$('saveStatus').textContent='Cannot read saved drafts: '+err.message;}
 }
 async function openDocument(doc,newCopy=false) {
   if(editorState.busy)return;
-  if(editorState.draft && !savedSuccessfully){saveLocal();if(!savedSuccessfully){status('Download your current draft before opening another poster.',true);return;}}
+  if(editorState.draft && !savedSuccessfully){saveLocal();if(!savedSuccessfully){status('Download your current draft before opening another.',true);return;}}
   openingDraft=true;
   try {
     const ok=await renderPoster('regenerate',[JSON.stringify(doc.state.rendered)],{fresh:true,state:doc.state});
     if(!ok)return;
     activeDraftId=newCopy?crypto.randomUUID():doc.id;
     els.src.value=doc.source||'';els.month.value='';$('draftName').value=(doc.name || current.slug)+(newCopy?' (copy)':'');
-    status(editorState.dirty?'Restored your draft with pending edits. Regenerate when ready.':'Saved poster restored.');
+    const name = doc.name || current.slug;
+    showToast(`✔ "${name}" draft loaded`);
   }finally{openingDraft=false;}
   saveLocal();syncControls();
 }
@@ -298,9 +333,15 @@ async function restoreStartup() {
       history.replaceState(null,'',location.href.split('#')[0]);
     }else if(draftStore?.active){await openDocument(draftStore.load(draftStore.active));}
     else {const source=draftStore?.readSource();if(source){els.src.value=source.text;els.month.value=source.month;$('saveStatus').textContent='Restored your unfinished paste.';}}
-  }catch(err){$('saveStatus').textContent=err.message+' Existing saved posters have been kept.';}
+  }catch(err){$('saveStatus').textContent=err.message+' Existing saved drafts have been kept.';}
 }
-function historyChange(action){if(editorState.busy)return;editorState[action]();editor.render();saveLocal();syncControls();}
+async function historyChange(action){
+  if(editorState.busy)return;
+  if(action==='undo'?!editorState.canUndo:!editorState.canRedo)return;
+  editorState[action]();
+  editor.render();syncControls();
+  await renderPoster('regenerate',[JSON.stringify(editorState.draft)],{checkpoint:false});
+}
 function savePaste(){
   if(editorState.current)return;
   try{if(!draftStore)throw new Error('Browser storage is unavailable.');draftStore.saveSource(els.src.value,els.month.value);$('saveStatus').textContent='Thread text saved on this device.';}
@@ -309,22 +350,32 @@ function savePaste(){
 els.src.oninput=els.month.oninput=savePaste;
 $('undo').onclick=()=>historyChange('undo');$('redo').onclick=()=>historyChange('redo');
 $('draftName').oninput=saveLocal;
-$('saveCopy').onclick=()=>{activeDraftId=crypto.randomUUID();$('draftName').value=($('draftName').value||current.slug)+' (copy)';saveLocal();};
 $('backupDraft').onclick=()=>{if(editorState.draft)download(new Blob([JSON.stringify(draftDocument(),null,2)],{type:'application/json'}),`otf_${current.slug}_draft.json`);};
+$('openDrafts').onclick=()=>{if(!draftsDisabledThisSession){refreshSaved();$('draftsDialog').showModal();}};
+$('closeDrafts').onclick=()=>$('draftsDialog').close();
 $('savedPicker').onchange=syncControls;
-$('openSaved').onclick=async()=>{try{await openDocument(draftStore.load($('savedPicker').value));}catch(err){$('saveStatus').textContent=err.message;}};
+$('openSaved').onclick=async()=>{
+  try{
+    await openDocument(draftStore.load($('savedPicker').value));
+    draftsDisabledThisSession=true;
+    $('draftsDialog').close();
+    syncControls();
+  }catch(err){$('saveStatus').textContent=err.message;}
+};
 $('backupSaved').onclick=()=>{try{download(new Blob([draftStore.raw($('savedPicker').value)],{type:'application/json'}),'otf_saved_draft.json');}catch(err){$('saveStatus').textContent=err.message;}};
 let deletingId=null;
 $('deleteSaved').onclick=()=>{deletingId=$('savedPicker').value;if(deletingId)$('deleteDialog').showModal();};
 $('deleteCancel').onclick=()=>$('deleteDialog').close();
 $('deleteConfirm').onclick=()=>{
-  try{draftStore.remove(deletingId);if(deletingId===activeDraftId){activeDraftId=null;savedSuccessfully=false;}refreshSaved();$('saveStatus').textContent='Saved poster deleted. The open editor is unchanged.';}
+  try{draftStore.remove(deletingId);if(deletingId===activeDraftId){activeDraftId=null;savedSuccessfully=false;}refreshSaved();$('saveStatus').textContent='Draft deleted. The open editor is unchanged.';}
   catch(err){$('saveStatus').textContent=err.message;}$('deleteDialog').close();
 };
 $('importDraft').onchange=async()=>{
   const file=$('importDraft').files?.[0];if(!file)return;
-  try{if(file.size>2_000_000)throw new Error('Draft file is too large.');await openDocument(OTFWorkspace.decodeBackup(await file.text()),true);}
-  catch(err){$('saveStatus').textContent='Import failed: '+err.message;}finally{$('importDraft').value='';}
+  try{if(file.size>2_000_000)throw new Error('Draft file is too large.');
+    await openDocument(OTFWorkspace.decodeBackup(await file.text()),true);
+    draftsDisabledThisSession=true;$('draftsDialog').close();syncControls();
+  }catch(err){$('saveStatus').textContent='Import failed: '+err.message;}finally{$('importDraft').value='';}
 };
 $('shareDraft').onclick=async()=>{
   if(!editorState.draft||editorState.busy)return;
@@ -355,57 +406,30 @@ function download(blob, name) {
   a.remove();
 }
 
-els.html.onclick = () => {
-  if (!editorState.canDownload) return;
-  download(new Blob([current.html], { type: "text/html" }),
-           `otf_${current.slug}.html`);
-};
-
-els.png.onclick = async () => {
-  if (!editorState.canDownload) return;
-  const doc = els.preview.contentDocument;
-  const node = doc && doc.querySelector(".poster");
-  if (!node) { status("Preview isn't ready yet.", true); return; }
-
-  if (!editorState.begin()) return;
-  syncControls();
-  status("Rendering PNG…");
-  try {
-    // Wait for the inlined webfonts inside the iframe before rasterising,
-    // otherwise the capture lands mid-swap and the headings come out wrong.
-    if (doc.fonts && doc.fonts.status !== "loaded") await doc.fonts.ready;
-    const dataUrl = await htmlToImage.toPng(node, {
-      pixelRatio: 2,
-      width: node.offsetWidth,
-      height: node.offsetHeight,
-      backgroundColor: "#ffffff",
-      cacheBust: false,
-    });
-    const blob = await (await fetch(dataUrl)).blob();
-    download(blob, `otf_${current.slug}.png`);
-    status("PNG downloaded.");
-  } catch (err) {
-    console.error(err);
-    status("PNG export failed — use Download HTML and print to PDF instead.", true);
-  } finally {
-    editorState.finish();
-    syncControls();
-  }
-};
-
-els.go.onclick = generate;
-$('exportMore').onclick=async()=>{
+async function doExport() {
   if(!editorState.canDownload||!editorState.begin())return;
-  syncControls();const kind=$('exportFormat').value;let frame=null;
+  syncControls();const kind=$('exportFormat').value;let frame=null;let fileName='';
   status('Preparing your export…');
   try{
-    if(kind==='pdf'){
+    if(kind==='png'){
+      const doc=els.preview.contentDocument;
+      const node=doc&&doc.querySelector('.poster');
+      if(!node){status("Preview isn't ready yet.",true);return;}
+      if(doc.fonts&&doc.fonts.status!=='loaded')await doc.fonts.ready;
+      const dataUrl=await htmlToImage.toPng(node,{pixelRatio:2,width:node.offsetWidth,height:node.offsetHeight,backgroundColor:'#ffffff',cacheBust:false});
+      fileName=`otf_${current.slug}.png`;
+      download(await(await fetch(dataUrl)).blob(),fileName);
+    }else if(kind==='html'){
+      fileName=`otf_${current.slug}.html`;
+      download(new Blob([current.html],{type:'text/html'}),fileName);
+    }else if(kind==='pdf'){
       const doc=els.preview.contentDocument;await doc.fonts.ready;
-      download(await OTFExports.posterPDF(doc.querySelector('.poster'),htmlToImage,PDFLib),`otf_${current.slug}.pdf`);
+      fileName=`otf_${current.slug}.pdf`;
+      download(await OTFExports.posterPDF(doc.querySelector('.poster'),htmlToImage,PDFLib),fileName);
     }else{
       const fn=pyodide.globals.get('export_schedule');let data;
       try{data=JSON.parse(fn(JSON.stringify(editorState.draft),kind));}finally{fn.destroy();}
-      if(kind==='ics')download(new Blob([data.text],{type:'text/calendar;charset=utf-8'}),`otf_${current.slug}.ics`);
+      if(kind==='ics'){fileName=`otf_${current.slug}.ics`;download(new Blob([data.text],{type:'text/calendar;charset=utf-8'}),fileName);}
       else{
         frame=document.createElement('iframe');frame.title='Preparing image export';
         frame.style.cssText=`position:fixed;left:-20000px;top:0;width:${data.width}px;height:${data.height}px;border:0;`;
@@ -416,13 +440,20 @@ $('exportMore').onclick=async()=>{
         const style=doc.defaultView.getComputedStyle(node),available=data.height-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom)-16;
         if(content.offsetHeight>available)content.style.transform=`scale(${available/content.offsetHeight})`;
         const url=await htmlToImage.toPng(node,{pixelRatio:1,width:data.width,height:data.height,backgroundColor:'#ffffff'});
-        download(await (await fetch(url)).blob(),`otf_${current.slug}_${kind}.png`);
+        fileName=`otf_${current.slug}_${kind}.png`;
+        download(await(await fetch(url)).blob(),fileName);
       }
     }
     status('Export downloaded.');
+    const confirm=$('exportConfirm');
+    confirm.textContent=`Downloaded ${fileName} — Open file · Download again · Share editable copy`;
+    confirm.hidden=false;
   }catch(err){status('Export failed: '+err.message,true);}
   finally{frame?.remove();editorState.finish();syncControls();}
-};
+}
+
+els.go.onclick = generate;
+$('exportBtn').onclick=doExport;
 els.restart.onclick = restartFromText;
 $('restartCancel').onclick = () => $('restartDialog').close();
 $('restartConfirm').onclick = confirmRestart;
@@ -435,7 +466,6 @@ $('previewZoom').onclick = () => {
   els.stage.scrollLeft = els.stage.scrollTop = 0;
   fitPreview();
 };
-// Open disclosures before following their section anchors.
 for (const anchor of document.querySelectorAll('a[href="#help"]')) {
   anchor.onclick = () => { $(anchor.getAttribute('href').slice(1)).open = true; };
 }
@@ -444,12 +474,9 @@ addEventListener('beforeunload', event => {
 });
 addEventListener('storage',event=>{
   if(activeDraftId && event.key==='otf-draft:'+activeDraftId){
-    // Another tab changed the same saved poster. Keep both edits as separate copies.
     activeDraftId=crypto.randomUUID();$('draftName').value+=' (this tab)';saveLocal();
-    $('saveStatus').textContent='Another tab changed this poster. Your edits were saved as a separate copy.';
+    $('saveStatus').textContent='Another tab changed this draft. Your edits were saved as a separate copy.';
   }else refreshSaved();
 });
-// Tracks the container, not just the window: catches the panel becoming
-// visible, a collapsed pane opening, and plain window resizes alike.
 new ResizeObserver(fitPreview).observe(els.stage);
 boot();

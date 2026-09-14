@@ -80,6 +80,43 @@ def test_bad_repeat_is_rejected_but_template_mismatch_remains_warning(bridge):
     assert "lists" in result["notes"]
 
 
+def test_empty_text_raises_friendly_value_error(bridge):
+    with pytest.raises(ValueError, match="Paste the monthly thread first"):
+        bridge["generate"]("")
+
+
+def test_whitespace_only_text_raises_friendly_value_error(bridge):
+    with pytest.raises(ValueError) as excinfo:
+        bridge["generate"]("   \n\t  ")
+    msg = str(excinfo.value)
+    assert "Paste the monthly thread first" in msg
+    assert "Technical detail" not in msg, "no underlying exception, so no technical detail line"
+
+
+def test_no_schedule_input_raises_didnt_look_like_monthly(bridge):
+    # Recognizable month/year, but no dated lines at all.
+    text = ("September 2026 Monthly Thread!\n\n"
+            "This is just prose with no schedule data at all.\n\n"
+            "https://example.com/post")
+    with pytest.raises(ValueError) as excinfo:
+        bridge["generate"](text)
+    msg = str(excinfo.value)
+    assert "didn't look like a monthly" in msg
+    assert "Technical detail" in msg
+    assert "no dated lines found" in msg
+
+
+def test_unreadable_month_raises_friendly_message_with_technical_detail(bridge):
+    # No month/year anywhere: parse() raises a month-detection error.
+    text = "Just some random words, no dates, no months."
+    with pytest.raises(ValueError) as excinfo:
+        bridge["generate"](text)
+    msg = str(excinfo.value)
+    assert "Couldn't read the month" in msg
+    assert "Technical detail" in msg
+    assert "could not tell which month" in msg
+
+
 def test_automatic_copy_tracks_edits_and_custom_copy_is_escaped(bridge):
     data = Month.load(ROOT / "schedules" / "2026-09.json").to_dict()
     data.update(notes=[], footnotes=[])

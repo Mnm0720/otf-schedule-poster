@@ -3,30 +3,43 @@
 ## Acceptance contract
 
 - Save every edit locally, including invalid pending edits and the original paste.
-  Restore the last active draft after refresh without reparsing; named saved posters
-  appear below examples and above the paste box. Opening another draft preserves
-  the previous one. Restart starts a new draft and does not delete saved posters.
+  Restore the last active draft after refresh without reparsing; a Saved Drafts
+  button opens a dialog to browse, load, download, delete, or import drafts.
+  Loading a draft shows a toast notification and disables the Saved Drafts button
+  for the rest of the session. A status line below the button shows whether the
+  current poster was loaded from a draft or generated from text. Opening another
+  draft preserves the previous one. Restart starts a new draft, re-enables the
+  drafts button, and does not delete saved drafts.
 - Version the storage envelope separately from Month JSON. Preserve unsupported or
   corrupt storage without overwriting it; announce failures and offer JSON backup
   and import. Do not promise that browser data survives clearing site storage.
   Workspace envelope version 1 accepts old plain JSON; Month schema 2 records the
   custom workout registry so older builds reject newer schedules instead of silently
   stripping their customization. Imported missing day defaults are filled in.
-- Undo/redo captures changes across sections and regeneration. New edits discard
-  the redo branch. Reset each section to its initial generated/imported state,
-  retaining unrelated settings; resets can be undone. Restore history with drafts.
+- Undo/redo checkpoint at Regenerate, not at each field edit. Editing or resetting
+  a section only changes the pending draft; nothing becomes undoable until the
+  next successful regeneration, which captures the schedule as it stood before
+  that regeneration. Undo/redo buttons sit next to Regenerate and describe the
+  captured change (e.g. "Undo: theme", "Redo: schedule"); disabled when no
+  checkpoint is available. Choosing Undo or Redo instantly reverts the pending
+  draft and re-renders the preview to match, discarding any edits made since the
+  last regeneration. A new regeneration after an undo discards the redo branch.
+  Reset each section to its initial generated/imported state, retaining unrelated
+  settings. Restore history with drafts.
 - Unknown template lines retain all linked days, appear as distinct month-specific
   workout types and in template selectors/highlights/legend, receive deterministic
   distinct colors, and support color/visibility overrides without changing the global
   registry. Preserve raw text and warn to check spelling or notify the developer.
-- Export the current rendered draft as printable PDF, a 1080×1920 calendar phone
-  wallpaper, a 1080×1350 social calendar image, and an all-day .ics calendar. Full
-  poster exports keep all information; compact layouts emphasize the calendar.
-  Escape ICS text, fold UTF-8 lines, use stable event IDs and exclusive end dates.
+- A unified format dropdown lists PNG (Recommended), HTML, Printable PDF (A4),
+  Phone wallpaper, Social calendar, and Calendar file (.ics). A single Download
+  button exports the selected format. Examples are hidden after the first
+  generation. PDF fits the full poster on a single A4 page. Full poster exports
+  keep all information; compact layouts emphasize the calendar. Escape ICS text,
+  fold UTF-8 lines, use stable event IDs and exclusive end dates.
 - GitHub Pages only, per the user's hosting constraint: create compressed editable
   snapshot links with data in the URL fragment and JSON backup/import files. No
   login or uploads. Opening shared data creates a separate local copy, preserving
-  existing drafts. State clearly that copies do not synchronize live: mods send an
+  existing saved drafts. State clearly that copies do not synchronize live: mods send an
   updated link/file back. Bound decoded size and reject unsupported versions; offer
   a file when a link would be too long. No infrastructure credentials or backend.
 - Keep new controls labelled, keyboard usable, 44px touch targets, and responsive.
@@ -47,17 +60,17 @@
 - Save edits before regeneration, preserving pending invalid values. Restore the
   last rendered schedule through Python, then overlay the saved draft and history.
   Do not reparse the source or show a pending edit as already rendered. Keep at most
-  100 undo snapshots. Regeneration does not discard history or change the initial
-  reset baseline.
+  100 undo snapshots, one captured per regeneration. Regeneration after an undo
+  discards the redo branch but does not change the initial reset baseline.
 - Reject saves when stored data changed since it was read. When another tab changes
   the active poster, preserve the current editor as a separate local copy. Report
   storage failures and keep draft download available; no browser-only design can
   guarantee recovery after site data is cleared.
-- Restart confirms clearing the active editor while keeping saved posters. If
+- Restart confirms clearing the active editor while keeping saved drafts. If
   autosave was already unavailable, warn to download a backup before discarding.
   If a previously successful save fails at confirmation, abort restart and leave
   the editor open. Successful restart restores the source paste and clears the
-  active selection, preview, and history without deleting library entries.
+  active selection, preview, and history without deleting saved drafts.
 - JSON draft backups include source text and history. Shared links contain the
   current draft and last rendered schedule, use the shared draft as the recipient's
   reset baseline, and omit source text and past/future history. Opening either an
@@ -69,13 +82,14 @@
   are also capped at 2,000,000 bytes.
   Offer draft files when links exceed the limit. Validate versions and schedule
   structure before restoring; escape imported poster text as for local edits.
-- PNG, HTML, PDF, phone/social images, and ICS use the last successfully rendered
-  schedule and are disabled while busy or dirty. Draft backup and sharing can
-  preserve pending edits. PDF uses A4 pages and favors section/row boundaries;
-  overlong blocks still retain every pixel. Compact images include the calendar,
-  color key, events, and credits; full poster/PDF retains detailed notes.
+- All export formats use the last successfully rendered schedule and are disabled
+  while busy or dirty. Draft backup and sharing can preserve pending edits. PDF
+  fits the full poster on a single A4 page, scaled to fill the available area.
+  Compact images include the calendar, color key, events, and credits; full
+  poster/PDF retains detailed notes.
 
-Each section's Reset restores only these fields from `initial` and is undoable:
+Each section's Reset restores only these fields from `initial`, as a pending edit
+that becomes undoable once the next regeneration checkpoints it:
 
 | Section | Month fields restored |
 | --- | --- |
@@ -104,7 +118,7 @@ after full Python/Node tests, schedule validation, static build and real-browser
   links, exports, and schema migration before those implementations were added.
   Later regressions caught the misplaced saved picker, unsafe shared tagline HTML,
   literal emphasis markup in compact layouts, and stale-tab storage writes.
-- Green: 114 Python tests and 33 Node tests pass. All four committed schedules
+- Green: 114 Python tests and 34 Node tests pass. All four committed schedules
   validate and the static build includes 31 bundled files. CI and Pages run all
   `tests/*.test.cjs` suites. The OTF TDD skill was updated and validated.
 - Actual Pyodide browser: generated September with `Minvdaibands` on days 2 and 5;

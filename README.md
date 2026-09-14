@@ -2,7 +2,7 @@
 
 Paste the monthly r/orangetheory thread, get a printable schedule poster.
 
-![Example poster](out/otf_2026-09.png)
+<img src="out/otf_2026-09.png" alt="Example poster" width="400">
 
 ## Generate a poster
 
@@ -11,9 +11,8 @@ Paste the monthly r/orangetheory thread, get a printable schedule poster.
 1. Open the monthly thread on r/orangetheory and copy the entire post
 2. Paste it into the text box on the site
 3. Hit **Generate** — the poster appears in seconds
-4. Review the poster and use **Download PNG** or **Download HTML**, or choose PDF,
-   phone wallpaper, social calendar, or a calendar file and select **Download format**.
-   Download controls appear before **View full size**.
+4. Pick a format from the dropdown — **PNG (Recommended)**, HTML, Printable PDF,
+   Phone wallpaper, Social calendar, or Calendar file — and hit **Download**
 
 Everything runs in your browser. Nothing is uploaded, and you don't need an account.
 
@@ -56,17 +55,23 @@ in. Credits default to the image and Modsquad attribution, with Reddit usernames
 linked to their profiles in the HTML poster. Edit or clear the credit text as needed;
 **Restore default credits** brings the original attribution back.
 
-Click **Regenerate poster** to apply your edits. Poster and calendar exports stay
+Click **Regenerate poster** to apply your edits. The **Download** button stays
 disabled while the preview is out of date; draft backups and editable sharing still
 include pending edits. If an edit is invalid, the draft stays available to fix.
-Edits and undo history save automatically on this device, even before regeneration.
-After reopening, the last active draft is restored. An unfinished paste is also saved.
-Use **Undo**, **Redo**, or a section’s **Reset** button to experiment. Resets return
-only that section to its starting version and can be undone (up to 100 changes).
+Edits save automatically on this device, even before regeneration. After
+reopening, the last active draft is restored. An unfinished paste is also saved.
+
+**Undo** and **Redo** sit next to Regenerate and step through your regenerated
+versions — not individual field edits. Editing a field or using a section's
+**Reset** button only changes the pending draft; nothing becomes undoable until
+you hit Regenerate, which checkpoints the change (up to 100 checkpoints) and
+labels the buttons with what they'd restore (e.g. "Undo: subtitle"). Undo and
+Redo are disabled when there's no checkpoint to move to, and instantly update
+the poster to match.
 
 To start over, select **Restart from text** beside the disabled Generate button.
 The popup explains that this clears the current editing session while retaining
-saved posters. If autosave is unavailable, it warns you to download a backup first.
+saved drafts. If autosave is unavailable, it warns you to download a backup first.
 **Keep editing** cancels; **Restart from text** restores the original paste and lets
 you generate a separate fresh poster. If a previously working save fails during
 restart, the editor stays open so you can back up your changes.
@@ -76,38 +81,43 @@ day cards and copy fields stack into one column with larger touch controls. **Vi
 lets you scroll across the poster to read its details; **Fit to width** restores
 the overview. Both views export the same full-resolution poster.
 
-### Save and share editable posters
+### Save and share editable drafts
 
-**Saved posters** appears below the examples and above the text box. Give your
-poster a name, reopen a saved poster, or **Save a copy** before experimenting.
-**Download draft** and **Back up selected** save editable JSON, including pending
-edits and history. Use **Import draft file** on another device. Browser storage can
-be cleared or run out of space: the page reports failures and preserves the draft
-for download. Saved-data versions protect newer backups from being silently
-rewritten by older app versions. Invalid/unreadable saved files stay available for backup.
+Your poster saves automatically as a draft. Give it a name in the editor and it
+appears in the **Saved Drafts** dialog. Open the dialog from the button above the
+text box to load, download, delete, or import drafts. A toast confirms when a draft
+is loaded. After loading a draft the button is disabled for the rest of the session;
+restart re-enables it.
+
+**Download draft** in the editor saves your current work as an editable JSON file,
+including pending edits and history. Use **Import draft file** in the Saved Drafts
+dialog on another device. Browser storage can be cleared or run out of space: the
+page reports failures and preserves the draft for download.
 
 **Share editable copy** creates a compressed snapshot link. Send it to another mod;
-it opens as a separate local draft without replacing existing saved posters. After
+it opens as a separate local draft without replacing existing saved drafts. After
 editing, send a new link or JSON file back. **Copies do not synchronize live.** This
 workflow runs entirely on GitHub Pages, with no accounts, database, or uploads.
 Links include current edits and the last rendered schedule, but omit the original
 paste and undo history. Draft files include both. If a snapshot is too large for a
 reliable URL, use a draft file instead.
 
-### More export formats
+### Export formats
 
-Select a format beside the normal PNG/HTML downloads:
+All formats are in the same dropdown — pick one and hit **Download**:
 
-- **Printable PDF (A4):** the full poster across pages, favoring section boundaries.
-- **Phone wallpaper:** 1080 × 1920 calendar and workout color key.
-- **Social calendar:** 1080 × 1350 calendar and workout color key.
-- **Calendar file (.ics):** daily all-day workouts and monthly events, with repeat
-  notes and 3G flags. These are schedule dates, not studio class times. Calendar
-  apps differ in whether repeat imports update entries or require removing a prior import.
+| Format | What you get |
+| --- | --- |
+| **PNG (Recommended)** | Full poster as a high-resolution image |
+| **HTML** | The poster as a standalone web page |
+| **Printable PDF (A4)** | The full poster scaled to fit a single A4 page |
+| **Phone wallpaper** | 1080 × 1920 calendar and workout color key |
+| **Social calendar** | 1080 × 1350 calendar and workout color key |
+| **Calendar file (.ics)** | Daily all-day workouts and monthly events |
 
-Compact images include attribution; use the full poster/PDF for detailed notes.
-Poster and calendar exports stay disabled while edits are pending. The last downloaded file
-also has an Open link for viewing or saving manually.
+Compact images include attribution; use the full poster or PDF for detailed notes.
+Calendar entries are schedule dates, not studio class times. The last downloaded
+file also has an Open link for viewing or saving manually.
 
 ### What to paste
 
@@ -272,7 +282,7 @@ pagination with a minimal DOM adapter and a mocked runtime. Python tests exercis
 the actual bridge, model, HTML renderers, custom workout types, and ICS output.
 These checks do not replace real-browser layout, Pyodide startup, or downloaded
 export inspection. The [latest verification record](specs/saved-workspaces.md#verification-2026-09-03)
-records 114 Python and 33 Node tests, browser checks, and remaining verification limits.
+records 114 Python and 34 Node tests, browser checks, and remaining verification limits.
 
 </details>
 

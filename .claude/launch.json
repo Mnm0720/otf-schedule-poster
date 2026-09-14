@@ -4,8 +4,8 @@
     {
       "name": "site",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8731", "--directory", "site"],
-      "port": 8731
+      "runtimeArgs": ["-c", "import http.server,socketserver,os;port=int(os.environ['PORT']);os.chdir('site');socketserver.TCPServer.allow_reuse_address=True;httpd=socketserver.TCPServer(('',port),http.server.SimpleHTTPRequestHandler);print('Serving on port',port);httpd.serve_forever()"],
+      "autoPort": true
     }
   ]
 }

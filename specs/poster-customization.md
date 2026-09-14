@@ -62,19 +62,25 @@ contracts are in [saved workspaces](saved-workspaces.md#data-and-recovery-contra
   round trips. Keep the defaults in Python, not a separate JavaScript copy.
 - Restart closes the new editor sections and returns to the initial defaults.
   Persistence and backups now follow [saved workspaces](saved-workspaces.md);
-  restart keeps saved posters while clearing the active editing session.
+  restart keeps saved drafts while clearing the active editing session.
 
 ## Simplified editing flow
 
-- After the first successful generation, hide the source inputs and disable
-  Generate. Examples and the saved-poster library remain above the source area;
-  example buttons only load text before generation. Place PNG/HTML downloads and
-  the additional format controls before View full size in the Poster section.
+- After the first successful generation, hide the source inputs and examples.
+  Disable Generate. A Saved Drafts button opens the drafts dialog; it is disabled
+  after loading a draft in the current session. A unified format dropdown with
+  PNG (Recommended), HTML, PDF, phone, social, and ICS options and a single
+  Download button replace the separate download buttons. Place these before View
+  full size in the Poster section. Undo/redo sit next to Regenerate, checkpointed
+  only at each regeneration (not at each field edit or section reset), with
+  labels describing the captured change (e.g. "Undo: theme"); each is disabled
+  when no checkpoint is available.
   Offer Restart from text beside Generate. Confirm that restarting clears current
-  customizations, including regenerated edits, while retaining saved posters.
+  customizations, including regenerated edits, while retaining saved drafts.
   Follow the saved-workspaces safeguards when saving fails. Cancel preserves everything;
-  confirm clears the preview/draft/selections, shows the original paste, and enables
-  Generate. A failed initial generation keeps the text available to correct.
+  confirm clears the preview/draft/selections, shows the original paste, re-enables
+  the drafts button, and enables Generate. A failed initial generation keeps the
+  text available to correct.
 - Before the daily schedule, provide a collapsed Poster title & theme section for
   theme, tagline, and subtitle. Below the daily editor, give Key Dates, Workout
   Types, Strength & Tread 50 notes, Monthly notes, and Events separate collapsed

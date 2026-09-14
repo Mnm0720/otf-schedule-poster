@@ -4,8 +4,14 @@
 
   class EditorState {
     constructor() { this.busy = false; this.reset(); }
-    reset() { this.current = null; this.draft = null; this.dirty = false; this.initial=null; this.past=[]; this.future=[]; this.rendered=null; }
-    accept(result) {
+    reset() { this.current = null; this.draft = null; this.dirty = false; this.initial=null; this.past=[]; this.future=[]; this.pastLabels=[]; this.futureLabels=[]; this.rendered=null; }
+    accept(result, opts = {}) {
+      if (opts.checkpoint && this.rendered) {
+        this.past.push(clone(this.rendered));
+        this.pastLabels.push(this._describeChange(this.rendered, result.schedule));
+        if (this.past.length > 100) { this.past.shift(); this.pastLabels.shift(); }
+        this.future = []; this.futureLabels = [];
+      }
       this.current = clone(result);
       this.draft = clone(result.schedule);
       for (const key of ['category_styles','key_date_overrides','footnote_styles','note_style']) this.draft[key] ??= {};
@@ -17,19 +23,34 @@
       this.rendered = clone(this.draft);
       this.dirty = false;
     }
+    _describeChange(before, after) {
+      if (before.theme !== after.theme) return 'theme';
+      if (before.tagline !== after.tagline) return 'tagline';
+      if (before.subtitle !== after.subtitle) return 'subtitle';
+      if (JSON.stringify(before.days) !== JSON.stringify(after.days)) return 'schedule';
+      if (JSON.stringify(before.key_dates) !== JSON.stringify(after.key_dates)) return 'key dates';
+      if (JSON.stringify(before.key_date_overrides) !== JSON.stringify(after.key_date_overrides)) return 'key dates';
+      if (JSON.stringify(before.category_styles) !== JSON.stringify(after.category_styles)) return 'workout types';
+      if (JSON.stringify(before.notes) !== JSON.stringify(after.notes) || JSON.stringify(before.note_style) !== JSON.stringify(after.note_style)) return 'notes';
+      if (JSON.stringify(before.footnotes) !== JSON.stringify(after.footnotes) || JSON.stringify(before.footnote_styles) !== JSON.stringify(after.footnote_styles)) return 'monthly notes';
+      if (JSON.stringify(before.events) !== JSON.stringify(after.events)) return 'events';
+      if (before.additional_info !== after.additional_info) return 'additional info';
+      if (before.credits !== after.credits) return 'credits';
+      return 'edit';
+    }
     edit(change) {
       if (this.busy) throw new Error('Editor is busy.');
       const before=clone(this.draft);
       try { change(this.draft); } catch (err) { this.draft=before; throw err; }
-      if (JSON.stringify(before)===JSON.stringify(this.draft)) return;
-      this.past.push(before); if(this.past.length>100)this.past.shift(); this.future=[];
       this.updateDirty();
     }
     updateDirty() { this.dirty=JSON.stringify(this.draft)!==JSON.stringify(this.rendered); }
     get canUndo() { return !this.busy && this.past.length>0; }
     get canRedo() { return !this.busy && this.future.length>0; }
-    undo() { if(!this.canUndo)return;this.future.push(clone(this.draft));this.draft=this.past.pop();this.updateDirty(); }
-    redo() { if(!this.canRedo)return;this.past.push(clone(this.draft));this.draft=this.future.pop();this.updateDirty(); }
+    get undoLabel() { return this.pastLabels.length ? this.pastLabels[this.pastLabels.length-1] : ''; }
+    get redoLabel() { return this.futureLabels.length ? this.futureLabels[this.futureLabels.length-1] : ''; }
+    undo() { if(!this.canUndo)return;this.future.push(clone(this.rendered));this.futureLabels.push(this.pastLabels.pop());this.draft=this.past.pop();this.updateDirty(); }
+    redo() { if(!this.canRedo)return;this.past.push(clone(this.rendered));this.pastLabels.push(this.futureLabels.pop());this.draft=this.future.pop();this.updateDirty(); }
     resetSection(section) {
       const keys={title:['theme','tagline','subtitle'],schedule:['days'],keyDates:['key_dates','key_date_overrides'],
         workouts:['category_styles'],notes:['notes','note_style'],monthlyNotes:['footnotes','footnote_styles'],
@@ -53,6 +74,7 @@
       };
       for(const key of ['draft','initial','rendered'])this[key]=normalize(snapshot[key]);
       for(const key of ['past','future'])this[key]=snapshot[key].map(normalize);
+      this.pastLabels=this.past.map(()=>''); this.futureLabels=this.future.map(()=>'');
       this.updateDirty();
     }
     setAutomatic(key, automatic) {
