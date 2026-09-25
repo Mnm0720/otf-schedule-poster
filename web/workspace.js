@@ -2,6 +2,18 @@
 (function(root){
  const PREFIX='otf-draft:', ACTIVE='otf-active', MAX=2_000_000;
  const clone=v=>JSON.parse(JSON.stringify(v));
+ function cleanImportReview(review){
+   if(!review || typeof review!=='object' || !Array.isArray(review.issues))return null;
+   const issues=review.issues.slice(0,500).filter(issue=>issue && typeof issue.message==='string').map(issue=>{
+     const row={severity:['error','warning','info'].includes(issue.severity)?issue.severity:'warning',message:issue.message.slice(0,4000)};
+     if(Number.isInteger(issue.day)&&issue.day>=1&&issue.day<=31)row.day=issue.day;
+     if(typeof issue.control==='string')row.control=issue.control.slice(0,120);
+     if(typeof issue.source==='string')row.source=issue.source.slice(0,4000);
+     return row;
+   });
+   const dates=key=>Array.isArray(review.summary?.[key])?[...new Set(review.summary[key].filter(day=>Number.isInteger(day)&&day>=1&&day<=31))]:[];
+   return {issues,summary:{recognizedDays:dates('recognizedDays'),inferredDays:dates('inferredDays')}};
+ }
  function validSchedule(d){
    if(!d || typeof d!=='object' || !Number.isInteger(d.year) || d.year<1900 || d.year>9998 ||
       !Number.isInteger(d.month) || d.month<1 || d.month>12 || !Array.isArray(d.days) || !d.days.length || d.days.length>31)
@@ -28,9 +40,16 @@
      data.state[key].forEach(validSchedule);
    }
    // Pick explicit fields so imported values cannot replace controller properties.
+   const state=clone({draft:data.state.draft,rendered:data.state.rendered,initial:data.state.initial,past:data.state.past,future:data.state.future});
+   for(const key of ['past','future']){
+     state[`${key}Labels`]=state[key].map((_,i)=>typeof data.state[`${key}Labels`]?.[i]==='string'?data.state[`${key}Labels`][i].slice(0,120):'');
+     state[`${key}Pending`]=state[key].map((_,i)=>data.state[`${key}Pending`]?.[i]===true);
+   }
+   state.currentIsPending=data.state.currentIsPending===true;
+   state.importReview=cleanImportReview(data.state.importReview);
    return {version:1,id:typeof data.id==='string'?data.id:'',name:String(data.name||'Saved poster').slice(0,120),
      source:typeof data.source==='string'?data.source:'',updatedAt:data.updatedAt||'',
-     state:clone({draft:data.state.draft,rendered:data.state.rendered,initial:data.state.initial,past:data.state.past,future:data.state.future})};
+     state};
  }
  class DraftStore {
    constructor(storage){this.storage=storage;this.observed=new Map();}

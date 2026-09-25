@@ -3,7 +3,7 @@ class Element {
   constructor(tag = 'div') {
     this.tagName = tag; this.children = []; this.value = ''; this.checked = false;
     this.hidden = false; this.disabled = false; this.style = {};
-    this.classList = {toggle() {}};
+    this.classList = {toggle() {}, add() {}, remove() {}};
   }
   append(...children) { this.children.push(...children); }
   appendChild(child) { this.append(child); return child; }

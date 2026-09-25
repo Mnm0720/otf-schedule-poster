@@ -55,7 +55,7 @@ label{font-weight:700;color:var(--ink);font-size:14px;display:block;}
 }
 .examples button:hover{background:var(--action);color:#fff;border-color:var(--action);}
 
-textarea,input[type=text]{
+textarea,input[type=text],input[type=month]{
   width:100%;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   background:var(--bg);color:var(--body);
   border:1px solid var(--line);border-radius:8px;padding:11px 12px;font-size:16px;
@@ -162,8 +162,8 @@ a{color:var(--orange);}
 .events{grid-column:1/-1;}
 .event-item{display:grid;grid-template-columns: minmax(0,2fr) minmax(70px,1fr) minmax(70px,1fr) auto;gap:12px;align-items:end;margin-top:14px;}
 .editor-actions{position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line);padding:8px 0 4px;margin-top:10px;gap:8px;z-index:1;}
-.editor-actions button{font-size:13px;padding:6px 12px;min-height:34px;}
-.editor-actions .status{font-size:12px;}
+.editor-actions button{font-size:16px;padding:10px 12px;min-height:44px;}
+.editor-actions .status{font-size:14px;flex-basis:100%;}
 button:disabled{opacity:.6;cursor:not-allowed;}
 button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible{
   outline:2px solid var(--orange);outline-offset:3px;
@@ -253,3 +253,88 @@ html{scroll-padding-top:80px;scroll-padding-bottom:130px;}
   font-size:14px;font-weight:600;z-index:100;box-shadow:0 4px 16px rgb(0 0 0 / 25%);
   transition:opacity .3s ease;max-width:calc(100% - 48px);text-align:center;}
 .toast.fade-out{opacity:0;}
+
+/* Moderator workflow: readable on phones, optional details out of the fast path. */
+.brand{line-height:1.4;}
+.how-to-card{max-width:1200px;margin:0 auto 22px;padding:18px 22px;background:var(--panel);border:1px solid var(--line);border-radius:12px;}
+.how-to-heading{margin-bottom:10px;}
+.how-to-card>summary{min-height:44px;display:list-item;cursor:pointer;font-size:16px;font-weight:700;padding:10px 0;}
+.how-to-card[open]>summary{margin-bottom:12px;}
+.how-to-card{padding:4px 18px;}
+.sample-section{width:100%;}
+.sample-section>summary{min-height:44px;padding:10px 0;cursor:pointer;font-size:16px;}
+.sample-section .examples{margin:8px 0;}
+.how-to{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 32px;padding-left:22px;}
+.how-to li{padding-left:2px;}
+.workspace-layout{min-width:0;}
+.workspace-layout>.panel{width:100%;min-width:0;}
+.active-month{font-size:20px;font-weight:750;color:var(--ink);margin-bottom:8px;}
+.save-feedback{font-size:14px;min-height:21px;margin-bottom:12px;color:var(--ink);overflow-wrap:anywhere;}
+.save-feedback.err{color:var(--orange);font-weight:700;border-left:4px solid var(--orange);padding:8px 12px;background:var(--warn-bg);}
+.issue-panel{border:1px solid var(--warn);background:var(--warn-bg);border-radius:8px;padding:14px;margin-bottom:18px;}
+.issue-list{list-style:none;padding:0;}
+.issue-list li{margin-top:12px;overflow-wrap:anywhere;}
+.issue-list button{display:block;min-height:44px;margin-top:8px;}
+.date-navigation{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;width:100%;}
+.date-navigation select{width:100%;}
+.date-navigation button{padding:8px 10px;min-width:0;}
+.editor-toolbar{margin-top:18px;}
+.editor-toolbar>label{font-size:16px;}
+.month-review{margin-bottom:18px;}
+.month-review-list{display:grid;gap:8px;max-height:360px;overflow:auto;padding:4px;scroll-padding:8px;}
+.review-day{display:block;text-align:left;width:100%;font:inherit;color:var(--body);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-height:44px;overflow-wrap:anywhere;cursor:pointer;}
+.review-day[aria-current=date]{border-color:var(--orange);box-shadow:inset 3px 0 var(--orange);}
+.review-day:focus-visible{outline:2px solid var(--orange);outline-offset:1px;}
+.schedule-section{margin-top:12px;}
+.schedule-section>.visually-hidden{margin:0;}
+.history-actions{margin-bottom:4px;}
+.history-actions>button{min-height:44px;}
+.draft-tools{margin:0;}
+#sourceReference{font:inherit;font-size:16px;min-height:180px;margin-top:8px;}
+#backupSection{margin:18px 0;}
+.editor-actions{gap:8px;box-shadow:0 -5px 12px rgb(0 0 0 / 5%);padding:12px 0 8px;}
+.editor-actions>button{flex:1 1 auto;}
+#regenerate{order:-2;}
+#readyDownload{order:-1;display:flex;align-items:center;justify-content:center;min-height:44px;font-weight:700;font-size:16px;flex:1 1 auto;padding:8px;text-align:center;}
+#editStatus{order:3;}
+#emergencyBackup{grid-column:1/-1;order:2;}
+#exportStatus{margin:10px 0;}
+.preview-actions{align-items:center;}
+.preview-actions select{flex:1 1 220px;}
+#exportActions{margin-bottom:12px;}
+.task-help{padding-left:22px;margin:12px 0;max-width:80ch;}
+.task-help li{padding-left:4px;margin:12px 0;}
+.syntax-help{border-top:1px solid var(--line);margin-top:18px;}
+.report{font-family:inherit;font-size:16px;}
+.panel-head,.template-entry,.editor-field,.copy-details{overflow-wrap:anywhere;}
+button,input,select,textarea{max-width:100%;}
+button{touch-action:manipulation;}
+html{scroll-padding-top:90px;scroll-padding-bottom:220px;}
+@media(min-width:1180px){
+  .workspace-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start;}
+  .workspace-layout>.preview{position:sticky;top:80px;}
+  .workspace-layout .copy-headings{grid-template-columns:1fr;}
+  .workspace-layout .template-entry{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+  .workspace-layout .template-entry>button{grid-column:1/-1;justify-self:start;}
+  .workspace-layout #monthlyNotesEditor>.automatic-copy{grid-template-columns:1fr;}
+}
+@media(max-width:700px){
+  .how-to{grid-template-columns:1fr 1fr;gap:10px 28px;}
+  .date-navigation{grid-template-columns:1fr 1fr;}
+  .date-navigation select{grid-column:1/-1;grid-row:1;font-size:18px;min-height:48px;}
+  .date-navigation button{min-height:44px;}
+  .editor-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+  .editor-actions>button{padding:10px 6px;}
+  #editStatus{grid-column:1/-1;}
+  #regenerate:only-child{grid-column:1/-1;}
+  .editor-actions #readyDownload{font-size:16px;}
+  .how-to-card{padding:4px 18px;}
+  .section-nav{gap:2px;}
+  .section-nav a{padding:8px 3px;font-size:14px;line-height:1.3;text-align:center;}
+  .style-controls{grid-template-columns:minmax(0,1fr) 76px;}
+  .preview-actions>button{flex:1 1 auto;min-height:44px;}
+  .preview-actions select{flex-basis:100%;}
+  .panel-head>a{font-size:16px;}
+}
+@media(max-height:560px){.editor-actions{position:static;}}
+@media(prefers-reduced-motion:reduce){.toast{transition:none;}}

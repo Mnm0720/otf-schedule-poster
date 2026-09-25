@@ -1,16 +1,19 @@
 /* Shared by the page and dependency-free Node tests. No parsing lives here. */
 (function (root) {
   const clone = (value) => JSON.parse(JSON.stringify(value));
+  const comparable = (value) => JSON.stringify(value,(_,item)=>item && typeof item==='object' && !Array.isArray(item)
+    ? Object.fromEntries(Object.keys(item).sort().map(key=>[key,item[key]])) : item);
 
   class EditorState {
     constructor() { this.busy = false; this.reset(); }
-    reset() { this.current = null; this.draft = null; this.dirty = false; this.initial=null; this.past=[]; this.future=[]; this.pastLabels=[]; this.futureLabels=[]; this.rendered=null; }
+    reset() { this.current = null; this.draft = null; this.dirty = false; this.initial=null; this.past=[]; this.future=[]; this.pastLabels=[]; this.futureLabels=[]; this.pastPending=[]; this.futurePending=[]; this.currentIsPending=false; this.rendered=null; this.importReview=null; }
     accept(result, opts = {}) {
       if (opts.checkpoint && this.rendered) {
-        this.past.push(clone(this.rendered));
-        this.pastLabels.push(this._describeChange(this.rendered, result.schedule));
-        if (this.past.length > 100) { this.past.shift(); this.pastLabels.shift(); }
-        this.future = []; this.futureLabels = [];
+        const label=this._describeChange(this.rendered, result.schedule);
+        if (this.currentIsPending && comparable(this.past.at(-1))===comparable(this.rendered)) {
+          this.pastLabels[this.past.length-1]=label;
+        } else this._pushVersion('past',this.rendered,label,Boolean(this.current.errors?.length));
+        this.future = []; this.futureLabels = []; this.futurePending = [];
       }
       this.current = clone(result);
       this.draft = clone(result.schedule);
@@ -22,18 +25,19 @@
       this.initial ??= clone(this.draft);
       this.rendered = clone(this.draft);
       this.dirty = false;
+      this.currentIsPending = false;
     }
     _describeChange(before, after) {
       if (before.theme !== after.theme) return 'theme';
       if (before.tagline !== after.tagline) return 'tagline';
       if (before.subtitle !== after.subtitle) return 'subtitle';
-      if (JSON.stringify(before.days) !== JSON.stringify(after.days)) return 'schedule';
-      if (JSON.stringify(before.key_dates) !== JSON.stringify(after.key_dates)) return 'key dates';
-      if (JSON.stringify(before.key_date_overrides) !== JSON.stringify(after.key_date_overrides)) return 'key dates';
-      if (JSON.stringify(before.category_styles) !== JSON.stringify(after.category_styles)) return 'workout types';
-      if (JSON.stringify(before.notes) !== JSON.stringify(after.notes) || JSON.stringify(before.note_style) !== JSON.stringify(after.note_style)) return 'notes';
-      if (JSON.stringify(before.footnotes) !== JSON.stringify(after.footnotes) || JSON.stringify(before.footnote_styles) !== JSON.stringify(after.footnote_styles)) return 'monthly notes';
-      if (JSON.stringify(before.events) !== JSON.stringify(after.events)) return 'events';
+      if (comparable(before.days) !== comparable(after.days)) return 'schedule';
+      if (comparable(before.key_dates) !== comparable(after.key_dates)) return 'key dates';
+      if (comparable(before.key_date_overrides) !== comparable(after.key_date_overrides)) return 'key dates';
+      if (comparable(before.category_styles) !== comparable(after.category_styles)) return 'workout types';
+      if (comparable(before.notes) !== comparable(after.notes) || comparable(before.note_style) !== comparable(after.note_style)) return 'notes';
+      if (comparable(before.footnotes) !== comparable(after.footnotes) || comparable(before.footnote_styles) !== comparable(after.footnote_styles)) return 'monthly notes';
+      if (comparable(before.events) !== comparable(after.events)) return 'events';
       if (before.additional_info !== after.additional_info) return 'additional info';
       if (before.credits !== after.credits) return 'credits';
       return 'edit';
@@ -44,13 +48,42 @@
       try { change(this.draft); } catch (err) { this.draft=before; throw err; }
       this.updateDirty();
     }
-    updateDirty() { this.dirty=JSON.stringify(this.draft)!==JSON.stringify(this.rendered); }
+    updateDirty() { this.dirty=comparable(this.draft)!==comparable(this.rendered); }
     get canUndo() { return !this.busy && this.past.length>0; }
     get canRedo() { return !this.busy && this.future.length>0; }
     get undoLabel() { return this.pastLabels.length ? this.pastLabels[this.pastLabels.length-1] : ''; }
     get redoLabel() { return this.futureLabels.length ? this.futureLabels[this.futureLabels.length-1] : ''; }
-    undo() { if(!this.canUndo)return;this.future.push(clone(this.rendered));this.futureLabels.push(this.pastLabels.pop());this.draft=this.past.pop();this.updateDirty(); }
-    redo() { if(!this.canRedo)return;this.past.push(clone(this.rendered));this.pastLabels.push(this.futureLabels.pop());this.draft=this.future.pop();this.updateDirty(); }
+    _pushVersion(stack, schedule, label, pending) {
+      this[stack].push(clone(schedule));
+      this[`${stack}Labels`].push(label);
+      this[`${stack}Pending`].push(pending);
+      if(this[stack].length>100) {
+        this[stack].shift(); this[`${stack}Labels`].shift(); this[`${stack}Pending`].shift();
+      }
+    }
+    _moveVersion(from, to) {
+      const target=this[from].pop(), label=this[`${from}Labels`].pop()||'';
+      const pending=this[`${from}Pending`].pop()===true;
+      const pendingLabel=`pending ${this._describeChange(this.rendered,this.draft)}`;
+      if(this.currentIsPending) this._pushVersion(to,this.draft,label,true);
+      else if(this.dirty) {
+        // Keep the rendered version as well as the pending work, in travel order.
+        if(from==='past') {
+          this._pushVersion(to,this.draft,pendingLabel,true);
+          this._pushVersion(to,this.rendered,label,false);
+        } else {
+          this._pushVersion(to,this.rendered,pendingLabel,false);
+          this._pushVersion(to,this.draft,label,true);
+        }
+      } else this._pushVersion(to,this.rendered,label,false);
+      this.draft=target;
+      this.currentIsPending=pending;
+      this.updateDirty();
+      // Pending versions can be invalid: restore the form without rendering them.
+      return {pending};
+    }
+    undo() { if(this.canUndo)return this._moveVersion('past','future'); }
+    redo() { if(this.canRedo)return this._moveVersion('future','past'); }
     resetSection(section) {
       const keys={title:['theme','tagline','subtitle'],schedule:['days'],keyDates:['key_dates','key_date_overrides'],
         workouts:['category_styles'],notes:['notes','note_style'],monthlyNotes:['footnotes','footnote_styles'],
@@ -58,7 +91,9 @@
       if(!keys)throw new Error('Unknown section');
       this.edit(d=>{for(const key of keys){if(key in this.initial)d[key]=clone(this.initial[key]);else delete d[key];}});
     }
-    snapshot() { return clone({draft:this.draft,initial:this.initial,rendered:this.rendered,past:this.past,future:this.future}); }
+    snapshot() { return clone({draft:this.draft,initial:this.initial,rendered:this.rendered,past:this.past,future:this.future,
+      pastLabels:this.pastLabels,futureLabels:this.futureLabels,pastPending:this.pastPending,futurePending:this.futurePending,
+      currentIsPending:this.currentIsPending,importReview:this.importReview}); }
     restore(snapshot) {
       const defaults=clone(this.draft), normalize=d=>{
         const value={...clone(defaults),...clone(d),schema_version:defaults.schema_version};
@@ -74,7 +109,12 @@
       };
       for(const key of ['draft','initial','rendered'])this[key]=normalize(snapshot[key]);
       for(const key of ['past','future'])this[key]=snapshot[key].map(normalize);
-      this.pastLabels=this.past.map(()=>''); this.futureLabels=this.future.map(()=>'');
+      for(const key of ['past','future']) {
+        this[`${key}Labels`]=this[key].map((_,i)=>typeof snapshot[`${key}Labels`]?.[i]==='string'?snapshot[`${key}Labels`][i]:'');
+        this[`${key}Pending`]=this[key].map((_,i)=>snapshot[`${key}Pending`]?.[i]===true);
+      }
+      this.currentIsPending=snapshot.currentIsPending===true;
+      this.importReview=snapshot.importReview?clone(snapshot.importReview):null;
       this.updateDirty();
     }
     setAutomatic(key, automatic) {
@@ -86,7 +126,7 @@
     }
     begin() { if (this.busy) return false; this.busy = true; return true; }
     finish() { this.busy = false; }
-    get canDownload() { return Boolean(this.current) && !this.dirty && !this.busy; }
+    get canDownload() { return Boolean(this.current) && !this.current.errors?.length && !this.dirty && !this.busy; }
   }
 
   function calendarCells(year, month) {

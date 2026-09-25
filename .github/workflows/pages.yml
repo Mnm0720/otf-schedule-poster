@@ -11,6 +11,10 @@ on:
       - "assets/**"
       - "schedules/raw/**"
       - "scripts/build_site.py"
+      - "scripts/smoke_site.py"
+      - "tests/**"
+      - "pyproject.toml"
+      - "requirements-pages.lock"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -33,7 +37,10 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -e ".[dev]"
+          cache-dependency-path: requirements-pages.lock
+      - run: |
+          python -m pip install -r requirements-pages.lock
+          python -m pip install --no-deps --no-build-isolation -e .
 
       # The site ships the real package, so if the package is broken the site
       # should not go out.
@@ -46,6 +53,10 @@ jobs:
         run: node --test tests/*.test.cjs
 
       - run: python scripts/build_site.py
+      - name: Install Chromium for the published-site smoke check
+        run: python -m playwright install --with-deps chromium
+      - name: Real browser, mobile, accessibility, and download checks
+        run: python scripts/smoke_site.py --site site
 
       - uses: actions/upload-pages-artifact@v3
         with:

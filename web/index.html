@@ -12,7 +12,7 @@
 
 <header class="top">
   <div class="wrap">
-    <div class="brand"><span>OTF</span> Schedule Poster</div>
+    <h1 class="brand"><span>OTF</span> Schedule Poster</h1>
     <a class="gh" href="https://github.com/Mnm0720/otf-schedule-poster" target="_blank" rel="noopener">Source on GitHub</a>
   </div>
 </header>
@@ -20,35 +20,36 @@
 <main class="wrap">
 
   <nav class="section-nav" aria-label="Page sections">
-    <a href="#pastePanel">Start</a>
-    <a id="navPoster" href="#previewWrap" hidden>Poster</a>
-    <a id="navDays" href="#editorWrap" hidden>Edit</a>
+    <a href="#pastePanel">1. Paste</a>
+    <a id="navDays" href="#editorWrap" hidden>2. Edit</a>
+    <a id="navPoster" href="#previewWrap" hidden>3. Download</a>
     <a href="#help">Help</a>
   </nav>
 
   <p class="lede">
-    Paste the monthly <strong>r/orangetheory</strong> thread below and get a printable
-    schedule poster. Drafts save in this browser. Share an editable copy with a link
-    or file &mdash; no uploads or account needed.
+    Paste the monthly <strong>r/orangetheory</strong> thread, review the dates,
+    and download your poster. No account needed.
   </p>
 
-  <div class="how-to-card">
-    <h2 class="how-to-heading">How to use (30 seconds)</h2>
+  <details id="howTo" class="how-to-card">
+    <summary>How to make a poster</summary>
     <ol class="how-to">
       <li>Copy the whole monthly thread</li>
       <li>Paste it in the box</li>
-      <li>Hit Generate</li>
+      <li>Generate and review the dates</li>
       <li>Download the PNG</li>
     </ol>
-  </div>
+  </details>
 
   <section id="pastePanel" class="panel">
     <div class="panel-head">
-      <h2>Start a poster</h2>
+      <h2>1. Paste your monthly thread</h2>
+      <details id="sampleSection" class="sample-section"><summary>Try a sample thread</summary>
       <div class="examples" id="examplesWrap">
         <span>Try an example (loads a sample thread &mdash; then hit Generate):</span>
         <span id="examples"></span>
       </div>
+      </details>
     </div>
     <div class="draft-bar">
       <button id="openDrafts" type="button" class="ghost">Saved Drafts</button>
@@ -67,74 +68,56 @@
     <div class="row">
       <div class="field">
         <label for="month">Month <span class="hint">optional &mdash; read from the text (use if the month looks wrong after generating)</span></label>
-        <input id="month" type="text" placeholder="2026-09" autocomplete="off">
+        <input id="month" type="month" autocomplete="off" aria-describedby="monthHelp">
+        <p id="monthHelp" class="hint">Leave blank to detect the month. Choose a month here if the detected month is wrong.</p>
       </div>
     </div>
 
     </fieldset>
-    <p id="sourceComplete" hidden>Your poster is ready. Make changes in the editor below, or restart with your original text.</p>
+    <p id="sourceComplete" hidden>Review the detected month and dates below, then download your poster.</p>
 
     <div class="actions">
       <button id="go" class="primary" disabled>Loading&hellip;</button>
       <button id="restart" class="ghost" type="button" hidden>Restart from text</button>
+      <button id="retryBoot" class="ghost" type="button" hidden>Retry loading</button>
       <span id="status" class="status" role="status" aria-live="polite"></span>
     </div>
 
     <div id="report" class="report" hidden></div>
+    <details id="sourceReferenceSection" class="copy-details" hidden>
+      <summary>Original thread and import review</summary>
+      <div><label for="sourceReference">Original thread (read only)</label><textarea id="sourceReference" readonly></textarea>
+      <p class="hint">Use this to check the original wording. To parse corrected text, use Restart from text above. Saved drafts are kept.</p>
+      <p id="importSummary" class="hint"></p><ul id="importIssues" class="issue-list"></ul></div>
+    </details>
   </section>
 
-  <section id="previewWrap" class="panel preview" hidden>
-    <div class="panel-head"><h2 id="posterTitle" tabindex="-1">Poster</h2><span class="hint" id="dims"></span></div>
-    <div class="preview-actions">
-      <label for="exportFormat" class="visually-hidden">Download format</label>
-      <select id="exportFormat">
-        <option value="png">PNG (Recommended)</option>
-        <option value="html">HTML</option>
-        <option value="pdf">Printable PDF (A4)</option>
-        <option value="phone">Phone wallpaper (1080 &times; 1920)</option>
-        <option value="social">Social calendar (1080 &times; 1350)</option>
-        <option value="ics">Calendar file (.ics)</option>
-      </select>
-      <button id="exportBtn" class="primary" type="button">Download</button>
-      <a id="lastDownload" target="_blank" rel="noopener" hidden>Open last downloaded file</a>
-      <button id="previewZoom" class="ghost" type="button" aria-pressed="false">View full size</button>
-    </div>
-    <p id="exportConfirm" class="hint" role="status" aria-live="polite" hidden></p>
-    <p class="hint preview-hint">Use full size to read the details, then scroll within the preview.</p>
-    <p class="hint">Wallpaper and social images show the calendar and workout color key. PDF fits the full poster on a single page. Calendar files contain all-day entries, not class times.</p>
-    <div class="stage" id="stage" tabindex="0" role="region" aria-label="Scrollable poster preview"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
-  </section>
-
+  <div class="workspace-layout">
   <section id="editorWrap" class="panel schedule-editor" aria-labelledby="editorTitle" hidden>
     <div class="panel-head">
-      <h2 id="editorTitle">Customize your poster</h2>
-      <a href="#previewWrap">Back to poster &uarr;</a>
+      <h2 id="editorTitle" tabindex="-1">2. Review and edit</h2>
     </div>
-    <p class="editor-intro">Edits save automatically on this device. Select Regenerate poster to update the preview. Undo and Redo step through your regenerated versions, not individual field edits.</p>
-    <div class="draft-tools">
-      <label for="draftName">Draft name</label><input id="draftName" type="text" maxlength="120">
-      <div class="actions">
-        <button id="backupDraft" type="button" class="ghost">Download draft</button>
-        <button id="shareDraft" type="button" class="ghost">Share editable copy</button>
-      </div>
-    </div>
+    <p id="activeMonth" class="active-month"></p>
+    <p id="autosaveStatus" class="save-feedback" role="status" aria-live="polite"></p>
+    <p class="editor-intro">Choose a date, make your changes, then select Update preview.</p>
+    <div id="editorIssues" class="issue-panel" hidden><h3>Check these items</h3><ul id="issueList" class="issue-list"></ul></div>
     <fieldset id="editorFields" class="editor-fields">
       <legend class="visually-hidden">Schedule and poster settings</legend>
+      <section class="schedule-section" aria-labelledby="scheduleTitle">
+      <h3 id="scheduleTitle" class="visually-hidden">Edit your schedule</h3>
+      <details id="monthReview" class="copy-details month-review"><summary>Review all dates</summary><div><p class="hint">Choose a date to edit it. Inferred Standard means that date was not explicitly listed in the thread.</p><div id="monthReviewList" class="month-review-list"></div></div></details>
+      <div class="editor-toolbar">
+        <label for="dayJump">Select date</label>
+        <div class="date-navigation"><button id="previousDay" type="button" class="ghost" aria-label="Previous date">&larr; Previous</button><select id="dayJump"></select><button id="nextDay" type="button" class="ghost" aria-label="Next date">Next &rarr;</button></div>
+      </div>
+      <div id="calendarEditor" class="calendar-editor"></div>
+        <div id="calendarEditorReset"></div>
+      </section>
       <details id="titleSection" class="copy-details">
         <summary>Poster title &amp; theme</summary>
         <div id="headingEditor" class="copy-headings"></div>
         <div id="headingEditorReset"></div>
       </details>
-      <section class="schedule-section" aria-labelledby="scheduleTitle">
-      <h3 id="scheduleTitle">Edit your schedule</h3>
-      <p class="editor-intro">Choose a date to change its workouts. Key Dates and template highlights are linked to your schedule and update when you regenerate.</p>
-      <div class="editor-toolbar">
-        <label for="dayJump">Select date</label>
-        <select id="dayJump"></select>
-      </div>
-      <div id="calendarEditor" class="calendar-editor"></div>
-        <div id="calendarEditorReset"></div>
-      </section>
       <details id="keyDateSection" class="copy-details">
         <summary>Key Dates</summary>
         <div id="keyDatesEditor"></div>
@@ -171,16 +154,68 @@
         <div id="creditsEditorReset"></div>
       </details>
     </fieldset>
+    <details class="copy-details" id="backupSection"><summary>Save, back up or share</summary><div>
+    <div class="draft-tools">
+      <label for="draftName">Draft name</label><input id="draftName" type="text" maxlength="120">
+      <div class="actions">
+        <button id="backupDraft" type="button" class="ghost">Download draft</button>
+        <button id="shareDraft" type="button" class="ghost">Share editable copy</button>
+      </div>
+    </div>
+    <p class="hint">Drafts stay in this browser. Download a draft file to move your work to another device. Shared copies do not sync.</p></div></details>
+    <details id="historySection" class="copy-details"><summary>Earlier versions and recovery</summary><div>
+      <p class="hint">Each preview update saves a version. Previous and Next version keep pending edits recoverable, including changes that need fixing.</p>
+      <div class="actions history-actions">
+      <button id="undo" type="button" class="ghost" disabled>Previous version</button>
+      <button id="redo" type="button" class="ghost" disabled>Next version</button>
+      </div>
+    </div></details>
     <div class="actions editor-actions">
-      <button id="undo" type="button" class="ghost" disabled>Undo</button>
-      <button id="redo" type="button" class="ghost" disabled>Redo</button>
-      <button id="regenerate" class="primary" type="button">Regenerate poster</button>
+      <button id="regenerate" class="primary" type="button">Update preview</button>
+      <a id="readyDownload" href="#previewWrap" hidden>Preview and download &darr;</a>
+      <button id="emergencyBackup" class="ghost" type="button" hidden>Download draft backup</button>
       <span id="editStatus" class="status" role="status" aria-live="polite"></span>
     </div>
   </section>
 
+  <section id="previewWrap" class="panel preview" hidden>
+    <div class="panel-head"><h2 id="posterTitle" tabindex="-1">3. Preview and download</h2><span class="hint" id="dims"></span></div>
+    <p id="previewNeedsUpdate" class="issue-panel" hidden>Your latest changes are not ready to download. <a href="#editorWrap">Return to the editor</a> to fix any errors and update the preview.</p>
+    <div class="preview-actions">
+      <label for="exportFormat" class="visually-hidden">Download format</label>
+      <select id="exportFormat">
+        <option value="png">PNG (Recommended)</option>
+        <option value="html">HTML</option>
+        <option value="pdf">Printable PDF (A4)</option>
+        <option value="phone">Phone wallpaper (1080 &times; 1920)</option>
+        <option value="social">Social calendar (1080 &times; 1350)</option>
+        <option value="ics">Calendar file (.ics)</option>
+      </select>
+      <button id="exportBtn" class="primary" type="button">Download</button>
+      <a id="lastDownload" target="_blank" rel="noopener" hidden>Open last downloaded file</a>
+      <button id="previewZoom" class="ghost" type="button" aria-pressed="false">View full size</button>
+    </div>
+    <p id="exportConfirm" class="hint" role="status" aria-live="polite" hidden></p>
+    <div id="exportActions" class="actions" hidden><button id="exportAgain" class="ghost" type="button">Download again</button><button id="exportShare" class="ghost" type="button">Share editable copy</button></div>
+    <p id="exportStatus" class="status" role="status" aria-live="polite"></p>
+    <p class="hint preview-hint">Use full size to read the details, then scroll within the preview.</p>
+    <p class="hint">Wallpaper and social images show the calendar and workout color key. PDF fits the full poster on a single page. Calendar files contain all-day entries, not class times.</p>
+    <div class="stage" id="stage" tabindex="0" role="region" aria-label="Scrollable poster preview"><iframe id="preview" title="Poster preview" scrolling="no"></iframe></div>
+  </section>
+
+  </div>
+
   <details id="help" class="panel help">
-    <summary>What it reads from the post</summary>
+    <summary>Help: make, edit and share a poster</summary>
+    <ol class="task-help">
+      <li><strong>Start:</strong> copy the monthly Reddit post, including its title and workout lists. Paste it above and choose Generate poster.</li>
+      <li><strong>Review:</strong> check the detected month. Open Review all dates and follow any Check date buttons to fix problems.</li>
+      <li><strong>Edit:</strong> choose a date or use Previous and Next. Optional sections change the title, colors, notes and credits.</li>
+      <li><strong>Update:</strong> choose Update preview after editing, then Preview and download. Previous/Next version lets you revisit earlier work and recover pending edits.</li>
+      <li><strong>Download:</strong> choose your format and Download. On a phone, open the file from your browser downloads or use the Open file link.</li>
+      <li><strong>Recover or hand off:</strong> use Saved Drafts to reopen work in this browser. Open Save, back up or share for a draft file or editable copy link. Send a new copy back after editing; copies do not sync.</li>
+    </ol>
+    <details class="syntax-help"><summary>Advanced: supported thread text</summary>
     <p>The threads describe a month <strong>by category, not day by day</strong>, so the
        schedule is assembled by inverting those lists. Four things are read; everything
        else is ignored.</p>
@@ -199,6 +234,7 @@ Key Dates for The Month
        automatically.</p>
     <p>Unknown workout types are kept on their dates and receive a new color. Check
        spelling; if it is a new type, let the developer know so it can become a default.</p>
+    </details>
   </details>
 
   <p class="foot">
@@ -224,7 +260,7 @@ Key Dates for The Month
 
 <dialog id="draftsDialog" aria-labelledby="draftsTitle">
   <h2 id="draftsTitle">Saved Drafts</h2>
-  <p class="hint">Saved in this browser. Download a backup file to keep it forever or move it to another computer.</p>
+  <p class="hint">Saved in this browser. Download a backup file to keep a separate copy or move it to another device.</p>
   <div class="actions">
     <label for="savedPicker">Choose a saved draft</label>
     <select id="savedPicker"><option value="">No saved drafts yet</option></select>
@@ -253,12 +289,10 @@ Key Dates for The Month
 
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 <script src="editor-state.js"></script>
 <script src="editor.js"></script>
 <script src="workspace.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="runtime.js"></script>
 <script src="exports.js"></script>
 <script src="app.js"></script>
 </body>

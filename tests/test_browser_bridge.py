@@ -128,3 +128,53 @@ def test_automatic_copy_tracks_edits_and_custom_copy_is_escaped(bridge):
     result = json.loads(bridge["regenerate"](json.dumps(data)))
     assert "<script>" not in result["html"]
     assert "&lt;script&gt;" in result["html"]
+
+
+def test_import_summary_and_structured_validation_are_separate_and_current(bridge):
+    text = ('Welcome to the September 2026 Monthly Thread!\nKey Dates for The Month\n'
+            '* Run/Rows on 9/3-9/5, 9/31.\n'
+            '* Repeat templates are as follows: 9/1 = 9/2.')
+    result = json.loads(bridge['generate'](text))
+    assert result['importSummary']['recognizedDays'] == [3, 4, 5]
+    assert 4 not in result['importSummary']['inferredDays']
+    assert result['errors']
+    error = next(issue for issue in result['issues'] if issue['severity'] == 'error')
+    assert error['source'] == 'validation'
+    assert error['day'] == 1
+    assert error['control'] == 'repeat'
+    warning = next(issue for issue in result['issues'] if '9/31' in issue['message'])
+    assert warning['source'] == 'import'
+    assert warning['severity'] == 'warning'
+    result['schedule']['days'][0]['repeat_of'] = None
+    bridge['regenerate'].__globals__['parse'] = lambda *a, **k: pytest.fail('reparsed')
+    corrected = json.loads(bridge['regenerate'](json.dumps(result['schedule'])))
+    assert corrected['errors'] == []
+    assert corrected['issues'] == []
+    assert corrected['parseNotes'] == ''
+    assert corrected['importSummary'] is None
+
+
+def test_restore_reopens_initial_validation_errors_without_reparsing(bridge):
+    initial = json.loads(bridge['generate']('September 2026\n9/1 - Standard (repeat of 9/2)\n9/2 - Standard'))
+    assert initial['errors']
+    bridge['restore'].__globals__['parse'] = lambda *a, **k: pytest.fail('reparsed')
+    restored = json.loads(bridge['restore'](json.dumps(initial['schedule'])))
+    assert restored['schedule'] == initial['schedule']
+    assert restored['html'] == initial['html']
+    assert restored['errors'] == initial['errors']
+    assert any(issue.get('day') == 1 and issue['severity'] == 'error' for issue in restored['issues'])
+    assert restored['importSummary'] is None
+    with pytest.raises(ValueError, match='not earlier'):
+        bridge['export_schedule'](json.dumps(restored['schedule']), 'ics')
+
+
+@pytest.mark.parametrize('broken,match', [
+    ({'schema_version': 999}, 'schema version'),
+    ({'category_styles': {'runrow': {'color': 'red'}}}, 'six-digit'),
+    ({'events': [{'name': 'Wrong date', 'start': 31, 'end': 31}]}, 'Event'),
+])
+def test_restore_still_rejects_unsupported_or_unsafe_render_data(bridge, broken, match):
+    data = Month.load(ROOT / 'schedules/2026-09.json').to_dict()
+    data.update(broken)
+    with pytest.raises(ValueError, match=match):
+        bridge['restore'](json.dumps(data))

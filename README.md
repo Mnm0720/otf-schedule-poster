@@ -10,24 +10,37 @@ Paste the monthly r/orangetheory thread, get a printable schedule poster.
 
 1. Open the monthly thread on r/orangetheory and copy the entire post
 2. Paste it into the text box on the site
-3. Hit **Generate** — the poster appears in seconds
-4. Pick a format from the dropdown — **PNG (Recommended)**, HTML, Printable PDF,
+3. Select **Generate poster**, then check the detected month and dates
+4. Correct anything needed and select **Update preview**
+5. Pick a format from the dropdown: **PNG (Recommended)**, HTML, Printable PDF,
    Phone wallpaper, Social calendar, or Calendar file — and hit **Download**
 
 Everything runs in your browser. Nothing is uploaded, and you don't need an account.
+The editor shows loading progress on first use. If loading fails, use **Retry
+loading**; your pasted text stays in place.
 
 ### Fix or customize your poster
 
 After generating, the text inputs are hidden and Generate is disabled. Use
-**Customize your poster** below the preview. Optional sections start collapsed;
-open only what you want to change. **Poster title & theme** comes first, with
-separate fields for theme, tagline, and subtitle.
+**2. Review and edit** to check the schedule before downloading. **Original thread
+and import review** keeps your source available for reference. Optional appearance
+sections start collapsed; open only what you want to change.
 
 In **Edit your schedule**, **Select date**
-shows one day at a time and keeps your edits when you switch dates. Each day supports
+shows one day at a time; **Previous** and **Next** move between dates and keep your
+edits. **Review all dates** shows a compact list of workouts, edited dates, inferred
+Standard days, and issues. Select a row to edit that date. Each day supports
 multiple templates, a title for each workout, an earlier **Repeat of** day, and a
 **3G template** checkbox. Adding a repeat link leaves the day's templates as you
-set them; mismatches appear as warnings when you regenerate.
+set them; mismatches appear as warnings when you update the preview. A repeat link
+records a relationship and does not copy or synchronize workouts.
+
+Warnings ask you to review the result. Blocking errors keep every finished download
+unavailable until corrected and applied with **Update preview**. Use the action
+beside an issue to reach the affected date or control. Your editable draft and
+**Download draft** backup remain available.
+
+**Poster title & theme** contains separate fields for theme, tagline, and subtitle.
 
 Under **Key Dates**, choose an entry by its description or select **Add key date**.
 New entries start with a default description and the selected schedule date. Link an
@@ -55,19 +68,20 @@ in. Credits default to the image and Modsquad attribution, with Reddit usernames
 linked to their profiles in the HTML poster. Edit or clear the credit text as needed;
 **Restore default credits** brings the original attribution back.
 
-Click **Regenerate poster** to apply your edits. The **Download** button stays
+Click **Update preview** to apply your edits. The **Download** button stays
 disabled while the preview is out of date; draft backups and editable sharing still
 include pending edits. If an edit is invalid, the draft stays available to fix.
-Edits save automatically on this device, even before regeneration. After
-reopening, the last active draft is restored. An unfinished paste is also saved.
+Edits save automatically in this browser, even before updating the preview. The
+visible save status reports **Saved in this browser** or a failure requiring a
+backup. After reopening, the last active draft is restored. An unfinished paste is
+also saved when browser storage is available.
 
-**Undo** and **Redo** sit next to Regenerate and step through your regenerated
-versions — not individual field edits. Editing a field or using a section's
-**Reset** button only changes the pending draft; nothing becomes undoable until
-you hit Regenerate, which checkpoints the change (up to 100 checkpoints) and
-labels the buttons with what they'd restore (e.g. "Undo: subtitle"). Undo and
-Redo are disabled when there's no checkpoint to move to, and instantly update
-the poster to match.
+**Previous version** and **Next version** appear under **Earlier versions and recovery** and step
+through saved editing checkpoints. Changes made since the last preview update are
+preserved as a recoverable version before navigation. Returning to pending edits
+keeps the last good preview visible until you update it. Failed rendering preserves
+the draft and history. A successful update after navigating back starts a new
+branch; the app retains up to 100 snapshots in each history direction.
 
 To start over, select **Restart from text** beside the disabled Generate button.
 The popup explains that this clears the current editing session while retaining
@@ -76,18 +90,20 @@ saved drafts. If autosave is unavailable, it warns you to download a backup firs
 you generate a separate fresh poster. If a previously working save fails during
 restart, the editor stays open so you can back up your changes.
 
-Use **Start**, **Poster**, **Edit**, and **Help** to navigate. On phones,
+Use **1. Paste**, **2. Edit**, **3. Download**, and **Help** to navigate. On phones,
 day cards and copy fields stack into one column with larger touch controls. **View full size**
 lets you scroll across the poster to read its details; **Fit to width** restores
 the overview. Both views export the same full-resolution poster.
 
 ### Save and share editable drafts
 
-Your poster saves automatically as a draft. Give it a name in the editor and it
+Your poster saves automatically as a draft. Open **Save, back up or share** to give
+it a name, back it up, or send an editable copy. It
 appears in the **Saved Drafts** dialog. Open the dialog from the button above the
 text box to load, download, delete, or import drafts. A toast confirms when a draft
-is loaded. After loading a draft the button is disabled for the rest of the session;
-restart re-enables it.
+is loaded. Saved Drafts remains available so you can switch again. A failed load or
+import keeps your current poster and the picker available for retry. If your
+current work cannot be saved, download a backup before switching.
 
 **Download draft** in the editor saves your current work as an editable JSON file,
 including pending edits and history. Use **Import draft file** in the Saved Drafts
@@ -129,7 +145,12 @@ and ignores the rest:
 - **Category lists** — which days are Run/Row, Lift More, Switch, etc.
 - **Repeat map** — which days re-run an earlier template
 
-Any day that no category mentions becomes **Standard**. Unrecognised category names
+Inclusive date ranges such as `9/3-9/5` include all three days. Invalid dates and
+recognizable schedule lines that could not be understood appear in the import
+review. Unrelated prose can be ignored safely.
+
+Any day that no category mentions becomes **Standard** and is marked as inferred
+in the review list. Unrecognised category names
 are kept on their dates as custom workout types with distinct colors. They appear
 in template selectors, Workout Types, highlights, and the poster. Check spelling;
 if the type is new, let the developer know. Change its color like any other type.
@@ -139,8 +160,10 @@ works and is detected automatically.
 
 ### Month override
 
-The month is normally read from the text. Use the optional **Month** field before
-generating if detection fails. After generating, change theme, tagline, and subtitle
+The month is normally read from the text. Use the optional **Month** picker before
+generating if detection fails. Check the month shown above the editor; use **Restart
+from text** to choose another month and generate a new draft. After generating,
+change theme, tagline, and subtitle
 under **Poster title & theme**.
 
 ### Example posts
@@ -199,9 +222,17 @@ artifact.
 <details>
 <summary><strong>Developer setup</strong></summary>
 
+For the same dependency versions used by CI and Pages:
+
 ```bash
-pip install -e ".[dev]" && python -m playwright install chromium
+python -m pip install -r requirements-pages.lock
+python -m pip install --no-deps --no-build-isolation -e .
+python -m playwright install chromium
 ```
+
+Use Python 3.10+ and Node 22+. `requirements-pages.lock` pins the release and test
+dependencies, including Playwright; browser runtime libraries have separate pinned
+URLs in `web/runtime.js` and `web/runtime-worker.js`.
 
 ### Commands
 
@@ -243,10 +274,21 @@ monthly thread / day list → thread.py / parse.py → Month JSON → validate.p
 
 ### How the site works
 
-The browser site runs the *actual* Python package via [Pyodide](https://pyodide.org/).
-`scripts/build_site.py` bundles the Python modules, Jinja templates, and cached
-assets used by the renderer. The browser and command line share the full-poster
-renderer; bridge tests check HTML parity without duplicating parsing in JavaScript.
+The browser site runs the actual Python package via [Pyodide](https://pyodide.org/)
+in a Web Worker. `web/runtime.js` provides the main-thread request/response client;
+`web/runtime-worker.js` loads pinned Pyodide 0.26.2 and its included Jinja2 package.
+The Python bundle fetch overlaps runtime initialization. Parsing and rendering
+stay off the editor's main thread, while preview DOM and image export remain there.
+Startup progress, bounded waits, and retry preserve the user's draft. Image export
+support loads when an image or PDF is requested; PDF support loads only for PDF.
+
+`scripts/build_site.py` bundles Python modules, Jinja templates, and cached assets.
+It requires complete local fonts and icons, inlines the fonts, and fingerprints
+the JavaScript, CSS, worker, and `bundle.<hash>.json`. `asset-manifest.json` records
+the filenames; the HTML embeds relative worker/bundle URLs and the bridge protocol
+version. Everything works under a GitHub project-site path. Edit `web/`, not the
+ignored generated `site/` directory. The browser and command line share the
+full-poster renderer; bridge tests check HTML parity without duplicating parsing.
 
 `web/editor-state.js` keeps the editable draft, last rendered schedule, initial
 reset baseline, and undo/redo history. `web/workspace.js` handles versioned local
@@ -264,8 +306,10 @@ editable links transfer snapshots and do not provide live synchronization.
 ### Specifications and tests
 
 The [browser editor spec](specs/browser-editor.md),
-[poster customization spec](specs/poster-customization.md), and
-[saved workspaces spec](specs/saved-workspaces.md) record behavior and TDD
+[poster customization spec](specs/poster-customization.md),
+[saved workspaces spec](specs/saved-workspaces.md),
+[import review spec](specs/import-review.md), and
+[GitHub Pages spec](specs/github-pages.md) record behavior and TDD
 verification. For behavior changes, update the relevant spec, add a failing regression test first, implement
 the smallest fix, then run the relevant tests and the full checks before delivery:
 
@@ -277,12 +321,38 @@ python scripts/build_site.py
 ```
 
 The JavaScript suite uses Node 22+ and no extra packages. It exercises state, form
-handlers, application flow, storage failures, history, snapshot sharing, and PDF
-pagination with a minimal DOM adapter and a mocked runtime. Python tests exercise
+handlers, application flow, storage failures, history, snapshot sharing, worker
+transport, lazy loading, and PDF output with a minimal DOM adapter and a mocked
+runtime. Python tests exercise
 the actual bridge, model, HTML renderers, custom workout types, and ICS output.
 These checks do not replace real-browser layout, Pyodide startup, or downloaded
-export inspection. The [latest verification record](specs/saved-workspaces.md#verification-2026-09-03)
-records 114 Python and 34 Node tests, browser checks, and remaining verification limits.
+export inspection. Current implementation evidence and remaining verification
+limits are recorded in the specifications rather than fixed test counts here.
+
+CI and the Pages build also run the actual built-site smoke check:
+
+```bash
+python scripts/smoke_site.py --site site
+```
+
+It serves the output under `/otf-schedule-poster/` and uses a temporary Chromium
+profile. It checks real Pyodide startup and retry, edit/update, pending draft
+restoration, 320/390/768/1440px layouts, image/PDF downloads, and axe accessibility
+rules for editor controls. Poster artwork is excluded from axe. It reports
+headless CI startup/generation timings; those are not phone or production-network
+benchmarks. Adding the workflow does not imply it has already run or published.
+
+For a manual local accessibility check, build with the `--audit` option, serve
+`site/` over HTTP, and open `audit.html`:
+
+```bash
+python scripts/build_site.py --audit
+```
+
+Its width selector and
+**Run editor accessibility check** button inspect the embedded editor. A normal
+build removes this development-only page. Also review keyboard focus, 200% zoom,
+and actual downloaded output; automated checks do not establish full accessibility.
 
 </details>
 

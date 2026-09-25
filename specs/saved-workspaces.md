@@ -5,25 +5,27 @@
 - Save every edit locally, including invalid pending edits and the original paste.
   Restore the last active draft after refresh without reparsing; a Saved Drafts
   button opens a dialog to browse, load, download, delete, or import drafts.
-  Loading a draft shows a toast notification and disables the Saved Drafts button
-  for the rest of the session. A status line below the button shows whether the
-  current poster was loaded from a draft or generated from text. Opening another
-  draft preserves the previous one. Restart starts a new draft, re-enables the
-  drafts button, and does not delete saved drafts.
+  Loading a draft shows a toast notification and keeps the Saved Drafts button
+  available. A visible status line beside the draft name reports save success or
+  failure. Opening another draft preserves the previous one; a failed load keeps
+  the picker usable for retrying or selecting another draft. Restart starts a new
+  draft and does not delete saved drafts.
+- Before generation, keep unfinished-paste save feedback visible through startup,
+  retry, and control updates, including storage-denied and quota failures.
 - Version the storage envelope separately from Month JSON. Preserve unsupported or
   corrupt storage without overwriting it; announce failures and offer JSON backup
   and import. Do not promise that browser data survives clearing site storage.
   Workspace envelope version 1 accepts old plain JSON; Month schema 2 records the
   custom workout registry so older builds reject newer schedules instead of silently
   stripping their customization. Imported missing day defaults are filled in.
-- Undo/redo checkpoint at Regenerate, not at each field edit. Editing or resetting
-  a section only changes the pending draft; nothing becomes undoable until the
-  next successful regeneration, which captures the schedule as it stood before
-  that regeneration. Undo/redo buttons sit next to Regenerate and describe the
-  captured change (e.g. "Undo: theme", "Redo: schedule"); disabled when no
-  checkpoint is available. Choosing Undo or Redo instantly reverts the pending
-  draft and re-renders the preview to match, discarding any edits made since the
-  last regeneration. A new regeneration after an undo discards the redo branch.
+- Previous version / Next version checkpoint at Update preview, not at each field
+  edit. Editing or resetting a section changes the pending draft. Navigation
+  preserves pending edits as an additional recoverable version, including invalid
+  values, while retaining the existing rendered checkpoints. Controls describe
+  the captured change and are disabled when no version is available. Restoring a
+  pending version leaves the last good preview visible and exports disabled until
+  Update preview succeeds. Failed history rendering restores the entire prior
+  editor state and history. A new successful update discards the next-version branch.
   Reset each section to its initial generated/imported state, retaining unrelated
   settings. Restore history with drafts.
 - Unknown template lines retain all linked days, appear as distinct month-specific
@@ -51,7 +53,10 @@
 
 - `web/workspace.js` stores workspace envelope version 1 with `id`, `name`,
   `source`, `updatedAt`, and `state`. State contains `draft`, `rendered`, `initial`,
-  `past`, and `future`; all schedule snapshots use the Month JSON contract.
+  `past`, and `future`, with optional version labels and pending-version flags;
+  all schedule snapshots use the Month JSON contract. Labels, pending-version
+  flags, and the source import review survive saving, backup, and reload. Older
+  version 1 backups without this metadata remain accepted.
   `otf-draft:<id>` holds each saved poster, `otf-active` identifies the last active
   poster, and `otf-source` separately saves an unfinished paste and month override.
 - Month schema version 2 includes `custom_categories`. Older Month JSON and plain
@@ -60,8 +65,17 @@
 - Save edits before regeneration, preserving pending invalid values. Restore the
   last rendered schedule through Python, then overlay the saved draft and history.
   Do not reparse the source or show a pending edit as already rendered. Keep at most
-  100 undo snapshots, one captured per regeneration. Regeneration after an undo
-  discards the redo branch but does not change the initial reset baseline.
+  100 snapshots in each history direction, including preserved pending versions.
+  Updating after moving to a previous version discards the next-version branch
+  but does not change the initial reset baseline.
+- Restoration reports errors in the current pending draft and treats equivalent
+  JSON objects with different property ordering as the same schedule. A render
+  failure restores the previous preview as well as editor data. Deleting an open
+  draft immediately changes its visible save status to unsaved.
+- If the browser runtime stops, offer Retry loading while retaining in-memory
+  edits and backup access. Retrying with an open editor must not load an older
+  saved draft. Text typed during startup or retry takes precedence over automatic
+  startup restoration.
 - Reject saves when stored data changed since it was read. When another tab changes
   the active poster, preserve the current editor as a separate local copy. Report
   storage failures and keep draft download available; no browser-only design can
@@ -83,7 +97,8 @@
   Offer draft files when links exceed the limit. Validate versions and schedule
   structure before restoring; escape imported poster text as for local edits.
 - All export formats use the last successfully rendered schedule and are disabled
-  while busy or dirty. Draft backup and sharing can preserve pending edits. PDF
+  while busy, dirty, or the current result has validation errors, including errors
+  on the initial generation. Draft backup and sharing can preserve pending edits. PDF
   fits the full poster on a single A4 page, scaled to fill the available area.
   Compact images include the calendar, color key, events, and credits; full
   poster/PDF retains detailed notes.
@@ -111,6 +126,37 @@ without removing unrelated copy or style overrides.
 
 Write failing behavioral tests for each slice before implementation. Record results
 after full Python/Node tests, schedule validation, static build and real-browser QA.
+
+### History and export eligibility verification, 2026-09-23
+
+- Red: five new Node cases reproduced clean-but-invalid exports, discarded pending
+  edits in both navigation directions, dropped version labels/import review during
+  backup, and absent backward-compatible pending metadata. Additional cases failed
+  for restoring an invalid initial schedule and preserving per-date import lists.
+- Green: 21 focused editor/workspace tests pass. They cover pending invalid edit
+  recovery, navigation in either direction, refresh/backup metadata, old envelope
+  migration, both bounded stacks, and full state rollback after failed navigation.
+  These are state/storage tests; actual controller and browser behavior are checked
+  separately with the combined implementation.
+- Replaced the unused pagination-helper test with three direct `posterPDF()`
+  tests for tall/wide posters fitting one A4 page, full-canvas embedding, preserved
+  aspect ratio, and capture failure. The existing export passed before removing
+  its unused pagination helper. PDF byte/layout inspection remains a real-browser
+  check; the unit tests use capture and PDF-library adapters.
+- Independent controller review reproduced seven further regressions before
+  fixing them: preview/state divergence after a late render or draft-load failure,
+  stale save health after deleting the active draft, hidden pending validation
+  errors after restore, absent worker retry recovery, startup input overwritten by
+  auto-restore, and false pending edits from JSON property order. A focused label
+  regression also caught ordering differences being mislabeled as schedule edits.
+- Green after those fixes: all 73 Node tests pass. Additional passing cases cover
+  repeated draft switching and opening an initially invalid saved poster. Worker
+  recovery preserves unsaved state with storage denied. These controller tests
+  mock Python and the DOM; real-browser coverage is recorded with the final review.
+- Final review red: a delayed-startup controller test showed an unfinished-paste
+  storage failure disappearing when startup refreshed the controls. The no-poster
+  status now retains the save message. Green: all 30 application controller tests
+  pass, including generated draft failures and retry recovery.
 
 ### Verification, 2026-09-03
 

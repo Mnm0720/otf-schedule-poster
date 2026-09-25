@@ -5,6 +5,7 @@ otfposter/ but not to the bundle breaks the site at runtime with an ImportError
 that nothing else would catch.
 """
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -52,17 +53,18 @@ def test_web_assets_exist():
 
 @pytest.mark.skipif(not (ROOT / "assets" / "icons").exists(),
                     reason="assets not fetched")
-def test_site_builds_and_bundle_is_self_contained():
+def test_site_builds_and_bundle_is_self_contained(tmp_path):
     from scripts.build_site import build
 
-    site = build()
-    bundle = json.loads((site / "bundle.json").read_text(encoding="utf-8"))
+    site = build(tmp_path / "site")
+    manifest = json.loads((site / "asset-manifest.json").read_text(encoding="utf-8"))
+    bundle = json.loads((site / manifest["assets"]["bundle.json"]).read_text(encoding="utf-8"))
     files = bundle["files"]
 
     assert "otfposter/templates/poster.html.j2" in files
     assert files["browser_bridge.py"] == (ROOT / "web" / "bridge.py").read_text(encoding="utf-8")
     for name in ("editor-state.js", "editor.js"):
-        assert (site / name).read_bytes() == (ROOT / "web" / name).read_bytes()
+        assert (site / manifest["assets"][name]).read_bytes() == (ROOT / "web" / name).read_bytes()
     for name in PY_MODULES:
         assert f"otfposter/{name}" in files
 
@@ -73,3 +75,47 @@ def test_site_builds_and_bundle_is_self_contained():
     assert ".woff2)" not in css
 
     assert bundle["examples"], "no example months bundled"
+
+
+def test_build_fingerprints_assets_and_uses_project_relative_urls(tmp_path):
+    from scripts.build_site import build
+
+    site = build(tmp_path / "site")
+    manifest = json.loads((site / "asset-manifest.json").read_text(encoding="utf-8"))
+    page = (site / "index.html").read_text(encoding="utf-8")
+    assert manifest["protocol"] == 1
+    for name in ("runtime.js", "runtime-worker.js", "app.js", "style.css", "bundle.json"):
+        target = manifest["assets"][name]
+        assert re.fullmatch(r"[\w-]+\.[0-9a-f]{12}\.(?:js|css|json)", target)
+        assert (site / target).exists()
+        assert target in page
+    for url in re.findall(r'(?:src|href)="([^"]+)"', page):
+        assert not url.startswith('/'), f"root-relative URL breaks project Pages: {url}"
+    bundle = json.loads((site / manifest["assets"]["bundle.json"]).read_text(encoding="utf-8"))
+    assert bundle["schemaVersion"] == bundle["bridgeVersion"] == 1
+    assert (site / ".nojekyll").exists()
+    second = build(tmp_path / "second")
+    assert (second / "asset-manifest.json").read_bytes() == (site / "asset-manifest.json").read_bytes()
+
+
+def test_build_rejects_missing_cached_fonts_without_fetching(tmp_path, monkeypatch):
+    from scripts.build_site import build
+    from otfposter import assets
+
+    monkeypatch.setattr(assets, "FONT_DIR", tmp_path / "missing-fonts")
+    monkeypatch.setattr(assets, "_get", lambda *_: pytest.fail("release builds must not fetch fonts"))
+    with pytest.raises(SystemExit, match="font"):
+        build(tmp_path / "site")
+
+
+def test_accessibility_audit_page_is_opt_in_only(tmp_path):
+    from scripts.build_site import build
+
+    site = build(tmp_path / "site", audit=True)
+    audit = (site / "audit.html").read_text(encoding="utf-8")
+    assert 'src="index.html"' in audit
+    assert 'Run editor accessibility check' in audit
+    assert 'axe-core@4.10.3' in audit
+    assert '#preview' in audit
+    build(site)
+    assert not (site / "audit.html").exists(), "diagnostic UI must never enter a normal release"

@@ -81,6 +81,16 @@ class ParseReport:
     unparsed: list[tuple[int, str]] = field(default_factory=list)
     unknown_templates: list[tuple[int, str]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    issues: list[dict] = field(default_factory=list)
+    recognized_days: list[int] = field(default_factory=list)
+    inferred_days: list[int] = field(default_factory=list)
+
+    def warn(self, message, day=None):
+        self.warnings.append(message)
+        issue = {'severity': 'warning', 'message': message, 'source': 'import'}
+        if day is not None:
+            issue.update(day=day, control='schedule')
+        self.issues.append(issue)
 
     @property
     def clean(self) -> bool:
@@ -166,6 +176,9 @@ def parse(
         report = ParseReport(
             unknown_templates=[(0, l) for l in treport.unknown_labels],
             warnings=list(treport.warnings),
+            issues=list(treport.issues),
+            recognized_days=list(treport.recognized_days),
+            inferred_days=list(treport.inferred_days),
         )
         return m, report
     return parse_day_list(text, year=year, month=month)
@@ -202,6 +215,13 @@ def parse_day_list(
             current = day
         elif dnum is not None and mo != month:
             # A date from a neighbouring month (e.g. a "10/1 preview" footer).
+            report.warn(f'Line {lineno}: {mo}/{dnum} is outside {calendar.month_name[month]} {year}; '
+                        'check the month or source date.')
+            current = None
+            continue
+        elif dnum is not None:
+            report.warn(f'Line {lineno}: {mo}/{dnum} is not a valid date in '
+                        f'{calendar.month_name[month]} {year}; check the source date.')
             current = None
             continue
         elif current is not None:
@@ -217,6 +237,9 @@ def parse_day_list(
             rday = int(rep.group(2)) if rep.group(2) else int(rep.group(3))
             if rmo == month and 1 <= rday <= length:
                 day.repeat_of = rday
+            else:
+                report.warn(f'{month}/{day.day}: repeat source {rmo}/{rday} is outside '
+                            f'{calendar.month_name[month]} {year}; choose an earlier date in this month.', day.day)
             rest = (rest[: rep.start()] + " " + rest[rep.end():]).strip(
                 " .,;-" + EN_DASH + EM_DASH
             )
@@ -231,6 +254,8 @@ def parse_day_list(
     if not days:
         raise ValueError("no dated lines found -- is this the right text?")
 
+    report.recognized_days = sorted(days)
+
     for d in range(1, length + 1):
         day = days.setdefault(d, Day(day=d))
         if not day.entries and day.repeat_of is not None:
@@ -239,7 +264,7 @@ def parse_day_list(
             if src and src.entries:
                 day.entries = [Entry(e.category, e.title, e.raw) for e in src.entries]
         if not day.entries:
-            report.warnings.append(f"{month}/{d} has no template listed")
+            report.warn(f"{month}/{d} has no template listed", d)
 
     return Month(year=year, month=month, days=[days[d] for d in sorted(days)]), report
 

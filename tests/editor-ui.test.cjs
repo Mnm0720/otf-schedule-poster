@@ -21,6 +21,50 @@ function setup() {
   return {doc, state, editor};
 }
 
+test('previous and next date controls retain edits and stop at month edges',()=>{
+ const {doc,state}=setup();
+ assert.equal(doc.getElementById('previousDay').disabled,true);
+ const title=labelled(doc.getElementById('calendarEditor'),'Day 1 workout title 1');title.value='Keep';title.oninput();
+ doc.getElementById('nextDay').onclick();assert.equal(doc.getElementById('dayJump').value,'2');
+ doc.getElementById('previousDay').onclick();assert.equal(state.draft.days[0].entries[0].title,'Keep');
+ const jump=doc.getElementById('dayJump');jump.value='30';jump.onchange();
+ assert.equal(doc.getElementById('nextDay').disabled,true);
+});
+
+test('month review marks edited and inferred dates and selects a day',()=>{
+ const {doc,state,editor}=setup();state.initial.days[0].entries[0].raw='(not listed)';state.draft.days[0].entries[0].raw='(not listed)';state.rendered.days[0].entries[0].raw='(not listed)';
+ editor.change(d=>{d.days[1].entries[0].title='A changed workout';});
+ const rows=doc.getElementById('monthReviewList').children;
+ assert.equal(rows.length,30);
+ assert.match(rows[0].textContent,/Inferred Standard/);
+ assert.match(rows[1].textContent,/A changed workout.*Edited/);
+ rows[1].onclick();assert.equal(editor.selectedDay,2);
+});
+
+test('copying workouts from repeat source is explicit and preserves day metadata',()=>{
+ const {doc,state}=setup();state.draft.days[0].entries[0].title='Source workout';
+ const jump=doc.getElementById('dayJump');jump.value='2';jump.onchange();
+ const grid=doc.getElementById('calendarEditor');const repeat=labelled(grid,'Day 2 repeat of');repeat.value='1';repeat.onchange();
+ assert.equal(state.draft.days[1].entries[0].title,'');
+ labelled(grid,'Day 2 copy workouts from repeat source').onclick();
+ assert.equal(state.draft.days[1].entries[0].title,'Source workout');
+ assert.equal(state.draft.days[1].note,'Keep');assert.equal(state.draft.days[1].repeat_of,1);
+ state.draft.days[0].entries[0].title='Later';assert.equal(state.draft.days[1].entries[0].title,'Source workout');
+});
+
+test('a key-date issue selects its own custom entry before focusing the field',()=>{
+ const {doc,state,editor}=setup();
+ state.draft.key_dates=[{detail:'First',days:[1]},{detail:'Second',days:'invalid'}];editor.renderKeyDates();
+ editor.focusIssue({message:'Key Date 2: choose date numbers between 1 and 30.'});
+ assert.equal(editor.selectedKeyDate,'custom:1');
+ assert.equal(labelled(doc.getElementById('keyDatesEditor'),'Key date dates').focused,true);
+});
+
+test('month review identifies current validation warnings on affected dates',()=>{
+ const {doc,state,editor}=setup();state.current.issues=[{severity:'warning',message:'Check repeat',day:2,source:'validation'}];editor.renderReview();
+ assert.match(doc.getElementById('monthReviewList').children[1].textContent,/Needs review/);
+});
+
 test('day controls retain metadata and edit independent entries, repeats and 3G', () => {
   const {doc, state} = setup(); const grid = doc.getElementById('calendarEditor');
   const jump = doc.getElementById('dayJump'); jump.value = '2'; jump.onchange();

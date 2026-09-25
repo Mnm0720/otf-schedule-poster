@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local editor accessibility check</title>
+<style>
+  body{font:16px/1.5 system-ui,sans-serif;margin:16px;background:#f2f4f7;color:#152237}
+  h1{font-size:24px}button,select{font:inherit;min-height:44px;padding:8px;margin:4px}
+  iframe{display:block;width:100%;height:850px;border:1px solid #56657a;background:white}
+  pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:16px}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<h1>Local editor accessibility check</h1>
+<p>This development-only page checks the editor controls with axe. Poster artwork is excluded. Generate and edit a poster below, then run the check again. This does not replace manual keyboard, zoom, or screen-reader testing.</p>
+<div class="controls">
+  <label for="width">Editor width</label><select id="width"><option value="100%">Fit window</option><option value="320px">320px</option><option value="390px">390px</option><option value="768px">768px</option><option value="1440px">1440px</option></select>
+  <button id="run" type="button">Run editor accessibility check</button>
+</div>
+<pre id="results" role="status" aria-live="polite">Waiting for a check.</pre>
+<iframe id="app" src="index.html" title="Editor under test"></iframe>
+<script>
+const app=document.getElementById('app'),results=document.getElementById('results'),run=document.getElementById('run');
+document.getElementById('width').onchange=event=>{app.style.width=event.target.value;};
+run.onclick=async()=>{
+  run.disabled=true;results.textContent='Checking editor controls…';
+  try {
+    const target=app.contentWindow;
+    if(!target.axe)await new Promise((resolve,reject)=>{
+      const script=target.document.createElement('script');
+      const timer=setTimeout(()=>{script.remove();reject(new Error('Accessibility tools timed out; retry.'));},30000);
+      script.src='https://cdn.jsdelivr.net/npm/axe-core@4.10.3/axe.min.js';
+      script.onload=()=>{clearTimeout(timer);resolve();};
+      script.onerror=()=>{clearTimeout(timer);script.remove();reject(new Error('Could not load accessibility tools; retry.'));};
+      target.document.head.appendChild(script);
+    });
+    const report=await target.axe.run({exclude:[['#preview']]},{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa','wcag22aa']}});
+    const violations=report.violations.map(item=>({rule:item.id,impact:item.impact,description:item.help,help:item.helpUrl,
+      nodes:item.nodes.map(node=>({target:node.target,reason:node.failureSummary}))}));
+    results.textContent=JSON.stringify({scope:'Editor controls; poster artwork excluded',violations:violations.length,passes:report.passes.length,details:violations},null,2);
+  }catch(error){results.textContent='Check failed: '+error.message;}
+  finally{run.disabled=false;}
+};
+</script>
+</body>
+</html>

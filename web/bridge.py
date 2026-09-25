@@ -1,5 +1,6 @@
 """Thin browser entry points; the package owns parsing, models, and rendering."""
 import json
+import re
 
 from otfposter.categories import CATEGORIES
 from otfposter.derive import default_notes, default_footnotes, automatic_key_dates, highlights
@@ -32,7 +33,27 @@ def _friendly_parse_error(err):
     return friendly + "\nTechnical detail: " + msg
 
 
-def _result(m, parse_notes="", *, edited=False):
+def _structured_validation(m, severity, message):
+    issue = {'severity': severity, 'message': message, 'source': 'validation'}
+    found = re.search(rf'\b{m.month}/(\d{{1,2}})\b', message)
+    if found and 1 <= int(found[1]) <= m.length:
+        issue.update(day=int(found[1]), control='repeat' if ' repeats ' in message else 'schedule')
+    return issue
+
+
+def _import_issues(report):
+    issues = list(report.issues)
+    for lineno, text in report.unparsed:
+        issues.append({'severity': 'warning', 'source': 'import',
+                       'message': f'Line {lineno}: could not read this workout line: {text}'})
+    for lineno, text in report.unknown_templates:
+        where = f'Line {lineno}: ' if lineno else ''
+        issues.append({'severity': 'warning', 'source': 'import',
+                       'message': f'{where}Unknown workout {text!r} was kept on its dates with a new color. Check the spelling.'})
+    return issues
+
+
+def _result(m, parse_notes="", *, edited=False, import_report=None):
     errors = validate.customization_errors(m)
     if errors:
         raise ValueError('\n'.join(message for _, message in errors))
@@ -51,6 +72,10 @@ def _result(m, parse_notes="", *, edited=False):
         "slug": m.slug, "html": render_html(m, allow_fetch=False),
         "notes": "\n".join(n for n in [parse_notes, validate.report(issues)] if n.strip()),
         "parseNotes": parse_notes, "errors": errors, "days": len(m.days),
+        "issues": ((_import_issues(import_report) if import_report else [])
+                   + [_structured_validation(m, severity, message) for severity, message in issues]),
+        "importSummary": ({"recognizedDays": import_report.recognized_days,
+                           "inferredDays": import_report.inferred_days} if import_report else None),
         "schedule": m.to_dict(),
         "defaults": {"notes": default_notes(m), "footnotes": default_footnotes(m),
                      "key_dates": automatic_key_dates(m), "credits": DEFAULT_CREDITS},
@@ -79,11 +104,16 @@ def generate(text, month=None, theme="", tagline=""):
         m.theme = theme
     if tagline:
         m.tagline = tagline
-    return _result(m, report.render() if not report.clean else "")
+    return _result(m, report.render() if not report.clean else "", import_report=report)
 
 
 def regenerate(schedule_json):
     return _result(Month.from_dict(json.loads(schedule_json)), edited=True)
+
+
+def restore(schedule_json):
+    """Reopen a saved preview, retaining correctable schedule validation errors."""
+    return _result(Month.from_dict(json.loads(schedule_json)))
 
 
 def export_schedule(schedule_json, kind):

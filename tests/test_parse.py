@@ -104,3 +104,12 @@ def test_missing_days_are_filled_and_warned():
     m, report = parse("September 2026\n9/1 - Standard")
     assert len(m.days) == 30
     assert any("9/2" in w for w in report.warnings)
+
+
+def test_invalid_day_does_not_attach_its_workout_to_previous_day():
+    m, report = parse('September 2026\n9/1 - Standard\n9/31 - Run/Row\n10/2 - Lift More')
+    assert [e.category for e in days(m)[1].entries] == ['std']
+    assert '9/31' in report.render()
+    assert 'outside September' in report.render()
+    assert report.recognized_days == [1]
+    assert report.inferred_days == []

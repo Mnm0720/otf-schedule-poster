@@ -7,6 +7,7 @@
   class ScheduleEditor {
     constructor(doc, state, changed) {
       this.doc = doc; this.state = state; this.changed = changed; this.serial = 0;
+      this.fields = new Map();
     }
     node(tag, text, cls) {
       const el = this.doc.createElement(tag);
@@ -14,7 +15,7 @@
       if (cls) el.className = cls;
       return el;
     }
-    change(fn) { this.state.edit(fn); this.changed(); }
+    change(fn) { this.state.edit(fn); this.renderReview(); this.changed(); }
     button(text, name, fn) {
       const b = this.node('button', text, 'small-button');
       b.type = 'button'; b.setAttribute('aria-label', name); b.onclick = fn;
@@ -26,6 +27,7 @@
       if (type !== 'textarea') input.type = type;
       input.id = `editor-field-${++this.serial}`;
       input.setAttribute('aria-label', name);
+      this.fields.set(name, input);
       input.value = value ?? '';
       if (type === 'number') { input.min = 1; input.max = this.state.draft.days.length; input.step = 1; }
       input.oninput = () => this.change(() => update(input.value));
@@ -44,6 +46,7 @@
     select(parent, label, name, options, value, update) {
       const wrap = this.node('div', undefined, 'editor-field');
       const select = this.node('select'); select.setAttribute('aria-label', name);
+      this.fields.set(name, select);
       select.id = `editor-field-${++this.serial}`;
       for (const [key, text] of options) {
         const option = this.node('option', text); option.value = String(key); select.append(option);
@@ -56,6 +59,7 @@
     }
     render() {
       this.renderCalendar(); this.renderCopy(); this.renderKeyDates(); this.renderWorkoutTypes();
+      this.renderReview();
       for(const [id,key,label] of [['headingEditor','title','title & theme'],['calendarEditor','schedule','schedule'],
         ['keyDatesEditor','keyDates','Key Dates'],['workoutTypesEditor','workouts','Workout Types'],
         ['notesEditor','notes','Strength & Tread 50 notes'],['monthlyNotesEditor','monthlyNotes','Monthly notes'],
@@ -83,11 +87,59 @@
         const day = m.days.find(d => d.day === this.selectedDay);
         const card = this.node('fieldset', undefined, 'day-card'); card.id = `day-${day.day}`;
         grid.append(card); this.renderDay(card, day);
+        this.doc.getElementById('previousDay').disabled = day.day === m.days[0].day;
+        this.doc.getElementById('nextDay').disabled = day.day === m.days[m.days.length-1].day;
+        this.renderReview();
       };
       jump.onchange = () => {
         this.selectedDay = Number(jump.value); showDay();
       };
+      for (const [id, offset] of [['previousDay',-1],['nextDay',1]]) {
+        this.doc.getElementById(id).onclick = () => {
+          const index=m.days.findIndex(d=>d.day===this.selectedDay);
+          if (m.days[index+offset]) { this.selectedDay=m.days[index+offset].day;jump.value=String(this.selectedDay);showDay(); }
+        };
+      }
       showDay();
+    }
+    selectDay(day, focus=false) {
+      if (!this.state.draft.days.some(d=>d.day===day)) return;
+      this.selectedDay=day;this.renderCalendar();
+      if(focus)this.fields.get(`Day ${day} template 1`)?.focus();
+    }
+    renderReview() {
+      const list=this.doc.getElementById('monthReviewList');list.replaceChildren();
+      const m=this.state.draft;if(!m)return;
+      for(const day of m.days){
+        const initial=this.state.initial?.days.find(d=>d.day===day.day);
+        const edited=initial && JSON.stringify(day)!==JSON.stringify(initial);
+        const inferred=!edited && day.entries.some(e=>e.raw==='(not listed)');
+        const invalid=day.repeat_of!==null && (!Number.isInteger(day.repeat_of)||day.repeat_of>=day.day||!m.days.some(d=>d.day===day.repeat_of));
+        const workouts=day.entries.map(e=>e.title || this.state.current.categories.find(c=>c.key===e.category)?.label || e.category).join(', ') || 'No workouts';
+        const issue=(this.state.current.issues||[]).some(i=>i.day===day.day);
+        const label=`${m.month}/${day.day} · ${workouts}${edited?' · Edited':''}${inferred?' · Inferred Standard':''}${invalid?' · Needs attention':issue?' · Needs review':''}`;
+        const button=this.button(label,`Review ${m.month}/${day.day}: ${workouts}`,()=>this.selectDay(day.day,true));
+        button.className='review-day';button.setAttribute('aria-current',day.day===this.selectedDay?'date':'false');
+        list.append(button);
+      }
+    }
+    focusIssue(issue) {
+      const text=issue.message || '';
+      const matched=text.match(/Day (\d+)/i) || text.match(/\b\d{1,2}\/(\d{1,2})/);
+      const day=issue.day || (matched?Number(matched[1]):null);
+      if(day && this.state.draft.days.some(d=>d.day===day)){
+        this.selectDay(day);
+        (issue.control==='repeat'||/repeat/i.test(text)?this.repeatControl:this.fields.get(`Day ${day} template 1`))?.focus();return;
+      }
+      const event=text.match(/Event (\d+)/i);
+      if(event){this.doc.getElementById('eventsSection').open=true;this.fields.get(`Event ${event[1]} ${/name/i.test(text)?'name':'start day'}`)?.focus();return;}
+      if(/Key Date/i.test(text)){
+        this.doc.getElementById('keyDateSection').open=true;
+        const keyDate=text.match(/Key Date (\d+)/i);
+        if(keyDate){this.selectedKeyDate=`custom:${Number(keyDate[1])-1}`;this.renderKeyDates();}
+        this.fields.get(/description/i.test(text)?'Key date description':'Key date dates')?.focus();return;
+      }
+      this.doc.getElementById('sourceReferenceSection').open=true;this.doc.getElementById('sourceReference').focus();
     }
     renderDay(card, day) {
       card.replaceChildren();
@@ -116,9 +168,17 @@
         const selects = card.querySelectorAll('select'); selects[selects.length - 2]?.focus();
       });
       card.append(add);
-      this.select(card, 'Repeat of', `Day ${day.day} repeat of`,
-        [['', 'Not a repeat'], ...m.days.filter(d => d.day < day.day).map(d => [d.day, `${m.month}/${d.day}`])],
-        day.repeat_of, value => { day.repeat_of = value ? Number(value) : null; });
+      const repeatOptions=[['', 'Not a repeat'], ...m.days.filter(d => d.day < day.day).map(d => [d.day, `${m.month}/${d.day}`])];
+      if(day.repeat_of!==null && !repeatOptions.some(([key])=>key===day.repeat_of))repeatOptions.push([day.repeat_of,`Invalid repeat: ${m.month}/${day.repeat_of} (choose an earlier date)`]);
+      this.repeatControl=this.select(card, 'Repeat of', `Day ${day.day} repeat of`,
+        repeatOptions,
+        day.repeat_of, value => { day.repeat_of = value ? Number(value) : null; copy.disabled=!day.repeat_of; });
+      card.append(this.node('p','Repeat of adds a label. It does not copy or synchronize workouts.','hint'));
+      const copy=this.button('Copy workouts from repeat date',`Day ${day.day} copy workouts from repeat source`,()=>{
+        const source=m.days.find(d=>d.day===day.repeat_of);if(!source)return;
+        this.change(()=>{day.entries=JSON.parse(JSON.stringify(source.entries));});
+        this.renderDay(card,day);this.renderWorkoutTypes();this.fields.get(`Day ${day.day} template 1`)?.focus();
+      });copy.disabled=!day.repeat_of;card.append(copy);
       this.checkbox(card, '3G template', `Day ${day.day} 3G`, day.three_g,
         checked => this.change(() => { day.three_g = checked; }));
     }

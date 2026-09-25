@@ -42,6 +42,15 @@ test('render failure retains draft; success updates export and clears dirty stat
   assert.equal(s.current.html, 'new poster'); assert.equal(s.canDownload, true);
 });
 
+test('validation errors block finished exports even for a clean initial result', () => {
+  const s = new EditorState();
+  s.accept({...response(), errors:['Day 1: choose an earlier repeat date.']});
+  assert.equal(s.dirty, false);
+  assert.equal(s.canDownload, false);
+  s.accept({...response(), errors:[], warnings:['Check an unfamiliar workout.']});
+  assert.equal(s.canDownload, true);
+});
+
 test('automatic/custom copy preserves structured icons and restores defaults', () => {
   const s = new EditorState(); s.accept(response());
   s.setAutomatic('notes', false); s.setAutomatic('footnotes', false);

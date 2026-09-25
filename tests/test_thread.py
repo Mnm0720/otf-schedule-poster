@@ -175,3 +175,103 @@ def test_parenthetical_hints_are_not_extra_templates():
     labels = [e.label for e in m.by_day()[8].entries]
     assert labels.count("Benchmark: 1000 Meter Row") == 1
     assert len(labels) == 2
+
+
+def thread_text(*lines):
+    return '\n'.join(['Welcome to the September 2026 Monthly Thread!',
+                      'Key Dates for The Month', *lines,
+                      '* Repeat templates are as follows: 9/16 = 9/1.'])
+
+
+@pytest.mark.parametrize('dates', ['9/3-9/5', '9/3-5', '9/3–9/5', '9/3—5', '9/3 to 9/5', '9/3 through 5'])
+def test_category_date_ranges_are_inclusive_and_identify_inferred_days(dates):
+    m, report = parse(thread_text(f'* Run/Rows on {dates}.'))
+    assert [d.day for d in m.days if any(e.category == 'runrow' for e in d.entries)] == [3, 4, 5]
+    assert report.recognized_days == [3, 4, 5]
+    assert report.inferred_days == [d for d in range(1, 31) if d not in (3, 4, 5)]
+    assert report.clean
+
+
+def test_category_colon_and_unknown_label_ranges_keep_linked_dates():
+    m, report = parse(thread_text('* Run/Rows: 9/3, 9/4, 9/5.', '* New Machine on 9/7-9/8.'))
+    assert [d.day for d in m.days if any(e.category == 'runrow' for e in d.entries)] == [3, 4, 5]
+    assert [d.day for d in m.days if any(e.title == 'New Machine' for e in d.entries)] == [7, 8]
+    assert report.unknown_templates == [(0, 'New Machine')]
+
+
+@pytest.mark.parametrize('dates,match', [
+    ('9/31', '9/31'), ('10/3', 'outside September'), ('9/5-9/3', 'reversed'),
+    ('9/3-9/31', '9/31'), ('13/1', '13/1'), ('9/0', '9/0')])
+def test_invalid_schedule_dates_and_ranges_are_reported(dates, match):
+    m, report = parse(thread_text(f'* Run/Rows on {dates}, 9/8.'))
+    assert not report.clean
+    assert match in report.render()
+    assert m.by_day()[8].entries[0].category == 'runrow'
+    assert any(issue['source'] == 'import' for issue in report.issues)
+
+
+def test_recognizable_unsupported_schedule_line_is_reported_but_prose_is_not():
+    _, report = parse(thread_text('* Run/Rows scheduled for 9/3.',
+                                  'Our members are meeting on 9/9.',
+                                  'Please see our wiki for workout descriptions.'))
+    assert not report.clean
+    assert 'Run/Rows scheduled for 9/3' in report.render()
+    assert 'Our members' not in report.render()
+    assert 'Please see' not in report.render()
+
+
+def test_invalid_key_date_and_repeat_dates_are_reported():
+    _, report = parse(thread_text('* September 31 (Thursday): Challenge; benchmark.',
+                                  '* Repeat templates are as follows: 9/17 = 9/31.'))
+    assert len([issue for issue in report.issues if '9/31' in issue['message']]) == 2
+
+
+def test_explicit_standard_is_recognized_not_registered_as_unknown():
+    m, report = parse(thread_text('* Standard on 9/3.'))
+    assert report.clean
+    assert report.recognized_days == [3]
+    assert m.by_day()[3].entries[0].category == 'std'
+
+
+def test_partial_category_date_lists_and_repeat_maps_cannot_look_clean():
+    _, report = parse(thread_text('* Run/Rows on 9/3, 4, 5.',
+                                  '* Repeat templates are as follows: 9/17 = 9/2, 9/18 repeats 9/3.'))
+    assert any('4, 5' in issue['message'] for issue in report.issues)
+    assert any('9/18 repeats 9/3' in issue['message'] for issue in report.issues)
+
+
+def test_invalid_3g_dates_are_reported():
+    _, report = parse(thread_text('* 9/31 and 10/3 are 3G style templates.'))
+    assert '9/31' in report.render()
+    assert 'outside September' in report.render()
+
+
+def test_thread_with_title_and_one_category_list_is_detected():
+    m, report = parse('Welcome to the September 2026 Monthly Thread!\n* Run/Rows: 9/3-9/5.')
+    assert [d.day for d in m.days if any(e.category == 'runrow' for e in d.entries)] == [3, 4, 5]
+    assert report.recognized_days == [3, 4, 5]
+
+
+@pytest.mark.parametrize('qualifier', ['except', 'excluding'])
+def test_unsupported_date_exclusions_warn_for_review(qualifier):
+    _, report = parse(thread_text(f'* Run/Rows on 9/3-9/5 {qualifier} 9/4.'))
+    assert not report.clean
+    assert qualifier in report.render()
+
+
+def test_verb_bearing_prose_is_ignored_but_known_workout_prefix_warns():
+    m, report = parse(thread_text('Members are meeting on 9/9.',
+                                  'Everyone should book classes on 9/9.',
+                                  '* Lift More will be on 9/3.'))
+    assert all(e.category == 'std' for d in m.days for e in d.entries)
+    assert not report.unknown_templates
+    assert 'Lift More will be on 9/3' in report.render()
+    assert 'Members' not in report.render()
+    assert 'Everyone' not in report.render()
+
+
+def test_key_date_without_kind_warns_instead_of_disappearing():
+    _, report = parse(thread_text('* September 3 (Thursday): Studio Challenge.'))
+    assert not report.clean
+    assert 'Studio Challenge' in report.render()
+    assert 'benchmark' in report.render()
