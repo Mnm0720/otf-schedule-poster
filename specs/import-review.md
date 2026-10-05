@@ -10,6 +10,11 @@
   workout lines with unsupported wording produce actionable source warnings.
   Ordinary unrelated prose remains ignored. Invalid lines never attach workouts
   to the previous date. Valid neighboring dates remain usable.
+- Standalone 3G date lists accept optional parenthesized weekdays after each
+  numeric date, including `10/26 (Monday) and 10/31 (Saturday) are 3G style
+  templates`. Keep bare-date lists working and report invalid/out-of-month dates
+  with either form. The October 2026 thread preserves both benchmarks, every
+  workout/equipment date, all six repeat links, its theme, and the Hell Week range.
 - Exclusion wording (`except`/`excluding`) and Key Dates missing their workout
   kind produce source review warnings; never claim those lines were read fully.
   Verb-bearing prose such as `Members are meeting on 9/9` is ignored, while a
@@ -35,6 +40,15 @@
 
 ## Verification
 
+- October 4, 2026: added the supplied October thread as a fifth fixture and
+  checked its complete daily entries, theme, two benchmarks, six repeat links,
+  Hell Week event range, and recognized/inferred-day provenance. The red thread
+  run failed five cases (51 passed): both real 3G flags were missing, weekday
+  captions could lose either/all dates, and invalid captioned dates were ignored.
+  Accepting optional captions in the 3G list preserves existing bare-date behavior
+  and the date validator. Green: `python -m pytest -q tests/test_thread.py
+  tests/test_parse.py tests/test_browser_bridge.py tests/test_unknown_types.py`
+  passes 94 tests, including invalid and out-of-month 3G warning coverage.
 - September 23, 2026: the first targeted run failed 16 new behavioral cases
   before implementation (54 existing cases passed). This covered the lost middle
   day, colon lists, invalid dates, unsupported category wording, explicit Standard

@@ -10,6 +10,7 @@ table{width:100%;border-collapse:separate;border-spacing:5px;table-layout:fixed}
 td{vertical-align:top;background:#fff;border:1px solid #DDE1E6;border-radius:10px;padding:9px 6px;height:{{ 175 if layout=='phone' else 122 }}px}
 td.empty{background:transparent;border:0}.date{font-size:29px;font-weight:800;margin-bottom:7px}
 .pill{font-size:17px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px;margin-top:4px;overflow-wrap:anywhere}
+.event-label{background:#202732;color:#fff;border-left:3px solid #F4511E;font-size:17px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px;margin-top:4px;overflow-wrap:anywhere}
 .note{font-size:14px;color:#5C6470;margin-top:6px}.three-g{font-size:15px;font-weight:700;color:#D6420E}
 .key{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 5px;font-size:17px;font-weight:600}
 .dot{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:6px}
@@ -21,6 +22,7 @@ footer a{color:inherit;text-decoration:none}.credit-line{white-space:pre-wrap}
 {% for e in m.events %}<div class="event">{{ e.label(m.month) }}</div>{% endfor %}
 <table><thead><tr>{% for name in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<th>{{ name }}</th>{% endfor %}</tr></thead><tbody>
 {% for week in weeks %}<tr>{% for day in week %}{% if day %}<td class="compact-day"><div class="date">{{ day.day }}</div>
+{% for event in day.events %}<div class="event-label">{{ event }}</div>{% endfor %}
 {% for pill in day.pills %}<div class="pill" style="background:{{ pill.color }};color:{{ pill.fg }}">{{ pill.label }}</div>{% endfor %}
 {% if day.three_g %}<div class="three-g">3G</div>{% endif %}{% if day.note %}<div class="note">{{ day.note }}</div>{% endif %}</td>
 {% else %}<td class="empty"></td>{% endif %}{% endfor %}</tr>{% endfor %}</tbody></table>

@@ -83,6 +83,9 @@
     color:#fff;text-align:center;border-radius:5px;padding:3px 4px;line-height:1.12;
   }
   .pill.two{font-size:13.5px;}
+  .event-label{background:#16181D;color:#fff;border-left:3px solid var(--orange);
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14.5px;
+    text-align:center;border-radius:5px;padding:4px;line-height:1.15;overflow-wrap:anywhere;}
   .g3{float:right;background:#16181D;color:#fff;font-family:'Barlow Condensed',sans-serif;
       font-size:11px;font-weight:700;letter-spacing:.5px;padding:1px 5px;border-radius:4px;
       line-height:1.35;}
@@ -210,6 +213,7 @@
           <td{% if cell.weekend %} class="weekend"{% endif %}>
             <div class="dnum">{{ cell.day }}{% if cell.three_g %}<span class="g3">3G</span>{% endif %}</div>
             <div class="pills">
+              {% for event in cell.events %}<div class="event-label">{{ event }}</div>{% endfor %}
               {% for p in cell.pills %}
               <div class="pill{% if cell.two %} two{% endif %}" style="background:{{ p.color }};color:{{ p.fg }}">{{ p.label }}</div>
               {% endfor %}

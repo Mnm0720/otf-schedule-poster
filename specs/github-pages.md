@@ -35,6 +35,9 @@
 Implementation uses spec-first regression tests. Runtime unit tests isolate the
 worker transport and package loader; these do not claim real-browser evidence.
 The built-site Playwright smoke runs in CI against `/otf-schedule-poster/`.
+It also covers October 2026 event labels, captioned 3G dates, and event edits in
+real Pyodide. Local runs can pass `--browser-channel chrome` or `msedge` when an
+installed browser is available instead of Playwright's downloaded Chromium.
 
 ### September 23, 2026 implementation
 

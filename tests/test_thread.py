@@ -1,6 +1,6 @@
 """The real thing: parse the actual r/orangetheory monthly threads.
 
-The four fixtures under schedules/raw/ are genuine posts. They are the
+The fixtures under schedules/raw/ are genuine posts. They are the
 regression suite -- if a change breaks one of these, it breaks the tool.
 """
 from pathlib import Path
@@ -12,7 +12,7 @@ from otfposter.parse import parse
 from otfposter.thread import looks_like_thread
 
 RAW = Path(__file__).resolve().parent.parent / "schedules" / "raw"
-FIXTURES = ["2025-10", "2026-04", "2026-08", "2026-09"]
+FIXTURES = ["2025-10", "2026-04", "2026-08", "2026-09", "2026-10"]
 
 
 def load(slug):
@@ -56,7 +56,7 @@ def test_every_fixture_validates(any_month):
 
 
 def test_repeat_days_carry_their_source_templates(any_month):
-    """The invariant this tool leans on: 45 pairs across four real months."""
+    """Every listed repeat pair retains the source day's template categories."""
     by_day = any_month.by_day()
     for day in any_month.days:
         if not day.repeat_of:
@@ -131,6 +131,45 @@ def test_october_3g_from_a_standalone_line():
     """'10/24 and 10/31 are 3G style templates ...'"""
     m, _ = load("2025-10")
     assert [d.day for d in m.days if d.three_g] == [24, 31]
+
+
+def test_october_2026_matches_the_supplied_thread():
+    m, report = load("2026-10")
+    expected = {
+        1: ["Lift More", "Elevation Gain"], 2: ["Standard"],
+        3: ["Lift More", "Minibands"], 4: ["Elevation Gain", "Incline Bench"],
+        5: ["Run/Row"], 6: ["Lift More"], 7: ["Switch Template"],
+        8: ["Standard"], 9: ["Run/Row", "Low Bench"], 10: ["Lift More"],
+        11: ["Standard"], 12: ["Standard"], 13: ["Standard"],
+        14: ["Lift More", "BOSU"],
+        15: ["Benchmark: 12 Minute Tread for Distance", "Lift More"],
+        16: ["Standard"], 17: ["Lift More", "Elevation Gain"],
+        18: ["Standard"], 19: ["Benchmark: 500 Meter Row"],
+        20: ["Lift More", "Minibands"], 21: ["Elevation Gain", "Incline Bench"],
+        22: ["Run/Row"], 23: ["Switch Template"],
+        24: ["Standard"], 25: ["Standard"], 26: ["Standard"],
+        27: ["Standard"], 28: ["Standard"], 29: ["Standard"],
+        30: ["Standard"], 31: ["Standard"],
+    }
+    assert report.clean, report.render()
+    assert m.theme == "Mental & Metabolic Flexibility"
+    assert {d.day: [e.label for e in d.entries] for d in m.days} == expected
+    assert {d.day: d.repeat_of for d in m.days if d.repeat_of} == {
+        17: 1, 18: 2, 20: 3, 21: 4, 22: 5, 23: 7,
+    }
+    assert [(e.name, e.start, e.end) for e in m.events] == [("Hell Week", 24, 31)]
+    assert [md["text"] for md in derive.marked_dates(m)] == [
+        "10/15 Benchmark: 12 Minute Tread for Distance",
+        "10/19 Benchmark: 500 Meter Row",
+    ]
+    assert [d.day for d in m.days if d.three_g] == [26, 31]
+    assert report.recognized_days == [
+        1, 3, 4, 5, 6, 7, 9, 10, 14, 15, 17, 19, 20, 21, 22, 23,
+    ]
+    assert report.inferred_days == [
+        2, 8, 11, 12, 13, 16, 18, 24, 25, 26, 27, 28, 29, 30, 31,
+    ]
+    assert validate.check(m) == []
 
 
 def test_october_multi_day_event_and_two_benchmarks():
@@ -242,6 +281,26 @@ def test_partial_category_date_lists_and_repeat_maps_cannot_look_clean():
 
 def test_invalid_3g_dates_are_reported():
     _, report = parse(thread_text('* 9/31 and 10/3 are 3G style templates.'))
+    assert '9/31' in report.render()
+    assert 'outside September' in report.render()
+
+
+@pytest.mark.parametrize('dates', [
+    '9/3 and 9/4',
+    '9/3 (Thursday) and 9/4 (Friday)',
+    '9/3 (Thursday), 9/4',
+    '9/3 and 9/4 (Friday)',
+])
+def test_standalone_3g_dates_allow_optional_weekdays(dates):
+    m, report = parse(thread_text(f'* {dates} are 3G style templates.'))
+    assert [d.day for d in m.days if d.three_g] == [3, 4]
+    assert report.clean, report.render()
+
+
+def test_parenthesized_3g_dates_keep_valid_neighbors_and_warn_for_invalid_dates():
+    m, report = parse(thread_text(
+        '* 9/31 (Thursday), 10/3 (Saturday), and 9/4 (Friday) are 3G style templates.'))
+    assert [d.day for d in m.days if d.three_g] == [4]
     assert '9/31' in report.render()
     assert 'outside September' in report.render()
 

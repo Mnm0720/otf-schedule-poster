@@ -150,7 +150,10 @@ recognizable schedule lines that could not be understood appear in the import
 review. Unrelated prose can be ignored safely.
 
 Any day that no category mentions becomes **Standard** and is marked as inferred
-in the review list. Unrecognised category names
+in the review list. Events such as Hell Week also appear on every covered calendar
+date in the full and compact posters. Event-only dates show the event in place of
+the inferred Standard placeholder; explicitly listed workouts remain visible.
+Weekday captions in 3G date lists are supported. Unrecognised category names
 are kept on their dates as custom workout types with distinct colors. They appear
 in template selectors, Workout Types, highlights, and the poster. Check spelling;
 if the type is new, let the developer know. Change its color like any other type.

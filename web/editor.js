@@ -363,7 +363,7 @@
       const events = this.doc.getElementById('eventsEditor');
       const renderEvents = () => {
         events.replaceChildren();
-        events.append(this.node('p', 'Add a day range for each event ribbon. Use day numbers within this month.', 'hint'));
+        events.append(this.node('p', 'Events appear in the banner and on every calendar date in their range. Use day numbers within this month.', 'hint'));
         m.events.forEach((event, index) => {
           const row = this.node('div', undefined, 'event-item');
           this.field(row, 'Event name', `Event ${index + 1} name`, event.name, value => { event.name = value; });

@@ -2,6 +2,17 @@
 
 ## Behavior
 
+- Calendar day cells show every event whose inclusive date range covers that day,
+  in both the full poster and phone/social layouts. Event labels stay separate
+  from workout entries, preserve notes/repeats/3G flags, and follow event edits on
+  regeneration. An event-only day with an inferred Standard entry displays the
+  event instead of that placeholder; explicitly listed workouts remain visible.
+  Labels are escaped and wrap; overlapping and single-day events are supported.
+- Automatic Strength/Tread 50 notes describe their independent two-week repeat
+  rule and available 29th-31st bonus dates, regardless of the 60-minute schedule's
+  repeat links. All benchmark reminders and bonus guidance remain visible in a
+  month with multiple benchmarks. Automatic 3G copy states the flagged dates and
+  the 2G listing caveat without assuming station durations.
 - Replace the full editor calendar with a date dropdown and exactly one day form.
   Initially select day 1; changing dates preserves edits without marking the draft
   dirty. Keep the selected date after regeneration and reset it for a new month.
@@ -102,6 +113,25 @@ contracts are in [saved workspaces](saved-workspaces.md#data-and-recovery-contra
   section labels. Editing alone does not update the preview or enable stale exports.
 
 ## Verification
+
+### October 4, 2026: events in the calendar and accurate class notes
+
+- Red: all 13 initial regressions failed before implementation. They reproduced
+  missing event labels in the full/phone/social calendars, dropped bonus guidance,
+  Strength/Tread notes following 60-minute repeat links, and assumed 3G durations.
+- Green: 179 Python and 77 Node tests pass; all five saved schedules validate
+  strictly, and the static build succeeds with five real-post examples. Additional
+  regressions preserve explicit/titled Standard entries and verify bonus guidance
+  for 28-, 29-, 30-, and 31-day months. No schedule mutation is used for display.
+- Real built-site worker/Pyodide in a temporary Chrome profile displays Hell Week
+  on all eight dates with 3G on October 26 and 31. Renaming/moving/removing the event
+  updates the calendar after regeneration; pending edits block export. Existing
+  browser smoke also passes draft recovery, startup retry, PNG/PDF downloads,
+  editor accessibility checks, and 320/390/768/1440px layouts.
+- Visually inspected the October calendar and full 2400 x 3936 PNG, plus its
+  1080 x 1350 social layout. Dates, benchmarks, repeat notes, Hell Week labels,
+  and both 3G flags are present. This verifies desktop browser layouts; no hosted
+  deployment or physical-phone testing was performed.
 
 The records below describe each earlier implementation stage. The
 [saved-workspaces verification](saved-workspaces.md#verification-2026-09-03) records

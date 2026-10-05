@@ -241,38 +241,28 @@ def default_notes(m: Month) -> list[str]:
         "Tread 50 runs daily; Strength 50 follows the split at left",
         "Tread benchmarks appear in Tread 50; signatures and specialties do not",
         "Templates never repeat inside the same Monday-Sunday week",
+        "Strength / Tread 50 templates from the first 14 days typically repeat two weeks later",
     ]
-    start = repeat_window_start(m)
-    if start and has_tight_cycle(m):
-        notes.append(
-            f"Repeating starts after the first {start - 1} days "
-            "and runs close to in order"
-        )
-    elif start:
-        notes.append(
-            f"Only {sum(1 for d in m.days if d.repeat_of)} days repeat an "
-            "earlier template this month"
-        )
-    for md in marked_dates(m):
-        if md["category"] == "bench":
-            notes.append(
-                f"{md['mmdd']} is a benchmark - the {md['title']}"
-                if md["title"] else f"{md['mmdd']} is a benchmark day"
-            )
-
     month_name = date(m.year, m.month, 1).strftime("%B")
-    absent = [d for d in (29, 30, 31) if d > m.length]
-    if absent:
-        span = (_ordinal(absent[0]) if len(absent) == 1
-                else f"{_ordinal(absent[0])}-{_ordinal(absent[-1])}")
-        plural = "" if len(absent) == 1 else "s"
-        notes.append(
-            f"{month_name} has {m.length} days, so there "
-            f"{'is' if len(absent) == 1 else 'are'} no {span} bonus template{plural}"
-        )
+    bonus_days = [d for d in (29, 30, 31) if d <= m.length]
+    if bonus_days:
+        span = (_ordinal(bonus_days[0]) if len(bonus_days) == 1
+                else f"{_ordinal(bonus_days[0])}-{_ordinal(bonus_days[-1])}")
+        note = (f"{month_name} has {m.length} days; {span} "
+                f"{'is a bonus template' if len(bonus_days) == 1 else 'are bonus templates'}")
+        if m.length < 31:
+            absent = [d for d in (29, 30, 31) if d > m.length]
+            missing = (_ordinal(absent[0]) if len(absent) == 1
+                       else f"{_ordinal(absent[0])}-{_ordinal(absent[-1])}")
+            note += f" (no {missing})"
+        notes.append(note)
     else:
-        notes.append(f"{month_name} has 31 days, including the 31st bonus template")
-    return notes[:6]
+        notes.append(f"{month_name} has {m.length} days, so there are no 29th-31st bonus templates")
+    benchmarks = [f"{md['mmdd']} {md['title'] or 'benchmark'}"
+                  for md in marked_dates(m) if md['category'] == 'bench']
+    if benchmarks:
+        notes.append("60-minute benchmarks: " + BULLET_SEP.join(benchmarks))
+    return notes
 
 
 def _ordinal(n: int) -> str:
@@ -286,8 +276,7 @@ def default_footnotes(m: Month) -> list[dict]:
     three_g = [m.mmdd(d.day) for d in m.days if d.three_g]
     if three_g:
         out.append({"id": "three_g", "icon": "groups", "lead": "3G-only templates:",
-                    "text": f"{', '.join(three_g)} run 3G-style with about 14 "
-                            "minutes at each station, even where 2G is listed."})
+                    "text": f"{', '.join(three_g)} run 3G-style even where 2G is listed."})
     else:
         out.append({"id": "three_g", "icon": "groups", "lead": "No 3G-only templates this month.",
                     "text": f"{date(m.year, m.month, 1).strftime('%B')} has no "
@@ -386,10 +375,15 @@ def build_context(m: Month) -> dict:
                 continue
             day = by_day[d]
             note, flagged = cell_note(m, day)
+            day_events = [event.name for event in m.events if event.start <= d <= event.end]
+            inferred_standard = (len(day.entries) == 1 and day.entries[0].category == 'std'
+                                 and not day.entries[0].title and day.entries[0].raw == '(not listed)')
+            entries = [] if day_events and inferred_standard else day.entries
             cells.append({
                 "day": d,
-                "pills": [pill(e, m) for e in day.entries],
-                "two": len(day.entries) > 1,
+                "pills": [pill(e, m) for e in entries],
+                "events": day_events,
+                "two": len(entries) > 1,
                 "note": note,
                 "flag": flagged,
                 "weekend": m.weekday_of(d) in (0, 6),

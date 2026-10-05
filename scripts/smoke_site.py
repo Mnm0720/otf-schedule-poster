@@ -3,6 +3,7 @@
 
 Run after building: python scripts/smoke_site.py --site site
 Requires the repository's Playwright dependency and its Chromium installation.
+Use --browser-channel chrome or msedge to test with an installed browser instead.
 The temporary browser profile never opens or modifies a user's browser/drafts.
 """
 from __future__ import annotations
@@ -41,7 +42,45 @@ def check_accessibility(page):
     assert not result, json.dumps(result, indent=2)
 
 
-def smoke(site: Path):
+def check_october_events(browser, base):
+    """The October source must show Hell Week and captioned 3G dates in Pyodide."""
+    context = browser.new_context(viewport={"width": 390, "height": 844})
+    try:
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(base)
+        expect(page.locator("#go")).to_be_enabled(timeout=120000)
+        page.locator("#src").fill((ROOT / "schedules/raw/2026-10.txt").read_text(encoding="utf-8"))
+        page.locator("#go").click()
+        expect(page.locator("#exportBtn")).to_be_enabled(timeout=60000)
+        preview = page.frame_locator("#preview")
+        expect(preview.locator(".cal .event-label")).to_have_count(8)
+        for day in range(24, 32):
+            cell = preview.locator(".dnum").filter(has_text=re.compile(rf"^{day}(?:3G)?$")).locator("..")
+            expect(cell).to_contain_text("Hell Week")
+            expect(cell).not_to_contain_text("Standard")
+            expect(cell.locator(".g3")).to_have_count(1 if day in (26, 31) else 0)
+        page.locator("#eventsSection > summary").click()
+        page.get_by_label("Event 1 name", exact=True).fill("Updated event")
+        page.get_by_label("Event 1 start day", exact=True).fill("25")
+        page.get_by_label("Event 1 end day", exact=True).fill("27")
+        expect(page.locator("#exportBtn")).to_be_disabled()
+        page.locator("#regenerate").click()
+        expect(page.locator("#exportBtn")).to_be_enabled(timeout=60000)
+        expect(preview.locator(".cal .event-label")).to_have_count(3)
+        expect(preview.locator(".cal")).not_to_contain_text("Hell Week")
+        page.get_by_role("button", name="Remove event 1", exact=True).click()
+        page.locator("#regenerate").click()
+        expect(page.locator("#exportBtn")).to_be_enabled(timeout=60000)
+        expect(preview.locator(".cal .event-label")).to_have_count(0)
+        expect(preview.locator(".dnum").filter(has_text=re.compile(r"^24$")).locator("..")).to_contain_text("Standard")
+        assert not errors, errors
+    finally:
+        context.close()
+
+
+def smoke(site: Path, browser_channel=None):
     with tempfile.TemporaryDirectory(prefix="otf-pages-smoke-") as temporary:
         root = Path(temporary)
         shutil.copytree(site, root / "otf-schedule-poster")
@@ -51,7 +90,7 @@ def smoke(site: Path):
         thread.start()
         try:
             with sync_playwright() as playwright:
-                browser = playwright.chromium.launch()
+                browser = playwright.chromium.launch(channel=browser_channel)
                 context = browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=1, accept_downloads=True)
                 page = context.new_page()
                 errors = []
@@ -134,16 +173,19 @@ def smoke(site: Path):
                 retry_context.close()
                 print("Headless CI timings (not representative phone/production measurements): " + json.dumps(measurements))
                 context.close()
+                check_october_events(browser, base)
                 browser.close()
         finally:
             server.shutdown()
             server.server_close()
             thread.join(timeout=5)
-    print("Built-site smoke passed: real worker/Pyodide, retry, restoration, mobile layout, editor accessibility (poster artwork excluded), PNG and PDF.")
+    print("Built-site smoke passed: real worker/Pyodide, October events/3G/regeneration, retry, restoration, mobile layout, editor accessibility (poster artwork excluded), PNG and PDF.")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--site", type=Path, default=ROOT / "site")
+    parser.add_argument("--browser-channel", choices=("chrome", "msedge"),
+                        help="Use an installed browser instead of Playwright's downloaded Chromium.")
     args = parser.parse_args()
-    smoke(args.site.resolve())
+    smoke(args.site.resolve(), args.browser_channel)

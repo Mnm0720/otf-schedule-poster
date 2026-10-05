@@ -81,7 +81,11 @@ _PROSE_START = re.compile(r"^(?:i|we|our|you|your|they|their|this|these|please|s
 _PROSE_VERBS = re.compile(r"\b(?:are|is|will|should|can|must|have|has|was|were)\b", re.I)
 _REPEAT_LINE = re.compile(r"repeat\s+templates?\s+are\s+as\s+follows\s*:?\s*(.+)", re.I)
 _REPEAT_PAIR = re.compile(r"\b(\d{1,2})/(\d{1,2})\s*=\s*(\d{1,2})/(\d{1,2})\b")
-_THREE_G = re.compile(r"((?:\b\d{1,2}/\d{1,2}\b[\s,and]*)+)\s*(?:are|is)\s+3G", re.I)
+# Numeric date lists may include weekday captions, e.g. "10/26 (Monday) and
+# 10/31 (Saturday) are 3G style templates".
+_THREE_G = re.compile(
+    r"((?:\b\d{1,2}/\d{1,2}\b(?:\s*\([^)]*\))?[\s,and]*)+)\s*(?:are|is)\s+3G", re.I
+)
 _THREE_G_INLINE = re.compile(r"\b3G[\s-]*only\b", re.I)
 
 _SECTION_END = re.compile(r"^\s*(?:please\s+see\s+our\s+\[?wiki|NEW\s+for\s+20)", re.I)
