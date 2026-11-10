@@ -21,6 +21,32 @@ function setup() {
   return {doc, state, editor};
 }
 
+test('appearance controls set layout visibility and calendar icons without changing dates',()=>{
+ const {doc,state}=setup(), before=JSON.stringify(state.draft.days);
+ const root=doc.getElementById('appearanceEditor');
+ const layout=labelled(root,'Poster layout');assert.ok(layout);
+ layout.value='reference';layout.onchange();assert.equal(state.draft.appearance.layout,'reference');
+ assert.equal(state.draft.appearance.show_workout_guide,true);
+ const icons=labelled(root,'Show workout icons on calendar dates');icons.checked=false;icons.onchange();
+ assert.equal(state.draft.appearance.calendar_icons,false);assert.equal(JSON.stringify(state.draft.days),before);
+ assert.equal(state.dirty,true);
+});
+
+test('saving and applying a named appearance preset preserves workouts and reports storage failure',()=>{
+ const {PresetStore}=require('../web/appearance.js');const {doc,state,editor}=setup();
+ const values=new Map();editor.presetStore=new PresetStore({getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)});
+ state.draft.appearance={layout:'reference'};editor.renderAppearance();
+ const root=doc.getElementById('appearanceEditor'), name=labelled(root,'Style preset name');
+ name.value='Studio style';name.oninput();labelled(root,'Save style preset').onclick();
+ assert.equal(editor.presetStore.list()[0].name,'Studio style');
+ state.draft.appearance.layout='clean';const before=JSON.stringify(state.draft.days);
+ labelled(root,'Apply saved style preset').onclick();assert.equal(state.draft.appearance.layout,'reference');
+ assert.equal(JSON.stringify(state.draft.days),before);
+ editor.presetStore={list:()=>[],defaultPreset:()=>null,save:()=>{throw new Error('quota');}};
+ editor.renderAppearance();labelled(root,'Save style preset').onclick();
+ assert.match(doc.getElementById('presetStatus').textContent,/quota/);
+});
+
 test('previous and next date controls retain edits and stop at month edges',()=>{
  const {doc,state}=setup();
  assert.equal(doc.getElementById('previousDay').disabled,true);

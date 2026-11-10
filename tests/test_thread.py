@@ -12,7 +12,7 @@ from otfposter.parse import parse
 from otfposter.thread import looks_like_thread
 
 RAW = Path(__file__).resolve().parent.parent / "schedules" / "raw"
-FIXTURES = ["2025-10", "2026-04", "2026-08", "2026-09", "2026-10"]
+FIXTURES = ["2025-10", "2026-04", "2026-08", "2026-09", "2026-10", "2026-11"]
 
 
 def load(slug):
@@ -181,6 +181,67 @@ def test_october_multi_day_event_and_two_benchmarks():
                        "10/20 Benchmark: 200 meter row"]
 
 
+def test_november_2026_matches_the_supplied_thread():
+    m, report = load('2026-11')
+    expected = {
+        1: ['Specialty: Member Choice'], 2: ['Low Bench'], 3: ['Lift More'],
+        4: ['BOSU'], 5: ['Benchmark: .25 Mile', 'Switch Template'],
+        6: ['Run/Row'], 7: ['Run/Row', 'Elevation Gain', 'Minibands'],
+        8: ['Standard'], 9: ['Lift More'], 10: ['Run/Row'], 11: ['Standard'],
+        12: ['Standard'], 13: ['Benchmark: 1 Mile'], 14: ['Lift More'],
+        15: ['Lift More'], 16: ['Standard'], 17: ['Benchmark: 200 Meter row'],
+        18: ['Low Bench'], 19: ['Lift More'], 20: ['BOSU'], 21: ['Run/Row'],
+        22: ['Run/Row', 'Elevation Gain', 'Minibands'],
+        23: ['Signature: Strength in Numbers'], 24: ['Standard'],
+        25: ['Lift More'], 26: ['Run/Row'], 27: ['Elevation Gain'],
+        28: ['Standard'], 29: ['Lift More'], 30: ['Standard'],
+    }
+    assert report.clean, report.render()
+    assert m.theme == 'Community & Mobility'
+    assert {d.day: [e.label for e in d.entries] for d in m.days} == expected
+    assert {d.day: d.repeat_of for d in m.days if d.repeat_of} == {
+        18: 2, 19: 3, 20: 4, 21: 6, 22: 7, 24: 8, 25: 9, 26: 10,
+        28: 12, 29: 14,
+    }
+    assert [d.day for d in m.days if d.three_g] == [23]
+    assert m.events == []
+    assert m.by_day()[27].note == m.by_day()[30].note == 'Not a repeat'
+    assert report.recognized_days == [
+        1, 2, 3, 4, 5, 6, 7, 9, 10, 13, 14, 15, 17, 18, 19, 20, 21,
+        22, 23, 25, 26, 27, 29,
+    ]
+    assert report.inferred_days == [8, 11, 12, 16, 24, 28, 30]
+    assert validate.check(m) == []
+
+
+@pytest.mark.parametrize('wording', ['3G only', '3G-only', '3G style', '3G-style'])
+def test_key_date_3g_wording_keeps_the_flag(wording):
+    m, report = parse(thread_text(
+        f'* September 3 (Thursday): Challenge; signature. This is a {wording} template.'))
+    assert m.by_day()[3].three_g
+    assert report.clean, report.render()
+
+
+def test_non_repeat_note_on_repeat_line_is_kept_without_a_false_warning():
+    m, report = parse(thread_text(
+        '* Repeat templates are as follows: 9/17 = 9/2. PLEASE NOTE: '
+        '9/27 and 9/30 are NOT designated as repeat templates.'))
+    assert report.clean, report.render()
+    assert m.by_day()[27].note == m.by_day()[30].note == 'Not a repeat'
+    assert m.by_day()[17].repeat_of == 2
+
+
+def test_invalid_and_conflicting_non_repeat_dates_warn():
+    m, report = parse(thread_text(
+        '* Repeat templates are as follows: 9/17 = 9/2. PLEASE NOTE: '
+        '9/17, 9/31 and 10/1 are NOT designated as repeat templates.'))
+    assert not report.clean
+    assert '9/31' in report.render()
+    assert 'outside September' in report.render()
+    assert '9/17' in report.render()
+    assert m.by_day()[17].repeat_of == 2
+
+
 def test_october_has_no_theme():
     """That post predates the monthly-theme convention."""
     m, _ = load("2025-10")
@@ -334,3 +395,20 @@ def test_key_date_without_kind_warns_instead_of_disappearing():
     assert not report.clean
     assert 'Studio Challenge' in report.render()
     assert 'benchmark' in report.render()
+
+
+@pytest.mark.parametrize('dates', [
+    'September 24-30', 'September 24 (Thursday) - 30 (Wednesday)',
+])
+def test_key_date_range_can_omit_the_repeated_month(dates):
+    m, report = parse(thread_text(f'* {dates}: Studio Challenge; event.'))
+    assert [(e.name, e.start, e.end) for e in m.events] == [('Studio Challenge', 24, 30)]
+    assert report.clean, report.render()
+
+
+@pytest.mark.parametrize('dates', ['September 3 & 5', '9/3 and 9/5'])
+def test_unsupported_key_date_syntax_warns_instead_of_disappearing(dates):
+    _, report = parse(thread_text(f'* {dates}: Studio Challenge; signature.'))
+    assert not report.clean
+    assert 'Key Date' in report.render()
+    assert 'Studio Challenge' in report.render()

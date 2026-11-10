@@ -8,6 +8,10 @@
   regeneration. An event-only day with an inferred Standard entry displays the
   event instead of that placeholder; explicitly listed workouts remain visible.
   Labels are escaped and wrap; overlapping and single-day events are supported.
+- Event validation is shared by CLI validation, rendering, and the browser bridge.
+  Event names must be nonempty plain strings; start/end must be integer days
+  (not booleans), within the displayed month, and in chronological order. Invalid
+  events are rejected before rendering without changing the saved schedule.
 - Automatic Strength/Tread 50 notes describe their independent two-week repeat
   rule and available 29th-31st bonus dates, regardless of the 60-minute schedule's
   repeat links. All benchmark reminders and bonus guidance remain visible in a
@@ -41,6 +45,19 @@
   Invalid settings preserve the draft and disable stale exports. Escape user copy.
 
 ## Data contract
+
+The additive `appearance` object selects clean/reference layout,
+comfortable/compact spacing, calendar artwork and optional section visibility.
+Missing values follow the new clean design; legacy JSON and backups still load.
+See [visual design](visual-design.md) and [style presets](appearance-presets.md).
+
+November 10, 2026 validation verification: eleven red cases reproduced CLI
+validation accepting invalid event bounds, reversed ranges, non-integer and
+boolean dates, and blank/non-string names. Moving the existing browser event
+rules into shared validation makes CLI checks and rendering reject these values
+without mutating the schedule. `tests/test_validation.py`,
+`tests/test_browser_bridge.py`, and `tests/test_event_calendar.py` pass all 54 cases,
+including valid single-day/month-long events and existing bridge behavior.
 
 Month adds `category_styles` (per-key color/optional visibility), `key_dates`
 (additional linked rows), `key_date_overrides` (sparse patches keyed by derived row

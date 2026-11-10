@@ -36,6 +36,8 @@ ICON_NAMES = (
     "equalizer", "autorenew", "menu_book", "groups", "cyclone", "bolt",
     "star", "flag", "local_fire_department", "filter_hdr", "local_cafe",
     "military_tech",
+    "rowing", "swap_horiz", "balance", "chair_alt",
+    "airline_seat_recline_extra", "all_inclusive", "timer",
 )
 
 
@@ -77,7 +79,8 @@ def make_icon_fn(allow_fetch: bool = True):
         st = f' style="color:{color}"' if color else ""
         return Markup(
             f'<svg viewBox="0 -960 960 960" fill="currentColor" '
-            f'xmlns="http://www.w3.org/2000/svg"{c}{st}>'
+            f'xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" '
+            f'data-icon="{name}"{c}{st}>'
             f"{icon_body(name, allow_fetch=allow_fetch)}</svg>"
         )
 

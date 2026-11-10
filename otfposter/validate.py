@@ -86,9 +86,32 @@ def customization_errors(m: Month) -> list[tuple[str, str]]:
     def error(label, message):
         issues.append((ERROR, f'{label}: {message}'))
 
+    options = {'layout': ('clean', 'reference'), 'density': ('comfortable', 'compact')}
+    flags = {'calendar_icons', 'show_marked_dates', 'show_highlights', 'show_repeat_map', 'show_workout_guide'}
+    if not isinstance(m.appearance, dict):
+        error('Appearance', 'settings must be an object')
+    else:
+        for key, value in m.appearance.items():
+            if key in options:
+                if value not in options[key]:
+                    error('Appearance', f'choose a supported {key}')
+            elif key in flags:
+                if type(value) is not bool:
+                    error('Appearance', f'{key} must be true or false')
+            else:
+                error('Appearance', f'unsupported setting {key}')
+
     for key, label in [('additional_info', 'Additional info'), ('credits', 'Credits & team')]:
         if not isinstance(getattr(m, key), str):
             error(label, 'enter plain text')
+
+    for index, event in enumerate(m.events, 1):
+        label = f'Event {index}'
+        if (type(event.start) is not int or type(event.end) is not int
+                or not 1 <= event.start <= event.end <= m.length):
+            error(label, f'choose start/end days between 1 and {m.length}, in order.')
+        if not isinstance(event.name, str) or not event.name.strip():
+            error(label, 'enter a name.')
 
     def style(value, label):
         if not isinstance(value, dict):

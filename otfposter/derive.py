@@ -9,12 +9,12 @@ from __future__ import annotations
 from datetime import date
 import re
 
-from .categories import BY_KEY, CATEGORIES, light_text
+from .categories import BY_KEY, CATEGORIES, category_icon, contrast_foreground, contrast_ratio
 from .models import Month
 
 # Icons (Material Symbols names) used for the Key Dates rows, per category.
 KEY_DATE_ICONS = {
-    "bench": ("local_cafe", "#6A1B9A"),
+    "bench": ("timer", "#1A3A6B"),
     "sig": ("military_tech", "#F4511E"),
     "spec": ("local_fire_department", "#E53935"),
 }
@@ -73,6 +73,9 @@ def highlights(m: Month) -> list[dict]:
             value = "none scheduled this month"
         rows.append({
             "color": category_color(m, cat.key),
+            "text_color": (category_color(m, cat.key)
+                           if contrast_ratio(category_color(m, cat.key), '#FFFFFF') >= 4.5
+                           else '#20242B'),
             "label": _plural(cat.label),
             "value": value,
             "count": len(dates),
@@ -329,13 +332,7 @@ def category_color(m: Month, key: str) -> str:
 
 
 def category_foreground(m: Month, key: str) -> str:
-    color = category_color(m, key)
-    if 'color' not in m.category_styles.get(key, {}):
-        return '#fff' if light_text(color) else '#5C6470'
-    rgb = [int(color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
-    linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb]
-    luminance = sum(v * weight for v, weight in zip(linear, (0.2126, 0.7152, 0.0722)))
-    return '#000000' if luminance > 0.179 else '#FFFFFF'
+    return contrast_foreground(category_color(m, key))
 
 
 def pill(entry, m: Month) -> dict:
@@ -344,6 +341,20 @@ def pill(entry, m: Month) -> dict:
         "label": entry.title or cat.label if entry.category.startswith('custom_') else entry.label,
         "color": category_color(m, cat.key),
         "fg": category_foreground(m, cat.key),
+        "icon": category_icon(cat.key),
+    }
+
+
+def appearance_settings(m: Month) -> dict:
+    """Resolve sparse per-month appearance settings without changing the Month."""
+    settings = getattr(m, 'appearance', {})
+    reference = settings.get('layout', 'clean') == 'reference'
+    return {
+        'layout': 'reference' if reference else 'clean',
+        'density': 'comfortable', 'calendar_icons': True,
+        'show_marked_dates': reference, 'show_highlights': reference,
+        'show_repeat_map': True, 'show_workout_guide': reference,
+        **settings,
     }
 
 
@@ -394,13 +405,14 @@ def build_context(m: Month) -> dict:
     used = {entry.category for day in m.days for entry in day.entries}
     legend = [
         {"label": c.label, "color": category_color(m, c.key), "blurb": c.blurb,
-         "fg": category_foreground(m, c.key)}
+         "fg": category_foreground(m, c.key), "icon": category_icon(c.key)}
         for c in sorted(m.categories(), key=lambda c: c.order)
         if m.category_styles.get(c.key, {}).get('visible', c.key in used)
     ]
 
     return {
         "m": m,
+        "appearance": appearance_settings(m),
         "title_month": m.name,
         "subtitle": m.subtitle,
         "theme": m.theme,

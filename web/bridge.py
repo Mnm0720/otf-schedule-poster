@@ -59,12 +59,6 @@ def _result(m, parse_notes="", *, edited=False, import_report=None):
         raise ValueError('\n'.join(message for _, message in errors))
     m.register_unknowns()
     issues = validate.check(m)
-    for index, event in enumerate(m.events, 1):
-        if (type(event.start) is not int or type(event.end) is not int
-                or not 1 <= event.start <= event.end <= m.length):
-            raise ValueError(f"Event {index}: choose start/end days between 1 and {m.length}, in order.")
-        if not event.name.strip():
-            raise ValueError(f"Event {index}: enter a name.")
     errors = [msg for severity, msg in issues if severity == "error"]
     if edited and errors:
         raise ValueError("\n".join(errors))
@@ -88,7 +82,7 @@ def _result(m, parse_notes="", *, edited=False, import_report=None):
     })
 
 
-def generate(text, month=None, theme="", tagline=""):
+def generate(text, month=None, theme="", tagline="", appearance_preset_json=""):
     if not text or not text.strip():
         raise ValueError(_EMPTY_MSG)
     year = mo = None
@@ -104,6 +98,25 @@ def generate(text, month=None, theme="", tagline=""):
         m.theme = theme
     if tagline:
         m.tagline = tagline
+    if appearance_preset_json:
+        try:
+            settings = json.loads(appearance_preset_json)
+            allowed = {'appearance', 'category_styles', 'note_style', 'footnote_styles', 'credits'}
+            if not isinstance(settings, dict) or set(settings) - allowed:
+                raise ValueError('unsupported schedule fields')
+            style = Month(m.year, m.month)
+            for key, value in settings.items():
+                if key == 'category_styles' and (not isinstance(value, dict)
+                        or any(name.startswith('custom_') for name in value)):
+                    raise ValueError('use built-in workout types')
+                setattr(style, key, value)
+            errors = validate.customization_errors(style)
+            if errors:
+                raise ValueError('; '.join(message for _, message in errors))
+        except (ValueError, TypeError, AttributeError) as error:
+            raise ValueError('Appearance preset: ' + str(error)) from None
+        for key in settings:
+            setattr(m, key, getattr(style, key))
     return _result(m, report.render() if not report.clean else "", import_report=report)
 
 

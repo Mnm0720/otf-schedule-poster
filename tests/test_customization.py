@@ -99,10 +99,13 @@ def test_all_types_can_be_hidden_and_settings_roundtrip(month):
 
 @pytest.mark.parametrize('visible_count', [0, 1, 4, 7, 11, 13])
 def test_legend_has_no_empty_layout_columns_when_types_are_toggled(month, visible_count):
+    # The clean preset deliberately hides the detailed guide. Exercise its
+    # column layout with the reference preset that actually displays it.
+    month.appearance = {'layout': 'reference'}
     month.category_styles = {key: {'visible': index < visible_count}
                              for index, key in enumerate(BY_KEY)}
     html = render_html(month, allow_fetch=False)
-    columns = html.count('<div class="bcol">')
+    columns = html.count('<div class="bcol"')
     assert f'grid-template-columns:repeat({columns},1fr)' in html
 
 

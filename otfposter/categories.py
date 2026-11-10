@@ -106,6 +106,20 @@ CATEGORIES: tuple[Category, ...] = (
 
 BY_KEY: dict[str, Category] = {c.key: c for c in CATEGORIES}
 
+# Shared by full/compact calendars and the browser's category inventory. Unknown
+# month-local types retain a labelled star instead of guessing their equipment.
+CATEGORY_ICONS = {
+    'runrow': 'rowing', 'switch': 'swap_horiz', 'lift': 'fitness_center',
+    'elev': 'filter_hdr', 'bosu': 'balance', 'lowbench': 'chair_alt',
+    'incline': 'airline_seat_recline_extra', 'band': 'all_inclusive',
+    'sig': 'military_tech', 'bench': 'timer', 'spec': 'local_fire_department',
+    'std': 'check_circle', 'unknown': 'star',
+}
+
+
+def category_icon(key: str) -> str:
+    return CATEGORY_ICONS.get(key, 'star')
+
 _ALIAS_INDEX: dict[str, Category] = {}
 for _c in CATEGORIES:
     _ALIAS_INDEX[_c.label.lower()] = _c
@@ -125,6 +139,24 @@ def lookup(name: str) -> Category | None:
 
 def light_text(color: str) -> bool:
     """True when white text on this colour is readable (used for pill contrast)."""
-    r, g, b = (int(color[i:i + 2], 16) for i in (1, 3, 5))
-    # Relative luminance, sRGB-ish. 0.55 lands Standard's #E4E7EB on dark text.
-    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.62
+    return contrast_foreground(color) == '#FFFFFF'
+
+
+def relative_luminance(color: str) -> float:
+    """WCAG relative luminance after linearizing the sRGB channels."""
+    if len(color) == 4:
+        color = '#' + ''.join(char * 2 for char in color[1:])
+    channels = [int(color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    linear = [v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4
+              for v in channels]
+    return sum(value * weight for value, weight in zip(linear, (.2126, .7152, .0722)))
+
+
+def contrast_ratio(first: str, second: str) -> float:
+    light, dark = sorted((relative_luminance(first), relative_luminance(second)), reverse=True)
+    return (light + .05) / (dark + .05)
+
+
+def contrast_foreground(background: str) -> str:
+    """Choose the higher-contrast black/white foreground (always at least 4.5)."""
+    return max(('#000000', '#FFFFFF'), key=lambda color: contrast_ratio(background, color))

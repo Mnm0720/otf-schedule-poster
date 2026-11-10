@@ -30,12 +30,13 @@ async function app(storageMap=new Map(), bundle={files:{}, examples:{}}, startup
     },
     OTFRuntime:{createRuntime:()=>({initialize:startup.initialize||(async()=>({examples:bundle.examples})),execute:async(name,args)=>{
       calls.push({name,args});if(fail)throw fail===true?new Error('Test render failure'):fail;
+      if(startup.rejectDefaultStyle && name==='generate' && args[4])throw new Error('Appearance preset: choose an icon from the available list');
       const draft=name==='regenerate'||name==='restore'?JSON.parse(args[0]):schedule;
       return JSON.stringify({html:`<p>${draft.subtitle}</p>`,slug:'2026-09',days:30,schedule:draft,
         categories:[{key:'std',label:'Standard'}],defaults:{notes:['Auto'],footnotes:[]},errors:[],notes:'',...(startup.response?.(name,draft)||{})});
     }}),loadExportLibrary:async name=>name==='image'?context.htmlToImage:context.PDFLib},
   });
-  for (const name of ['editor-state.js','editor.js','workspace.js','app.js']) {
+  for (const name of ['editor-state.js','appearance.js','editor.js','workspace.js','app.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../web', name), 'utf8'), context);
   }
   await new Promise(resolve => setTimeout(resolve, 0));
@@ -59,6 +60,36 @@ test('generate → edit → regenerate updates preview and download without pars
   assert.equal(a.els.preview.srcdoc, '<p>Edited subtitle</p>');
   assert.equal(a.editorState.current.html, a.els.preview.srcdoc);
   assert.equal(a.context.document.getElementById('exportBtn').disabled, false);
+});
+
+test('a default style is sent only to fresh generation, never to regeneration', async()=>{
+  const {PresetStore,capturePreset}=require('../web/appearance.js');const values=new Map();
+  const storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
+  new PresetStore(storage).save(capturePreset({appearance:{layout:'reference'},credits:'Studio credit'},'Studio'),true);
+  const a=await app(values);await a.generate();
+  const call=a.calls.find(item=>item.name==='generate');
+  assert.equal(JSON.parse(call.args[4]).appearance.layout,'reference');
+  assert.equal(JSON.parse(call.args[4]).credits,'Studio credit');
+  a.editor.change(d=>{d.subtitle='Keep current month';});await a.regenerate();
+  const update=a.calls.find(item=>item.name==='regenerate');assert.equal(update.args.length,1);
+  assert.equal(JSON.parse(update.args[0]).subtitle,'Keep current month');
+});
+
+test('a corrupt style store cannot replace a generation failure with a success message',async()=>{
+  const {PresetStore}=require('../web/appearance.js');const values=new Map([[PresetStore.KEY,'{broken']]);
+  const a=await app(values);a.setFailure(true);await a.generate();
+  assert.equal(a.editorState.current,null);assert.match(a.els.status.textContent,/Test render failure/);
+  assert.equal(values.get(PresetStore.KEY),'{broken');
+});
+
+test('an unsupported saved default style recovers into the built-in style without deleting the preset',async()=>{
+  const {PresetStore,capturePreset}=require('../web/appearance.js');const values=new Map();
+  const storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
+  new PresetStore(storage).save(capturePreset({note_style:{icon:'not_cached'}},'Old style'),true);
+  const before=values.get(PresetStore.KEY),a=await app(values,{}, {rejectDefaultStyle:true});
+  await a.generate();assert.ok(a.editorState.current);assert.equal(a.calls.length,2);
+  assert.equal(a.calls[1].args[4],'');assert.equal(values.get(PresetStore.KEY),before);
+  assert.match(a.els.status.textContent,/saved style.*built-in style/i);
 });
 
 test('autosave restores pending edits after reopening and restart keeps the saved poster',async()=>{
@@ -100,6 +131,7 @@ test('source is hidden after success and only confirmed restart permits a fresh 
   assert.equal(a.els.go.disabled, true);
   await a.generate(); assert.equal(a.calls.length, 1);
   a.editor.change(d => { d.subtitle = 'Already saved edit'; }); await a.regenerate();
+  doc.getElementById('appearanceSection').open=true;
   doc.getElementById('restart').onclick();
   assert.equal(doc.getElementById('restartDialog').open,true);
   doc.getElementById('restartCancel').onclick();
@@ -109,6 +141,7 @@ test('source is hidden after success and only confirmed restart permits a fresh 
   doc.getElementById('restartConfirm').onclick();
   assert.equal(doc.getElementById('restartDialog').open,false);
   assert.equal(a.editorState.draft, null); assert.equal(a.editorState.current, null);
+  assert.equal(doc.getElementById('appearanceSection').open,false);
   assert.equal(doc.getElementById('sourceInputs').hidden, false);
   assert.equal(a.els.previewWrap.hidden, true);
   assert.equal(a.els.go.disabled, false); assert.equal(doc.getElementById('exportBtn').disabled, true);

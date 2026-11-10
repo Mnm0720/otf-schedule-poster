@@ -2,7 +2,7 @@
 
 Paste the monthly r/orangetheory thread, get a printable schedule poster.
 
-<img src="out/otf_2026-09.png" alt="Example poster" width="400">
+<img src="out/2026-11-revised/poster.png" alt="November poster with workout icons" width="400">
 
 ## Generate a poster
 
@@ -20,6 +20,18 @@ The editor shows loading progress on first use. If loading fails, use **Retry
 loading**; your pasted text stays in place.
 
 ### Fix or customize your poster
+
+**Appearance & reusable styles** offers a clean calendar or a detailed reference
+layout, comfortable/compact spacing, workout icons on calendar dates, and section
+visibility controls. Icons use locally cached SVG artwork and always accompany
+readable workout labels. The default palette chooses contrasting text colors.
+
+Save a named style to reuse its appearance, built-in workout colors, note/icon
+styles and credits. **Use this style for new posters when saved** makes it the
+default for fresh generations. Restored drafts keep their own settings. Styles
+never copy workout dates, events, repeat links, themes or linked Key Dates.
+Download/import style JSON to move a preset between devices. Presets and poster
+drafts are separate browser saves; storage failures keep the current poster open.
 
 After generating, the text inputs are hidden and Generate is disabled. Use
 **2. Review and edit** to check the schedule before downloading. **Original thread
@@ -171,12 +183,15 @@ under **Poster title & theme**.
 
 ### Example posts
 
-The site ships with built-in examples (Oct 2025, Apr 2026, Aug 2026, Sep 2026) so
+The site ships with built-in examples through November 2026 so
 you can see what the output looks like before you paste anything.
 
 ## How the poster is laid out
 
-Each poster includes:
+Available poster sections are listed below. The clean layout prioritizes the
+calendar; the detailed reference layout also shows the marked-date ribbon,
+equipment highlights and workout guide. Appearance controls can change these
+sections independently without changing the schedule.
 
 | Section | What it shows |
 | --- | --- |
@@ -219,6 +234,70 @@ color, highlights row, and legend follow automatically.
 If you have write access to the repo: **Actions → Build poster → Run workflow**, paste
 the thread into the `schedule_text` box, and run. The poster is attached as a run
 artifact.
+
+### Automatically check the monthly post
+
+**Actions → Check monthly post** discovers the current month's r/orangetheory
+thread and prepares a review artifact daily at 14:17 UTC. Run it manually for a
+different month or a specific post URL. The current month uses New York time.
+This becomes active after the workflow is on the default branch; scheduled runs
+can be delayed, and GitHub can disable them after 60 days without repository activity.
+
+The default source is the public monthly-post RSS feed when OAuth credentials are
+absent. The feed supplies full post content; the artifact preserves its original
+HTML, converted text, source URL, timestamps and hashes. API mode supports an
+approved app through `REDDIT_CLIENT_ID`/`REDDIT_CLIENT_SECRET`, with an optional
+`REDDIT_REFRESH_TOKEN` for authorized refresh-token access. An existing
+`REDDIT_ACCESS_TOKEN` remains supported. Configure `REDDIT_USER_AGENT` for contact
+information. These credentials do not grant Reddit API approval themselves.
+
+The lightweight fetch runs before installing rendering dependencies. It pins the
+verified post and checks persistent fingerprints covering source facts, parser
+findings, templates/assets and saved edits. Unchanged reviews reuse their previews;
+changed inputs rebuild. From the 25th, the workflow also checks for next month's
+post. Missing posts, authentication problems and rate limits have distinct states.
+
+Updates compare the previous imported source, the new source and your edited
+schedule. Untouched fields follow source corrections; manual changes remain, with
+conflicts requiring review. The artifact includes plain-language changes, inferred
+dates, source/validation findings, full/phone/social images, a visual contact sheet
+and contrast/font/clipping checks. It never silently replaces your edited schedule
+or submits a Reddit post. Committed raw sources also receive isolated previews in
+**Build poster**, including months without saved JSON.
+
+Manual dispatch can optionally prepare a **draft PR** with reviewed schedule,
+source and independent import-baseline files. This is disabled by default and
+requires the repository's Actions PR setting. Scheduled checks have read-only
+repository permissions. A failed retrieval retains diagnostics; saved-paste and
+saved-feed fallbacks remain available.
+
+Run the same check locally:
+
+```bash
+python scripts/check_monthly.py --month 2026-11 --source-mode rss --png --visual-check
+python scripts/check_monthly.py --month 2026-11 --input schedules/raw/2026-11.txt --png --visual-check
+```
+
+Use `--browser-channel chrome` if Playwright Chromium is not installed. Review
+outputs stay under `build/monthly/`; the existing browser editor remains entirely
+static and account-free. See the [monthly import contract](specs/monthly-import.md).
+
+### Test historical Reddit posts
+
+The offline corpus contains **40 complete monthly posts**: January 2024 through
+November 2026, plus five posts from 2020–2023. It lives under
+`tests/fixtures/monthly/` and is not shipped as extra editor examples.
+
+```bash
+python scripts/collect_months.py --replay-only
+python scripts/collect_months.py --start-month 2024-01 --end-month 2026-11
+```
+
+The second command retrieves the public RSS feed. Use `--feed-file` for a saved
+Atom/RSS XML file. Existing fixtures cannot be silently replaced by a different
+post or edited body. Replay reports retain recognized/inferred dates and every
+finding; remaining warnings and genuine upstream errors return nonzero for review.
+See [historical corpus coverage](specs/historical-corpus.md).
 
 ---
 

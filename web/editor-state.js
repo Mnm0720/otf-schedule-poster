@@ -17,7 +17,7 @@
       }
       this.current = clone(result);
       this.draft = clone(result.schedule);
-      for (const key of ['category_styles','key_date_overrides','footnote_styles','note_style']) this.draft[key] ??= {};
+      for (const key of ['category_styles','key_date_overrides','footnote_styles','note_style','appearance']) this.draft[key] ??= {};
       this.draft.key_dates ??= [];
       this.draft.additional_info ??= '';
       this.draft.credits ??= result.defaults.credits || '';
@@ -35,6 +35,7 @@
       if (comparable(before.key_dates) !== comparable(after.key_dates)) return 'key dates';
       if (comparable(before.key_date_overrides) !== comparable(after.key_date_overrides)) return 'key dates';
       if (comparable(before.category_styles) !== comparable(after.category_styles)) return 'workout types';
+      if (comparable(before.appearance) !== comparable(after.appearance)) return 'appearance';
       if (comparable(before.notes) !== comparable(after.notes) || comparable(before.note_style) !== comparable(after.note_style)) return 'notes';
       if (comparable(before.footnotes) !== comparable(after.footnotes) || comparable(before.footnote_styles) !== comparable(after.footnote_styles)) return 'monthly notes';
       if (comparable(before.events) !== comparable(after.events)) return 'events';
@@ -87,7 +88,7 @@
     resetSection(section) {
       const keys={title:['theme','tagline','subtitle'],schedule:['days'],keyDates:['key_dates','key_date_overrides'],
         workouts:['category_styles'],notes:['notes','note_style'],monthlyNotes:['footnotes','footnote_styles'],
-        events:['events'],additionalInfo:['additional_info'],credits:['credits']}[section];
+        events:['events'],additionalInfo:['additional_info'],credits:['credits'],appearance:['appearance']}[section];
       if(!keys)throw new Error('Unknown section');
       this.edit(d=>{for(const key of keys){if(key in this.initial)d[key]=clone(this.initial[key]);else delete d[key];}});
     }

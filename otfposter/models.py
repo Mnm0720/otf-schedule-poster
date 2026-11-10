@@ -94,6 +94,7 @@ class Month:
     footnotes: list[dict] = field(default_factory=list)  # bottom-right callouts
     events: list[Event] = field(default_factory=list)
     category_styles: dict[str, dict] = field(default_factory=dict)
+    appearance: dict = field(default_factory=dict)
     key_dates: list[dict] = field(default_factory=list)
     key_date_overrides: dict[str, dict] = field(default_factory=dict)
     footnote_styles: dict[str, dict] = field(default_factory=dict)

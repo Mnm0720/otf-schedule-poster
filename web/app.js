@@ -41,13 +41,15 @@ let examples = {};
 let current = { html: "", slug: "poster", days: 0 };
 const editorState = new OTFEditor.EditorState();
 let draftStore=null, activeDraftId=null, savedSuccessfully=false, openingDraft=false;
+let presetStore=null;
+try { presetStore=new OTFAppearance.PresetStore(localStorage); } catch { /* Style downloads remain available. */ }
 let saveMessage = '';
 try { draftStore=new OTFWorkspace.DraftStore(localStorage); } catch { /* Storage may be disabled. */ }
 const editor = new ScheduleEditor(document, editorState, () => {
   saveLocal();
   syncControls();
   status("Edits saved locally when available. Update preview before downloading.");
-});
+}, presetStore);
 
 let toastTimer = null;
 function showToast(text) {
@@ -210,7 +212,14 @@ async function generate() {
     status("Paste the monthly thread first. Copy the whole Reddit post \u2014 title, prose, and the category lists \u2014 and try again.", true);
     return;
   }
-  await renderPoster("generate", [text, els.month.value.trim() || null]);
+  let preset=null, presetProblem='';
+  try { preset=presetStore?.defaultPreset(); } catch(error) { presetProblem=error.message; }
+  const rendered=await renderPoster("generate", [text, els.month.value.trim() || null, '', '', preset ? JSON.stringify(preset.settings) : '']);
+  if(!rendered && preset && runtimeReady && els.status.textContent.includes('Appearance preset:')){
+    const recovered=await renderPoster('generate',[text,els.month.value.trim()||null,'','','']);
+    if(recovered)status('The saved style could not be applied. Your poster uses the built-in style; the saved style was kept. Open Appearance to replace it or clear the default.',true);
+  }
+  if(presetProblem && editorState.current)status(`Poster generated with the built-in style. ${presetProblem}`,true);
 }
 
 function restartFromText() {
@@ -237,7 +246,7 @@ function confirmRestart() {
   savePaste();
   current = {html:'', slug:'poster', days:0};
   editor.selectedDay = editor.selectedKeyDate = editor.selectionMonth = null;
-  for (const id of ['titleSection','keyDateSection','workoutSection','notesSection','monthlyNotesSection','eventsSection','additionalInfoSection','creditsSection']) $(id).open = false;
+  for (const id of ['appearanceSection','titleSection','keyDateSection','workoutSection','notesSection','monthlyNotesSection','eventsSection','additionalInfoSection','creditsSection']) $(id).open = false;
   els.previewWrap.hidden = $('editorWrap').hidden = true;
   els.preview.srcdoc = '';
   previewFullSize = false;

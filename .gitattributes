@@ -1,3 +1,8 @@
 *.woff2 binary
 *.png binary
 * text=auto eol=lf
+
+# Raw Reddit Markdown keeps meaningful hard-break spaces and original blank lines.
+schedules/raw/*.txt -whitespace
+# Exported iCalendar bytes require CRLF; folded lines may end in a word separator.
+*.ics -text -whitespace

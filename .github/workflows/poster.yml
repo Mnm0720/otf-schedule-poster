@@ -5,7 +5,7 @@ name: Build poster
 # people are expected to generate a poster.
 #
 #   1. Paste a month's post into the Actions UI (workflow_dispatch).
-#   2. Push a file to schedules/raw/ and it renders on merge.
+#   2. Push a file to schedules/raw/ and it gets an isolated import preview.
 #   3. Open a PR touching a schedule -- renders a preview artifact.
 on:
   workflow_dispatch:
@@ -37,11 +37,15 @@ on:
       - "schedules/**"
       - "otfposter/**"
       - "assets/**"
+      - "scripts/check_monthly.py"
+      - ".github/workflows/poster.yml"
   pull_request:
     paths:
       - "schedules/**"
       - "otfposter/**"
       - "assets/**"
+      - "scripts/check_monthly.py"
+      - ".github/workflows/poster.yml"
 
 permissions:
   contents: read
@@ -60,17 +64,18 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+          cache-dependency-path: requirements-pages.lock
 
       - name: Install
         run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          python -m pip install -r requirements-pages.lock
+          python -m pip install --no-deps --no-build-isolation -e .
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements-pages.lock') }}
 
       - name: Install Chromium
         run: python -m playwright install --with-deps chromium
@@ -100,11 +105,26 @@ jobs:
           python -m otfposter "${args[@]}"
 
       # ---- committed schedules (push / PR) -----------------------------
+      - name: Review committed source posts without replacing edited schedules
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from scripts.check_monthly import main
+
+          status = 0
+          for source in sorted(Path('schedules/raw').glob('*.txt')):
+              status = max(status, main(['--month', source.stem, '--input', str(source),
+                                        '--out', 'build/monthly', '--png']))
+          raise SystemExit(status)
+          PY
+
       - name: Render all schedules
         if: github.event_name != 'workflow_dispatch'
         run: python -m otfposter render --offline
 
       - name: Upload poster
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: otf-poster${{ github.event_name == 'pull_request' && '-preview' || '' }}
@@ -112,4 +132,5 @@ jobs:
           path: |
             out/*.png
             out/*.html
-          if-no-files-found: error
+            build/monthly/
+          if-no-files-found: warn

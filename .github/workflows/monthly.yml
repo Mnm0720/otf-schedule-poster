@@ -1,0 +1,189 @@
+name: Check monthly post
+
+# Scheduled checks stay read-only. Draft PR creation is an explicit dispatch choice.
+on:
+  schedule:
+    - cron: '17 14 * * *'
+  workflow_dispatch:
+    inputs:
+      month:
+        description: 'YYYY-MM (blank uses the current America/New_York month)'
+        required: false
+        type: string
+      source_url:
+        description: 'Optional exact monthly post URL; verified URLs are pinned after discovery'
+        required: false
+        type: string
+      source_mode:
+        description: 'auto uses public RSS without OAuth; api requires approved Reddit access'
+        type: choice
+        options: [auto, rss, api]
+        default: auto
+      check_next_month:
+        description: 'Check next month too (auto starts on the 25th)'
+        type: choice
+        options: [auto, on, off]
+        default: auto
+      create_draft_pr:
+        description: 'Create/update a draft PR from clean reviews (requires repository setting and write permissions)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monthly-review-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      ready: ${{ steps.eligibility.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore previous source state and review artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          IN_BRANCH: ${{ github.ref_name }}
+        run: |
+          mkdir -p build/monthly build/monthly-state
+          run_id=$(gh api "repos/$GH_REPO/actions/workflows/monthly.yml/runs?status=completed&branch=$IN_BRANCH&per_page=1" --jq '.workflow_runs[0].id // empty' || true)
+          if [ -n "$run_id" ]; then
+            gh run download "$run_id" --name monthly-review-state --dir build/monthly-state || true
+            gh run download "$run_id" --name monthly-post-review --dir build/monthly || true
+          fi
+      - name: Fetch and compare before installing render dependencies
+        id: fetch
+        continue-on-error: true
+        env:
+          IN_MONTH: ${{ inputs.month }}
+          IN_SOURCE_URL: ${{ inputs.source_url }}
+          IN_SOURCE_MODE: ${{ inputs.source_mode || 'auto' }}
+          IN_NEXT_MONTH: ${{ inputs.check_next_month || 'auto' }}
+          REDDIT_ACCESS_TOKEN: ${{ secrets.REDDIT_ACCESS_TOKEN }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_REFRESH_TOKEN: ${{ secrets.REDDIT_REFRESH_TOKEN }}
+          REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
+        run: |
+          python - <<'PY'
+          import os
+          from scripts.check_monthly import main
+          args = ['--fetch-only', '--png', '--visual-check', '--source-mode', os.environ['IN_SOURCE_MODE'], '--check-next-month', os.environ['IN_NEXT_MONTH']]
+          if os.environ.get('IN_MONTH'):
+              args += ['--month', os.environ['IN_MONTH']]
+          if os.environ.get('IN_SOURCE_URL'):
+              args += ['--url', os.environ['IN_SOURCE_URL']]
+          raise SystemExit(main(args))
+          PY
+      - name: Install pinned render and test dependencies only for changes
+        if: steps.fetch.outputs.changed == 'true'
+        run: |
+          python -m pip install -r requirements-pages.lock
+          python -m pip install --no-deps --no-build-isolation -e .
+      - name: Run regression tests for changed candidates
+        if: steps.fetch.outputs.changed == 'true'
+        run: python -m pytest -q
+      - name: Install Chromium only for changes
+        if: steps.fetch.outputs.changed == 'true'
+        run: python -m playwright install --with-deps chromium
+      - name: Render changed sources and check every layout
+        if: steps.fetch.outputs.changed == 'true'
+        continue-on-error: true
+        run: python scripts/check_monthly.py --resume build/monthly/manifest.json
+      - name: Determine draft PR eligibility
+        id: eligibility
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('build/monthly/manifest.json')
+          ready = False
+          if path.exists():
+              for item in json.loads(path.read_text())['checks']:
+                  report = json.loads((Path(item['directory']) / 'report.json').read_text())
+                  ready |= report['status'] == 'ready' or (report['status'] == 'unchanged' and report.get('review_status') == 'ready')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('ready=' + str(ready).lower() + '\n')
+          PY
+      - name: Upload source, diagnostics and visual previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monthly-post-review
+          path: build/monthly/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Persist next run's fingerprints and pinned URLs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monthly-review-state
+          path: build/monthly-state/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Report unresolved review failures
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('build/monthly/manifest.json')
+          if not path.exists():
+              raise SystemExit('No monthly review manifest was produced.')
+          checks = json.loads(path.read_text())['checks']
+          if any(item['status'] == 'changed' or item['exit_code'] for item in checks):
+              raise SystemExit('Monthly checks require attention; download monthly-post-review and inspect the run summary.')
+          PY
+
+  draft-pr:
+    if: github.event_name == 'workflow_dispatch' && inputs.create_draft_pr && needs.review.outputs.ready == 'true'
+    needs: review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: monthly-post-review
+          path: build/monthly
+      - name: Stage clean schedule, source and independent import baseline
+        run: |
+          python -m scripts.monthly_state --stage-pr build/monthly/manifest.json --destination build/monthly-pr
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          staged = Path('build/monthly-pr/schedules')
+          if staged.exists():
+              shutil.copytree(staged, 'schedules', dirs_exist_ok=True)
+          PY
+      # This action needs the repository setting allowing Actions to create PRs.
+      # Nothing enables that setting or dispatches the write job here.
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          branch: automation/monthly-review
+          title: 'Review updated monthly schedules'
+          commit-message: 'Prepare verified monthly schedule updates'
+          body-path: build/monthly-pr/pull-request.md
+          draft: always-true
+          add-paths: |
+            schedules/*.json
+            schedules/raw/*.txt
+            schedules/baselines/*.json

@@ -80,6 +80,137 @@ def check_october_events(browser, base):
         context.close()
 
 
+def check_november_source(browser, base):
+    """Check the latest monthly example through real parsing, editing and ICS."""
+    context = browser.new_context(viewport={"width": 390, "height": 844}, accept_downloads=True)
+    try:
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(base)
+        expect(page.locator("#go")).to_be_enabled(timeout=120000)
+        page.locator("#sampleSection > summary").click()
+        page.locator("#examples").get_by_role("button", name="2026-11", exact=True).click()
+        expect(page.locator("#src")).to_have_value(re.compile("November 2026 - Monthly Post"))
+        page.locator("#go").click()
+        expect(page.locator("#exportBtn")).to_be_enabled(timeout=60000)
+        preview = page.frame_locator("#preview")
+
+        def check_preview():
+            expect(preview.locator(".theme")).to_contain_text("COMMUNITY & MOBILITY")
+            for day, title in ((1, "Member Choice"), (5, ".25 Mile"), (13, "1 Mile"),
+                               (17, "200 Meter row"), (23, "Strength in Numbers")):
+                cell = preview.locator(".dnum").filter(has_text=re.compile(rf"^{day}(?:3G)?$")).locator("..")
+                expect(cell).to_contain_text(title)
+                expect(preview.locator(".kd").filter(has_text=title)).to_have_count(1)
+            cell_23 = preview.locator(".dnum").filter(has_text=re.compile(r"^23(?:3G)?$")).locator("..")
+            expect(cell_23.locator(".g3")).to_have_count(1)
+            for day in (27, 30):
+                cell = preview.locator(".dnum").filter(has_text=re.compile(rf"^{day}$")).locator("..")
+                expect(cell).to_contain_text("Not a repeat")
+                expect(cell).not_to_contain_text("Repeat of")
+
+        check_preview()
+        page.locator("#dayJump").select_option("23")
+        expect(page.get_by_label("Day 23 3G", exact=True)).to_be_checked()
+        for day in (27, 30):
+            page.locator("#dayJump").select_option(str(day))
+            expect(page.get_by_label(f"Day {day} repeat of", exact=True)).to_have_value("")
+        page.locator("#titleSection > summary").click()
+        page.get_by_label("Poster subtitle", exact=True).fill("November verified source")
+        expect(page.locator("#exportBtn")).to_be_disabled()
+        page.locator("#regenerate").click()
+        expect(page.locator("#exportBtn")).to_be_enabled(timeout=60000)
+        expect(preview.locator(".sub")).to_have_text("November verified source")
+        check_preview()
+
+        page.locator("#exportFormat").select_option("ics")
+        with page.expect_download(timeout=60000) as download_event:
+            page.locator("#exportBtn").click()
+        download = download_event.value
+        assert download.suggested_filename.endswith(".ics"), download.suggested_filename
+        calendar = Path(download.path()).read_text(encoding="utf-8").replace("\n ", "")
+        assert ".25 Mile" in calendar and "Strength in Numbers (3G)" in calendar
+        for day in (27, 30):
+            event = next(part for part in calendar.split("BEGIN:VEVENT")
+                         if f"DTSTART;VALUE=DATE:202611{day}" in part)
+            assert "Not a repeat" in event
+            assert "Repeat of" not in event
+        assert not errors, errors
+    finally:
+        context.close()
+
+
+def check_appearance_presets(browser, base):
+    """A style moves between months while dates and restored edits remain local."""
+    context = browser.new_context(viewport={"width": 390, "height": 844}, accept_downloads=True)
+    try:
+        page = context.new_page()
+        page.goto(base)
+        expect(page.locator('#go')).to_be_enabled(timeout=120000)
+        page.locator('#src').fill((ROOT / 'schedules/raw/2026-11.txt').read_text(encoding='utf-8'))
+        page.locator('#go').click()
+        expect(page.locator('#exportBtn')).to_be_enabled(timeout=60000)
+        assert page.frame_locator('#preview').locator('td .pill svg').count() > 0
+        page.locator('#appearanceSection > summary').click()
+        page.get_by_label('Poster layout', exact=True).select_option('reference')
+        page.get_by_label('Poster spacing', exact=True).select_option('compact')
+        page.get_by_label('Show workout icons on calendar dates', exact=True).uncheck()
+        page.locator('#workoutSection > summary').click()
+        page.get_by_label('Run/Row color', exact=True).fill('#123456')
+        page.locator('#creditsSection > summary').click()
+        page.get_by_label('Credits & team', exact=True).fill('Image: Studio style smoke')
+        page.get_by_label('Style preset name', exact=True).fill('Studio smoke')
+        page.get_by_label('Use saved style for new posters', exact=True).check()
+        page.get_by_role('button', name='Save style preset', exact=True).click()
+        expect(page.locator('#presetStatus')).to_contain_text('saved')
+        page.locator('#regenerate').click()
+        expect(page.locator('#exportBtn')).to_be_enabled(timeout=60000)
+        expect(page.frame_locator('#preview').locator('td .pill svg')).to_have_count(0)
+        with page.expect_download() as download_event:
+            page.get_by_role('button', name='Download style preset', exact=True).click()
+        preset = json.loads(Path(download_event.value.path()).read_text(encoding='utf-8'))
+        assert preset['settings']['credits'] == 'Image: Studio style smoke'
+        assert not any(key in preset['settings'] for key in ('days', 'events', 'theme', 'key_dates'))
+        page.locator('#restart').click()
+        page.locator('#restartConfirm').click()
+        page.locator('#src').fill((ROOT / 'schedules/raw/2026-09.txt').read_text(encoding='utf-8'))
+        page.locator('#go').click()
+        expect(page.locator('#exportBtn')).to_be_enabled(timeout=60000)
+        values = page.evaluate('({month:editorState.draft.month,appearance:editorState.draft.appearance,credits:editorState.draft.credits,color:editorState.draft.category_styles.runrow.color})')
+        assert values['month'] == 9 and values['appearance']['layout'] == 'reference'
+        assert values['appearance']['calendar_icons'] is False
+        assert values['credits'] == 'Image: Studio style smoke' and values['color'] == '#123456'
+        page.locator('#appearanceSection > summary').click()
+        page.get_by_label('Show workout icons on calendar dates', exact=True).check()
+        page.locator('#regenerate').click()
+        expect(page.locator('#exportBtn')).to_be_enabled(timeout=60000)
+        page.reload()
+        expect(page.locator('#editorWrap')).to_be_visible(timeout=120000)
+        assert page.evaluate('editorState.draft.appearance.calendar_icons') is True
+        page.locator('#appearanceSection > summary').click()
+        for width in (320, 390):
+            page.set_viewport_size({'width': width, 'height': 844})
+            assert page.evaluate('document.documentElement.scrollWidth <= document.documentElement.clientWidth'), f'Appearance overflow at {width}px'
+        check_accessibility(page)
+        # A broken imported default must never lock the user out of generation.
+        page.evaluate("""() => {
+          const key='otf-appearance-presets-v1',data=JSON.parse(localStorage.getItem(key));
+          data.presets.push({version:1,name:'Unsupported old style',settings:{note_style:{icon:'not_cached'}}});
+          data.defaultName='Unsupported old style';localStorage.setItem(key,JSON.stringify(data));
+        }""")
+        page.locator('#restart').click()
+        page.locator('#restartConfirm').click()
+        page.locator('#go').click()
+        expect(page.locator('#exportBtn')).to_be_enabled(timeout=60000)
+        expect(page.locator('#status')).to_contain_text('saved style could not be applied')
+        page.locator('#appearanceSection > summary').click()
+        page.get_by_role('button',name='Clear default style preset',exact=True).click()
+        expect(page.locator('#presetStatus')).to_contain_text('built-in style')
+    finally:
+        context.close()
+
+
 def smoke(site: Path, browser_channel=None):
     with tempfile.TemporaryDirectory(prefix="otf-pages-smoke-") as temporary:
         root = Path(temporary)
@@ -174,12 +305,14 @@ def smoke(site: Path, browser_channel=None):
                 print("Headless CI timings (not representative phone/production measurements): " + json.dumps(measurements))
                 context.close()
                 check_october_events(browser, base)
+                check_november_source(browser, base)
+                check_appearance_presets(browser, base)
                 browser.close()
         finally:
             server.shutdown()
             server.server_close()
             thread.join(timeout=5)
-    print("Built-site smoke passed: real worker/Pyodide, October events/3G/regeneration, retry, restoration, mobile layout, editor accessibility (poster artwork excluded), PNG and PDF.")
+    print("Built-site smoke passed: real worker/Pyodide, October events/3G/regeneration, November key dates/3G/nonrepeats/ICS, reusable styles across months, retry, restoration, mobile layout, editor accessibility (poster artwork excluded), PNG and PDF.")
 
 
 if __name__ == "__main__":

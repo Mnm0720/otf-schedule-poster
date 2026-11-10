@@ -2,11 +2,14 @@
 (function (root) {
   const {parseDayList} = typeof module !== 'undefined' && module.exports
     ? require('./editor-state.js') : root.OTFEditor;
+  const appearanceAPI = typeof module !== 'undefined' && module.exports
+    ? require('./appearance.js') : root.OTFAppearance;
   const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   class ScheduleEditor {
-    constructor(doc, state, changed) {
+    constructor(doc, state, changed, presetStore = null) {
       this.doc = doc; this.state = state; this.changed = changed; this.serial = 0;
+      this.presetStore = presetStore;
       this.fields = new Map();
     }
     node(tag, text, cls) {
@@ -58,16 +61,78 @@
       return select;
     }
     render() {
-      this.renderCalendar(); this.renderCopy(); this.renderKeyDates(); this.renderWorkoutTypes();
+      this.renderCalendar(); this.renderCopy(); this.renderKeyDates(); this.renderWorkoutTypes(); this.renderAppearance();
       this.renderReview();
       for(const [id,key,label] of [['headingEditor','title','title & theme'],['calendarEditor','schedule','schedule'],
         ['keyDatesEditor','keyDates','Key Dates'],['workoutTypesEditor','workouts','Workout Types'],
         ['notesEditor','notes','Strength & Tread 50 notes'],['monthlyNotesEditor','monthlyNotes','Monthly notes'],
-        ['eventsEditor','events','Events'],['additionalInfoEditor','additionalInfo','Additional info'],['creditsEditor','credits','Credits & team']]) {
+        ['eventsEditor','events','Events'],['additionalInfoEditor','additionalInfo','Additional info'],['creditsEditor','credits','Credits & team'],
+        ['appearanceEditor','appearance','Appearance']]) {
         const reset=this.button(`Reset ${label}`,`Reset ${label} section`,()=>{this.state.resetSection(key);this.render();this.changed();});
         reset.className='small-button section-reset';this.doc.getElementById(id+'Reset').replaceChildren(reset);
       }
       this.doc.getElementById('editorWrap').hidden = false;
+    }
+    renderAppearance() {
+      const host=this.doc.getElementById('appearanceEditor');host.replaceChildren();
+      const m=this.state.draft, a=m.appearance ??= {};
+      this.select(host,'Layout','Poster layout',[['clean','Clean calendar'],['reference','Detailed reference']],a.layout||'clean',value=>{
+        Object.assign(a,{layout:value,show_marked_dates:value==='reference',show_highlights:value==='reference',
+          show_repeat_map:true,show_workout_guide:value==='reference'});this.renderAppearance();
+      });
+      this.select(host,'Spacing','Poster spacing',[['comfortable','Comfortable'],['compact','Compact']],a.density||'comfortable',value=>{a.density=value;});
+      this.checkbox(host,'Show workout icons on calendar dates','Show workout icons on calendar dates',a.calendar_icons!==false,
+        checked=>this.change(()=>{a.calendar_icons=checked;}));
+      for(const [key,label,fallback] of [['show_marked_dates','Marked Dates ribbon',a.layout==='reference'],
+        ['show_highlights','Workout date highlights',a.layout==='reference'],['show_repeat_map','Repeat map',true],
+        ['show_workout_guide','Detailed workout guide',a.layout==='reference']]){
+        this.checkbox(host,label,`Show ${label}`,a[key]??fallback,checked=>this.change(()=>{a[key]=checked;}));
+      }
+      host.append(this.node('p','Save colors, spacing, sections, icon styles and credits for another month. Dates, workouts, themes and events stay with their poster.','hint'));
+      let presets=[],problem='',defaultName='';
+      try{presets=this.presetStore?.list()||[];defaultName=this.presetStore?.defaultPreset()?.name||'';}catch(error){problem=error.message;}
+      host.append(this.node('p',defaultName?`New posters use: ${defaultName}.`:'New posters use the built-in style.','hint'));
+      const row=this.node('div',undefined,'style-controls');host.append(row);
+      const name=this.node('input');name.type='text';name.maxLength=80;name.value=this.presetName||'My poster style';
+      name.id=`editor-field-${++this.serial}`;name.setAttribute('aria-label','Style preset name');
+      const label=this.node('label','Style preset name');label.htmlFor=name.id;
+      const nameWrap=this.node('div',undefined,'editor-field');nameWrap.append(label,name);row.append(nameWrap);
+      name.oninput=()=>{this.presetName=name.value;};
+      this.checkbox(host,'Use this style for new posters when saved','Use saved style for new posters',Boolean(this.makePresetDefault),checked=>{this.makePresetDefault=checked;});
+      const picker=this.select(host,'Saved style','Saved style preset',presets.map(p=>[p.name,p.name]),this.selectedPreset||presets[0]?.name,()=>{});
+      this.selectedPreset=picker.value;picker.onchange=()=>{this.selectedPreset=picker.value;};
+      const feedback=this.doc.getElementById('presetStatus');feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');
+      feedback.textContent=problem||this.presetMessage||'';
+      const attempt=fn=>{try{fn();}catch(error){feedback.textContent=error.message;}};
+      host.append(this.button('Save style','Save style preset',()=>attempt(()=>{
+        if(!this.presetStore)throw new Error('Browser storage is unavailable. Download your style preset as a backup.');
+        const saved=this.presetStore.save(appearanceAPI.capturePreset(this.state.draft,name.value),Boolean(this.makePresetDefault));
+        this.selectedPreset=saved.name;this.presetName=saved.name;this.presetMessage='Style preset saved in this browser.';this.renderAppearance();
+      })));
+      const apply=this.button('Apply saved style','Apply saved style preset',()=>attempt(()=>{
+        const preset=this.presetStore?.list().find(p=>p.name===this.selectedPreset);
+        if(!preset)throw new Error('Choose a saved style first.');
+        this.change(d=>Object.assign(d,appearanceAPI.applyPreset(d,preset)));this.presetMessage='Style applied. Update preview to see it.';this.render();
+      }));apply.disabled=!presets.length;host.append(apply);
+      host.append(this.button('Download style','Download style preset',()=>attempt(()=>{
+        const preset=appearanceAPI.capturePreset(this.state.draft,name.value);
+        const url=root.URL.createObjectURL(new root.Blob([JSON.stringify(preset,null,2)],{type:'application/json'}));
+        const link=this.node('a');link.href=url;link.download='otf-style-preset.json';link.click();root.setTimeout(()=>root.URL.revokeObjectURL(url),60000);
+        feedback.textContent='Style preset downloaded.';
+      })));
+      const importLabel=this.node('label','Import style preset','file-label ghost');const input=this.node('input');input.type='file';input.accept='.json,application/json';
+      input.setAttribute('aria-label','Import style preset');input.onchange=async()=>{
+        try{
+          const file=input.files?.[0];if(!file)return;if(file.size>64000)throw new Error('Appearance preset is too large.');
+          const preset=appearanceAPI.validatePreset(JSON.parse(await file.text()));
+          if(!this.presetStore)throw new Error('Browser storage is unavailable. Your current poster was kept.');
+          this.presetStore.save(preset,false);this.selectedPreset=preset.name;this.presetName=preset.name;
+          this.presetMessage='Style imported. Choose Apply saved style to use it.';this.renderAppearance();
+        }catch(error){feedback.textContent=error.message;}finally{input.value='';}
+      };importLabel.append(input);host.append(importLabel);
+      host.append(this.button('Stop using a default style','Clear default style preset',()=>attempt(()=>{
+        this.presetStore?.clearDefault();this.makePresetDefault=false;this.presetMessage='New posters will use the built-in style.';this.renderAppearance();
+      })));
     }
     renderCalendar() {
       const grid = this.doc.getElementById('calendarEditor'); grid.replaceChildren();

@@ -70,6 +70,11 @@ The persistence, sharing, history, and export extensions are specified in
 
 ## Responsive/readability regression
 
+Appearance and reusable styles follow [appearance-presets.md](appearance-presets.md).
+Named styles transfer visual settings and credits across months without carrying
+schedule dates. Corrupt stores remain recoverable; an unsupported saved default
+cannot prevent a fresh poster from opening with the built-in style.
+
 ### Moderator workflow update, September 2026
 
 - Use Paste thread, Review and edit, and Preview and download as visible stages.

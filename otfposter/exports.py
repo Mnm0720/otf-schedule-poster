@@ -5,7 +5,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from markupsafe import Markup
-from .assets import font_css
+from .assets import font_css, make_icon_fn
 from .derive import build_context
 from .render import safe_tagline
 
@@ -59,5 +59,6 @@ def compact_html(m, layout):
                       undefined=StrictUndefined, trim_blocks=True, lstrip_blocks=True)
     context = build_context(m)
     context['tagline'] = safe_tagline(m.tagline)
+    context['icon'] = make_icon_fn(allow_fetch=False)
     return {'html': env.get_template('compact.html.j2').render(**context,
             font_css=Markup(font_css(allow_fetch=False)), layout=layout, height=height), 'width': 1080, 'height': height}
