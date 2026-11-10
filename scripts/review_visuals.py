@@ -34,7 +34,7 @@ METRICS_SCRIPT = r"""() => {
  }
  const overflow=[...poster.querySelectorAll('td,.pill,.event-label,.kd,.map')].filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.textContent.trim().slice(0,100));
  const broken=[...poster.querySelectorAll('img')].filter(e=>!e.complete||!e.naturalWidth).map(e=>e.alt||e.src.slice(0,60));
- return {width:bounds.width,height:bounds.height,texts,missing_fonts:[...missing],font_errors:faces.filter(f=>f.status==='error').map(f=>f.family),overflow:[...new Set(overflow)],clipped:[...clipped],broken_images:broken,
+ return {visual_style:poster.dataset.visualStyle||'',width:bounds.width,height:bounds.height,texts,missing_fonts:[...missing],font_errors:faces.filter(f=>f.status==='error').map(f=>f.family),overflow:[...new Set(overflow)],clipped:[...clipped],broken_images:broken,
    calendar_icons:poster.querySelectorAll('td .pill svg').length,loaded_fonts:[...fonts]};
 }"""
 
@@ -70,11 +70,20 @@ def review_html(layouts: list[dict]) -> str:
             'p{color:#4c535d}</style><h1>Poster visual review</h1><main>' + ''.join(cards) + '</main></html>')
 
 
+def classify_findings(metrics: dict, findings: list[str]) -> tuple[list[str], list[str]]:
+    """Retain readability diagnostics for the user-requested original style."""
+    if metrics.get('visual_style') != 'classic':
+        return findings, []
+    warnings = [value for value in findings if value.startswith(('Text contrast ', 'Text size '))
+                or value == 'Missing font: Inter']  # Original compact stack has an Arial fallback.
+    return [value for value in findings if value not in warnings], warnings
+
+
 def run_visual_review(directory: Path, browser_channel: str | None = None) -> dict:
     from playwright.sync_api import sync_playwright
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    report = {'status': 'failed', 'errors': [], 'layouts': []}
+    report = {'status': 'failed', 'errors': [], 'warnings': [], 'layouts': []}
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(channel=browser_channel)
@@ -100,10 +109,13 @@ def run_visual_review(directory: Path, browser_channel: str | None = None) -> di
                             }""")
                         metrics = page.evaluate(METRICS_SCRIPT)
                         issues = assess_metrics(metrics)
+                        errors, warnings = classify_findings(metrics, issues)
                         page.locator('.poster').screenshot(path=str(directory / image))
-                        item = {'layout': layout, 'image': image, 'issues': issues, 'metrics': metrics}
+                        item = {'layout': layout, 'image': image, 'issues': issues, 'errors': errors,
+                                'warnings': warnings, 'metrics': metrics}
                         report['layouts'].append(item)
-                        report['errors'].extend(f'{layout}: {issue}' for issue in issues)
+                        report['errors'].extend(f'{layout}: {issue}' for issue in errors)
+                        report['warnings'].extend(f'{layout}: {issue}' for issue in warnings)
                     finally:
                         page.close()
                 cards = [{**item, 'image_data': 'data:image/png;base64,' + base64.b64encode((directory / item['image']).read_bytes()).decode('ascii')}

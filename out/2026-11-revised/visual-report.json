@@ -1,1089 +1,1570 @@
 {
   "status": "passed",
   "errors": [],
+  "warnings": [
+    "full: Text contrast 3.48:1 below 4.5:1: MARKED DATES",
+    "full: Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+    "full: Text contrast 3.48:1 below 4.5:1: Lift More",
+    "full: Text contrast 4.23:1 below 4.5:1: Switch Template",
+    "full: Text contrast 4.10:1 below 4.5:1: Minibands",
+    "full: Text contrast 3.39:1 below 4.5:1: Not a repeat",
+    "full: Text contrast 3.48:1 below 4.5:1: Not a repeat",
+    "full: Text contrast 3.18:1 below 4.5:1: Repeat of 11/2",
+    "full: Text contrast 3.18:1 below 4.5:1: Repeat of 11/3",
+    "full: Text contrast 3.18:1 below 4.5:1: Repeat of 11/4",
+    "full: Text contrast 3.10:1 below 4.5:1: Repeat of 11/6",
+    "full: Text contrast 3.10:1 below 4.5:1: Repeat of 11/7",
+    "full: Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+    "full: Text contrast 3.18:1 below 4.5:1: Repeat of 11/8",
+    "full: Text contrast 3.18:1 below 4.5:1: Repeat of 11/9",
+    "full: Text contrast 3.18:1 below 4.5:1: Repeat of 11/10",
+    "full: Text contrast 3.10:1 below 4.5:1: Repeat of 11/12",
+    "full: Text contrast 3.10:1 below 4.5:1: Repeat of 11/14",
+    "full: Text contrast 3.48:1 below 4.5:1: Mon / Thu",
+    "full: Text contrast 3.48:1 below 4.5:1: Tue / Fri",
+    "full: Text contrast 3.48:1 below 4.5:1: Wed / Sat / Sun",
+    "full: Text contrast 3.48:1 below 4.5:1: Key Dates",
+    "full: Text contrast 3.48:1 below 4.5:1: Template & Equipment Highlights",
+    "full: Text contrast 4.23:1 below 4.5:1: Switch Templates:",
+    "full: Text contrast 3.48:1 below 4.5:1: Lift More:",
+    "full: Text contrast 4.10:1 below 4.5:1: Minibands:",
+    "full: Text contrast 2.16:1 below 4.5:1: Signatures:",
+    "full: Text contrast 4.23:1 below 4.5:1: Specialties:",
+    "full: Text contrast 3.48:1 below 4.5:1: Repeat Template Map",
+    "full: Text contrast 4.23:1 below 4.5:1: 11/15, 11/16, 11/17, 11/23, 11/27, 11/30 are not repeats",
+    "full: Text contrast 3.48:1 below 4.5:1: Workout Types & Monthly Notes",
+    "full: Text contrast 2.77:1 below 4.5:1: Signature",
+    "full: Text contrast 4.23:1 below 4.5:1: Specialty",
+    "full: Text contrast 3.48:1 below 4.5:1: Repeat",
+    "full: Text contrast 2.26:1 below 4.5:1: Schedule data from https://www.reddit.com/r/orangetheory/comments/1xqghtv/november_2026_monthly_post",
+    "phone: Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+    "phone: Text contrast 3.48:1 below 4.5:1: Lift More",
+    "phone: Text contrast 4.23:1 below 4.5:1: Switch Template",
+    "phone: Text contrast 4.10:1 below 4.5:1: Minibands",
+    "phone: Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+    "phone: Missing font: Inter",
+    "social: Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+    "social: Text contrast 3.48:1 below 4.5:1: Lift More",
+    "social: Text contrast 4.23:1 below 4.5:1: Switch Template",
+    "social: Text contrast 4.10:1 below 4.5:1: Minibands",
+    "social: Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+    "social: Missing font: Inter"
+  ],
   "layouts": [
     {
       "layout": "full",
       "image": "poster.png",
-      "issues": [],
+      "issues": [
+        "Text contrast 3.48:1 below 4.5:1: MARKED DATES",
+        "Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+        "Text contrast 3.48:1 below 4.5:1: Lift More",
+        "Text contrast 4.23:1 below 4.5:1: Switch Template",
+        "Text contrast 4.10:1 below 4.5:1: Minibands",
+        "Text contrast 3.39:1 below 4.5:1: Not a repeat",
+        "Text contrast 3.48:1 below 4.5:1: Not a repeat",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/2",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/3",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/4",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/6",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/7",
+        "Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/8",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/9",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/10",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/12",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/14",
+        "Text contrast 3.48:1 below 4.5:1: Mon / Thu",
+        "Text contrast 3.48:1 below 4.5:1: Tue / Fri",
+        "Text contrast 3.48:1 below 4.5:1: Wed / Sat / Sun",
+        "Text contrast 3.48:1 below 4.5:1: Key Dates",
+        "Text contrast 3.48:1 below 4.5:1: Template & Equipment Highlights",
+        "Text contrast 4.23:1 below 4.5:1: Switch Templates:",
+        "Text contrast 3.48:1 below 4.5:1: Lift More:",
+        "Text contrast 4.10:1 below 4.5:1: Minibands:",
+        "Text contrast 2.16:1 below 4.5:1: Signatures:",
+        "Text contrast 4.23:1 below 4.5:1: Specialties:",
+        "Text contrast 3.48:1 below 4.5:1: Repeat Template Map",
+        "Text contrast 4.23:1 below 4.5:1: 11/15, 11/16, 11/17, 11/23, 11/27, 11/30 are not repeats",
+        "Text contrast 3.48:1 below 4.5:1: Workout Types & Monthly Notes",
+        "Text contrast 2.77:1 below 4.5:1: Signature",
+        "Text contrast 4.23:1 below 4.5:1: Specialty",
+        "Text contrast 3.48:1 below 4.5:1: Repeat",
+        "Text contrast 2.26:1 below 4.5:1: Schedule data from https://www.reddit.com/r/orangetheory/comments/1xqghtv/november_2026_monthly_post"
+      ],
+      "errors": [],
+      "warnings": [
+        "Text contrast 3.48:1 below 4.5:1: MARKED DATES",
+        "Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+        "Text contrast 3.48:1 below 4.5:1: Lift More",
+        "Text contrast 4.23:1 below 4.5:1: Switch Template",
+        "Text contrast 4.10:1 below 4.5:1: Minibands",
+        "Text contrast 3.39:1 below 4.5:1: Not a repeat",
+        "Text contrast 3.48:1 below 4.5:1: Not a repeat",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/2",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/3",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/4",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/6",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/7",
+        "Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/8",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/9",
+        "Text contrast 3.18:1 below 4.5:1: Repeat of 11/10",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/12",
+        "Text contrast 3.10:1 below 4.5:1: Repeat of 11/14",
+        "Text contrast 3.48:1 below 4.5:1: Mon / Thu",
+        "Text contrast 3.48:1 below 4.5:1: Tue / Fri",
+        "Text contrast 3.48:1 below 4.5:1: Wed / Sat / Sun",
+        "Text contrast 3.48:1 below 4.5:1: Key Dates",
+        "Text contrast 3.48:1 below 4.5:1: Template & Equipment Highlights",
+        "Text contrast 4.23:1 below 4.5:1: Switch Templates:",
+        "Text contrast 3.48:1 below 4.5:1: Lift More:",
+        "Text contrast 4.10:1 below 4.5:1: Minibands:",
+        "Text contrast 2.16:1 below 4.5:1: Signatures:",
+        "Text contrast 4.23:1 below 4.5:1: Specialties:",
+        "Text contrast 3.48:1 below 4.5:1: Repeat Template Map",
+        "Text contrast 4.23:1 below 4.5:1: 11/15, 11/16, 11/17, 11/23, 11/27, 11/30 are not repeats",
+        "Text contrast 3.48:1 below 4.5:1: Workout Types & Monthly Notes",
+        "Text contrast 2.77:1 below 4.5:1: Signature",
+        "Text contrast 4.23:1 below 4.5:1: Specialty",
+        "Text contrast 3.48:1 below 4.5:1: Repeat",
+        "Text contrast 2.26:1 below 4.5:1: Schedule data from https://www.reddit.com/r/orangetheory/comments/1xqghtv/november_2026_monthly_post"
+      ],
       "metrics": {
+        "visual_style": "classic",
         "width": 1200,
-        "height": 2058.0625,
+        "height": 1948.953125,
         "texts": [
           {
             "text": "OTF",
-            "size": 58,
-            "weight": 700,
-            "ratio": 7.385880722224861,
-            "family": "Barlow Condensed"
+            "size": 72,
+            "weight": 400,
+            "ratio": 3.475475506926296,
+            "family": "Anton"
           },
           {
             "text": "NOVEMBER 2026",
-            "size": 58,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "size": 72,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Monthly Schedule Poster",
-            "size": 21,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 30,
+            "weight": 400,
+            "ratio": 3.8894235650868696,
+            "family": "Anton"
           },
           {
-            "text": "COMMUNITY & MOBILITY",
-            "size": 20,
+            "text": "\u2605 THEME OF THE MONTH: COMMUNITY & MOBILITY \u2605",
+            "size": 27,
             "weight": 700,
-            "ratio": 6.69433384033015,
-            "family": "Barlow"
+            "ratio": 3.475475506926296,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "MARKED DATES",
+            "size": 19,
+            "weight": 400,
+            "ratio": 3.475475506926296,
+            "family": "Anton"
+          },
+          {
+            "text": "11/1 Specialty: Member Choice",
+            "size": 20,
+            "weight": 600,
+            "ratio": 10.425425098372932,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "\u00b7 11/5 Benchmark: .25 Mile \u00b7 11/13 Benchmark: 1 Mile \u00b7 11/17 Benchmark: 200 Meter row \u00b7 11/23 Signat",
+            "size": 20,
+            "weight": 600,
+            "ratio": 17.758836800979772,
+            "family": "Barlow Condensed"
           },
           {
             "text": "Sun",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "Mon",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "Tue",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "Wed",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "Thu",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "Fri",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "Sat",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.758836800979772,
             "family": "Barlow Condensed"
           },
           {
             "text": "1",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Specialty: Member Choice",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 4.968261964804532,
+            "ratio": 4.226830257495532,
             "family": "Barlow Condensed"
           },
           {
             "text": "2",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Low Bench",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 6.6138160256812535,
             "family": "Barlow Condensed"
           },
           {
             "text": "3",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "4",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "BOSU",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 9.390820863829939,
             "family": "Barlow Condensed"
           },
           {
             "text": "5",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Benchmark: .25 Mile",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
             "ratio": 11.281514520808521,
             "family": "Barlow Condensed"
           },
           {
             "text": "Switch Template",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
-            "ratio": 4.968261964804532,
+            "ratio": 4.226830257495532,
             "family": "Barlow Condensed"
           },
           {
             "text": "6",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Run/Row",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 5.74632080646379,
             "family": "Barlow Condensed"
           },
           {
             "text": "7",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Run/Row",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
             "ratio": 5.74632080646379,
             "family": "Barlow Condensed"
           },
           {
             "text": "Elevation Gain",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
-            "ratio": 4.643153893303642,
+            "ratio": 4.522787846917201,
             "family": "Barlow Condensed"
           },
           {
             "text": "Minibands",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
-            "ratio": 5.120353685186739,
+            "ratio": 4.10127918716891,
             "family": "Barlow Condensed"
           },
           {
             "text": "8",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "9",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "10",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Run/Row",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 5.74632080646379,
             "family": "Barlow Condensed"
           },
           {
             "text": "11",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "12",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "13",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Benchmark: 1 Mile",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 11.281514520808521,
             "family": "Barlow Condensed"
           },
           {
             "text": "14",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "15",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "Not a repeat",
-            "size": 15,
+            "size": 12.5,
             "weight": 600,
-            "ratio": 7.0111603009288554,
+            "ratio": 3.389684321379746,
             "family": "Barlow"
           },
           {
             "text": "16",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "Not a repeat",
-            "size": 15,
+            "size": 12.5,
             "weight": 600,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow"
           },
           {
             "text": "17",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Benchmark: 200 Meter row",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 11.281514520808521,
             "family": "Barlow Condensed"
           },
           {
             "text": "Not a repeat",
-            "size": 15,
+            "size": 12.5,
             "weight": 600,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow"
           },
           {
             "text": "18",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Low Bench",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 6.6138160256812535,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/2",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 3.1798303726270465,
             "family": "Barlow"
           },
           {
             "text": "19",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/3",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 3.1798303726270465,
             "family": "Barlow"
           },
           {
             "text": "20",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "BOSU",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 9.390820863829939,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/4",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 3.1798303726270465,
             "family": "Barlow"
           },
           {
             "text": "21",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Run/Row",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 5.74632080646379,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/6",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.571728259107333,
+            "ratio": 3.101337108335316,
             "family": "Barlow"
           },
           {
             "text": "22",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Run/Row",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
             "ratio": 5.74632080646379,
             "family": "Barlow Condensed"
           },
           {
             "text": "Elevation Gain",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
-            "ratio": 4.643153893303642,
+            "ratio": 4.522787846917201,
             "family": "Barlow Condensed"
           },
           {
             "text": "Minibands",
-            "size": 17,
+            "size": 13.5,
             "weight": 700,
-            "ratio": 5.120353685186739,
+            "ratio": 4.10127918716891,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/7",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.571728259107333,
+            "ratio": 3.101337108335316,
             "family": "Barlow"
           },
           {
             "text": "23",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "3G",
-            "size": 13,
+            "size": 11,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "ratio": 17.758836800979772,
+            "family": "Barlow Condensed"
           },
           {
             "text": "Signature: Strength in Numbers",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 9.737422511725912,
+            "ratio": 2.7726925858754905,
             "family": "Barlow Condensed"
           },
           {
             "text": "Not a repeat",
-            "size": 15,
+            "size": 12.5,
             "weight": 600,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow"
           },
           {
             "text": "24",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/8",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 3.1798303726270465,
             "family": "Barlow"
           },
           {
             "text": "25",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/9",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 3.1798303726270465,
             "family": "Barlow"
           },
           {
             "text": "26",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Run/Row",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
             "ratio": 5.74632080646379,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/10",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 3.1798303726270465,
             "family": "Barlow"
           },
           {
             "text": "27",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Elevation Gain",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 4.643153893303642,
+            "ratio": 4.522787846917201,
             "family": "Barlow Condensed"
           },
           {
             "text": "Not a repeat",
-            "size": 15,
+            "size": 12.5,
             "weight": 600,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow"
           },
           {
             "text": "28",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/12",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.571728259107333,
+            "ratio": 3.101337108335316,
             "family": "Barlow"
           },
           {
             "text": "29",
-            "size": 29,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.32046465303988,
+            "family": "Anton"
           },
           {
             "text": "Lift More",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 6.042338654998136,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
             "text": "Repeat of 11/14",
-            "size": 15,
+            "size": 12.5,
             "weight": 500,
-            "ratio": 6.571728259107333,
+            "ratio": 3.101337108335316,
             "family": "Barlow"
           },
           {
             "text": "30",
-            "size": 29,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 22,
+            "weight": 400,
+            "ratio": 17.758836800979772,
+            "family": "Anton"
           },
           {
             "text": "Standard",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 16.92879333890639,
+            "ratio": 4.820407014492846,
             "family": "Barlow Condensed"
           },
           {
             "text": "Not a repeat",
-            "size": 15,
+            "size": 12.5,
             "weight": 600,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow"
           },
           {
             "text": "Strength 50 / Tread 50 Weekly Pattern",
-            "size": 21,
-            "weight": 700,
-            "ratio": 14.78113728733904,
-            "family": "Barlow"
+            "size": 23,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Anton"
           },
           {
             "text": "Mon / Thu",
-            "size": 19,
+            "size": 18,
             "weight": 700,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
-            "text": "Upper Body",
-            "size": 16,
+            "text": "Strength 50 =",
+            "size": 12.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 10.143457016551254,
+            "family": "Barlow"
+          },
+          {
+            "text": "Upper Body",
+            "size": 12.5,
+            "weight": 900,
+            "ratio": 10.143457016551254,
             "family": "Barlow"
           },
           {
             "text": "Tue / Fri",
-            "size": 19,
+            "size": 18,
             "weight": 700,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
-            "text": "Lower Body",
-            "size": 16,
+            "text": "Strength 50 =",
+            "size": 12.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 10.143457016551254,
+            "family": "Barlow"
+          },
+          {
+            "text": "Lower Body",
+            "size": 12.5,
+            "weight": 900,
+            "ratio": 10.143457016551254,
             "family": "Barlow"
           },
           {
             "text": "Wed / Sat / Sun",
-            "size": 19,
+            "size": 18,
             "weight": 700,
-            "ratio": 7.385880722224861,
+            "ratio": 3.475475506926296,
             "family": "Barlow Condensed"
           },
           {
-            "text": "Total Body",
-            "size": 16,
+            "text": "Strength 50 =",
+            "size": 12.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 10.143457016551254,
+            "family": "Barlow"
+          },
+          {
+            "text": "Total Body",
+            "size": 12.5,
+            "weight": 900,
+            "ratio": 10.143457016551254,
             "family": "Barlow"
           },
           {
             "text": "Tread 50 runs daily; Strength 50 follows the split at left",
-            "size": 16,
+            "size": 14.5,
             "weight": 500,
-            "ratio": 14.78113728733904,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "Tread benchmarks appear in Tread 50; signatures and specialties do not",
-            "size": 16,
+            "size": 14.5,
             "weight": 500,
-            "ratio": 14.78113728733904,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "Templates never repeat inside the same Monday-Sunday week",
-            "size": 16,
+            "size": 14.5,
             "weight": 500,
-            "ratio": 14.78113728733904,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "Strength / Tread 50 templates from the first 14 days typically repeat two weeks later",
-            "size": 16,
+            "size": 14.5,
             "weight": 500,
-            "ratio": 14.78113728733904,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "November has 30 days; 29th-30th are bonus templates (no 31st)",
-            "size": 16,
+            "size": 14.5,
             "weight": 500,
-            "ratio": 14.78113728733904,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "60-minute benchmarks: 11/5 .25 Mile \u00b7 11/13 1 Mile \u00b7 11/17 200 Meter row",
-            "size": 16,
+            "size": 14.5,
             "weight": 500,
-            "ratio": 14.78113728733904,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "Key Dates",
             "size": 20,
-            "weight": 700,
-            "ratio": 14.007462581300453,
-            "family": "Barlow"
+            "weight": 400,
+            "ratio": 3.475475506926296,
+            "family": "Anton"
           },
           {
             "text": "November 1 (Sunday)",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "Specialty: Member Choice",
-            "size": 16,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 4.863252816835393,
             "family": "Barlow"
           },
           {
             "text": "November 5 (Thursday)",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "Benchmark: .25 Mile",
-            "size": 16,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 4.863252816835393,
             "family": "Barlow"
           },
           {
             "text": "November 13 (Friday)",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "Benchmark: 1 Mile",
-            "size": 16,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 4.863252816835393,
             "family": "Barlow"
           },
           {
             "text": "November 17 (Tuesday)",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "Benchmark: 200 Meter row",
-            "size": 16,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 4.863252816835393,
             "family": "Barlow"
           },
           {
             "text": "November 23 (Monday)",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "Signature: Strength in Numbers",
-            "size": 16,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 4.863252816835393,
             "family": "Barlow"
           },
           {
             "text": "November 15, 16, 17, 23, 27 & 30",
-            "size": 17,
+            "size": 14.5,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "The month\u2019s only non-repeat days",
-            "size": 16,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 4.863252816835393,
+            "family": "Barlow"
+          },
+          {
+            "text": "Template & Equipment Highlights",
+            "size": 20,
+            "weight": 400,
+            "ratio": 3.475475506926296,
+            "family": "Anton"
+          },
+          {
+            "text": "Run/Rows:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 5.74632080646379,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/6, 11/7, 11/10, 11/21, 11/22, 11/26",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Switch Templates:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 4.226830257495532,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/5",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Lift More:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 3.475475506926296,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/3, 11/9, 11/14, 11/15, 11/19, 11/25, 11/29",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Elevation Gain:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 4.522787846917201,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/7, 11/22, 11/27",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "BOSU:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 9.390820863829939,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/4, 11/20",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Low Bench:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 6.6138160256812535,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/2, 11/18",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Minibands:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 4.10127918716891,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/7, 11/22",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Signatures:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 2.156628201632574,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/23 Strength in Numbers",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Benchmarks:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 11.281514520808521,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/5 .25 Mile \u00b7 11/13 1 Mile \u00b7 11/17 200 Meter row",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
+            "family": "Barlow"
+          },
+          {
+            "text": "Specialties:",
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 4.226830257495532,
+            "family": "Barlow"
+          },
+          {
+            "text": "11/1 Member Choice",
+            "size": 13.5,
+            "weight": 400,
+            "ratio": 17.40432753274219,
             "family": "Barlow"
           },
           {
             "text": "Repeat Template Map",
             "size": 20,
-            "weight": 700,
-            "ratio": 14.007462581300453,
-            "family": "Barlow"
+            "weight": 400,
+            "ratio": 3.475475506926296,
+            "family": "Anton"
           },
           {
             "text": "11/18 = 11/2",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/19 = 11/3",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/20 = 11/4",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/21 = 11/6",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/22 = 11/7",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/24 = 11/8",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/25 = 11/9",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/26 = 11/10",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/28 = 11/12",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/29 = 11/14",
-            "size": 17,
+            "size": 13.5,
             "weight": 600,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "11/15, 11/16, 11/17, 11/23, 11/27, 11/30 are not repeats",
-            "size": 16,
-            "weight": 600,
-            "ratio": 7.385880722224861,
+            "size": 13.5,
+            "weight": 700,
+            "ratio": 4.226830257495532,
             "family": "Barlow"
           },
           {
-            "text": "Monthly Notes",
-            "size": 20,
+            "text": "Workout Types & Monthly Notes",
+            "size": 21,
+            "weight": 400,
+            "ratio": 3.475475506926296,
+            "family": "Anton"
+          },
+          {
+            "text": "Run/Row",
+            "size": 13,
             "weight": 700,
-            "ratio": 14.007462581300453,
+            "ratio": 5.74632080646379,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Treadmill running paired with rowing intervals for cardio endurance and power.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Switch Template",
+            "size": 13,
+            "weight": 700,
+            "ratio": 4.226830257495532,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Stations rotate more often than usual for a faster switch-style class.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Lift More",
+            "size": 13,
+            "weight": 700,
+            "ratio": 3.475475506926296,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Strength-forward floor blocks: heavier loads, controlled reps, progression.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Elevation Gain",
+            "size": 13,
+            "weight": 700,
+            "ratio": 4.522787846917201,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Incline-focused tread work that builds lower-body strength and burn.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "BOSU",
+            "size": 13,
+            "weight": 700,
+            "ratio": 9.390820863829939,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Balance trainer work for core engagement, stability, and control.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Low Bench",
+            "size": 13,
+            "weight": 700,
+            "ratio": 6.6138160256812535,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Step-ups, lower-body strength, and bench-based movements.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Minibands",
+            "size": 13,
+            "weight": 700,
+            "ratio": 4.10127918716891,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Resistance-band work targeting glutes, hips, shoulders, and stabilizers.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Signature",
+            "size": 13,
+            "weight": 700,
+            "ratio": 2.7726925858754905,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Recurring named OTF workouts with a known format and coaching focus.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Benchmark",
+            "size": 13,
+            "weight": 700,
+            "ratio": 11.281514520808521,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Timed or measured efforts used to track progress over time.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Specialty",
+            "size": 13,
+            "weight": 700,
+            "ratio": 4.226830257495532,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "Event-style templates built around a theme or a season milestone.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Standard",
+            "size": 13,
+            "weight": 700,
+            "ratio": 4.820407014492846,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "A regular daily template with no signature, benchmark, or equipment emphasis.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
+            "family": "Barlow"
+          },
+          {
+            "text": "Repeat",
+            "size": 13,
+            "weight": 700,
+            "ratio": 3.475475506926296,
+            "family": "Barlow Condensed"
+          },
+          {
+            "text": "The day re-runs an earlier template from the same month.",
+            "size": 12.4,
+            "weight": 500,
+            "ratio": 5.9796670251566315,
             "family": "Barlow"
           },
           {
             "text": "3G-only templates:",
-            "size": 16,
+            "size": 12.6,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 11.5441381151708,
             "family": "Barlow"
           },
           {
             "text": "11/23 run 3G-style even where 2G is listed.",
-            "size": 16,
-            "weight": 400,
-            "ratio": 6.922962673412383,
+            "size": 12.6,
+            "weight": 500,
+            "ratio": 7.060864088441174,
             "family": "Barlow"
           },
           {
             "text": "Specialty workouts this month.",
-            "size": 16,
+            "size": 12.6,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 11.5441381151708,
             "family": "Barlow"
           },
           {
             "text": "Scheduled on 11/1.",
-            "size": 16,
-            "weight": 400,
-            "ratio": 6.922962673412383,
+            "size": 12.6,
+            "weight": 500,
+            "ratio": 7.060864088441174,
             "family": "Barlow"
           },
           {
             "text": "Bench days are specific this month.",
-            "size": 16,
+            "size": 12.6,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 11.5441381151708,
             "family": "Barlow"
           },
           {
             "text": "Low bench 11/2, 11/18.",
-            "size": 16,
-            "weight": 400,
-            "ratio": 6.922962673412383,
+            "size": 12.6,
+            "weight": 500,
+            "ratio": 7.060864088441174,
             "family": "Barlow"
           },
           {
             "text": "Tornado & 90-minute classes",
-            "size": 16,
+            "size": 12.6,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 11.5441381151708,
             "family": "Barlow"
           },
           {
             "text": "stay studio-specific. Two Tornado templates exist each month; coaches pick.",
-            "size": 16,
-            "weight": 400,
-            "ratio": 6.922962673412383,
+            "size": 12.6,
+            "weight": 500,
+            "ratio": 7.060864088441174,
             "family": "Barlow"
           },
           {
             "text": "Hyrox templates aren\u2019t date-specific.",
-            "size": 16,
+            "size": 12.6,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 11.5441381151708,
             "family": "Barlow"
           },
           {
             "text": "Participating studios run whichever training phase they're in.",
-            "size": 16,
-            "weight": 400,
-            "ratio": 6.922962673412383,
+            "size": 12.6,
+            "weight": 500,
+            "ratio": 7.060864088441174,
             "family": "Barlow"
           },
           {
             "text": "Schedule data from https://www.reddit.com/r/orangetheory/comments/1xqghtv/november_2026_monthly_post",
-            "size": 14,
+            "size": 11.5,
             "weight": 500,
-            "ratio": 6.922962673412383,
+            "ratio": 2.26432035713333,
             "family": "Barlow"
           },
           {
             "text": "Credits & team",
-            "size": 15,
+            "size": 14,
             "weight": 700,
-            "ratio": 15.571134057319037,
+            "ratio": 12.73668585899747,
             "family": "Barlow"
           },
           {
             "text": "Image:",
-            "size": 14,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 5.9796670251566315,
             "family": "Barlow"
           },
           {
             "text": "u/MnM0720",
-            "size": 14,
+            "size": 13,
             "weight": 400,
             "ratio": 7.385880722224861,
             "family": "Barlow"
           },
           {
             "text": "Modsquad:",
-            "size": 14,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 5.9796670251566315,
             "family": "Barlow"
           },
           {
             "text": "u/lookie4dacookie",
-            "size": 14,
+            "size": 13,
             "weight": 400,
             "ratio": 7.385880722224861,
             "family": "Barlow"
           },
           {
             "text": ",",
-            "size": 14,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 5.9796670251566315,
             "family": "Barlow"
           },
           {
             "text": "u/jenniferlynn5454",
-            "size": 14,
+            "size": 13,
             "weight": 400,
             "ratio": 7.385880722224861,
             "family": "Barlow"
           },
           {
             "text": ",",
-            "size": 14,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 5.9796670251566315,
             "family": "Barlow"
           },
           {
             "text": "u/pantherluna",
-            "size": 14,
+            "size": 13,
             "weight": 400,
             "ratio": 7.385880722224861,
             "family": "Barlow"
           },
           {
             "text": ", and",
-            "size": 14,
+            "size": 13,
             "weight": 400,
-            "ratio": 6.922962673412383,
+            "ratio": 5.9796670251566315,
             "family": "Barlow"
           },
           {
             "text": "u/Rizzah319",
-            "size": 14,
+            "size": 13,
             "weight": 400,
             "ratio": 7.385880722224861,
             "family": "Barlow"
@@ -1094,8 +1575,9 @@
         "overflow": [],
         "clipped": [],
         "broken_images": [],
-        "calendar_icons": 35,
+        "calendar_icons": 0,
         "loaded_fonts": [
+          "anton",
           "barlow",
           "barlow condensed"
         ]
@@ -1104,1373 +1586,1559 @@
     {
       "layout": "phone",
       "image": "phone.png",
-      "issues": [],
+      "issues": [
+        "Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+        "Text contrast 3.48:1 below 4.5:1: Lift More",
+        "Text contrast 4.23:1 below 4.5:1: Switch Template",
+        "Text contrast 4.10:1 below 4.5:1: Minibands",
+        "Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+        "Missing font: Inter"
+      ],
+      "errors": [],
+      "warnings": [
+        "Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+        "Text contrast 3.48:1 below 4.5:1: Lift More",
+        "Text contrast 4.23:1 below 4.5:1: Switch Template",
+        "Text contrast 4.10:1 below 4.5:1: Minibands",
+        "Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+        "Missing font: Inter"
+      ],
       "metrics": {
+        "visual_style": "classic",
         "width": 1080,
         "height": 1920,
         "texts": [
           {
             "text": "OTF",
-            "size": 57,
+            "size": 48,
             "weight": 700,
-            "ratio": 7.385880722224861,
-            "family": "Barlow Condensed"
+            "ratio": 4.0644765032863575,
+            "family": "Inter"
           },
           {
             "text": "NOVEMBER 2026",
-            "size": 57,
+            "size": 48,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
-          },
-          {
-            "text": "Monthly Schedule Poster",
-            "size": 20,
-            "weight": 400,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "ratio": 13.507309434906857,
+            "family": "Inter"
           },
           {
             "text": "Community & Mobility",
-            "size": 25,
+            "size": 27,
             "weight": 700,
-            "ratio": 6.69433384033015,
-            "family": "Barlow"
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Monthly Schedule Poster",
+            "size": 19,
+            "weight": 400,
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Sun",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Mon",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Tue",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Wed",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Thu",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Fri",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Sat",
-            "size": 19,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "1",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Specialty: Member Choice",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.968261964804532,
-            "family": "Barlow Condensed"
+            "ratio": 4.226830257495532,
+            "family": "Inter"
           },
           {
             "text": "2",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Low Bench",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 6.6138160256812535,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "3",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "4",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "BOSU",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 9.390820863829939,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "5",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Benchmark: .25 Mile",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 11.281514520808521,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Switch Template",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.968261964804532,
-            "family": "Barlow Condensed"
+            "ratio": 4.226830257495532,
+            "family": "Inter"
           },
           {
             "text": "6",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "7",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Elevation Gain",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.643153893303642,
-            "family": "Barlow Condensed"
+            "ratio": 4.522787846917201,
+            "family": "Inter"
           },
           {
             "text": "Minibands",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 5.120353685186739,
-            "family": "Barlow Condensed"
+            "ratio": 4.10127918716891,
+            "family": "Inter"
           },
           {
             "text": "8",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "9",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "10",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "11",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "12",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "13",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Benchmark: 1 Mile",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 11.281514520808521,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "14",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "15",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 16,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "16",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 16,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "17",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Benchmark: 200 Meter row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 11.281514520808521,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 16,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "18",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Low Bench",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 6.6138160256812535,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/2",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "19",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/3",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "20",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "BOSU",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 9.390820863829939,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/4",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "21",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/6",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "22",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Elevation Gain",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.643153893303642,
-            "family": "Barlow Condensed"
+            "ratio": 4.522787846917201,
+            "family": "Inter"
           },
           {
             "text": "Minibands",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 5.120353685186739,
-            "family": "Barlow Condensed"
+            "ratio": 4.10127918716891,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/7",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "23",
-            "size": 30,
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
+          },
+          {
+            "text": "Signature: Strength in Numbers",
+            "size": 17,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "ratio": 2.7726925858754905,
+            "family": "Inter"
           },
           {
             "text": "3G",
             "size": 15,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
-          },
-          {
-            "text": "Signature: Strength in Numbers",
-            "size": 18,
-            "weight": 700,
-            "ratio": 9.737422511725912,
-            "family": "Barlow Condensed"
+            "ratio": 4.521131036704498,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 16,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "24",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/8",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "25",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/9",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "26",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 18,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/10",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "27",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Elevation Gain",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.643153893303642,
-            "family": "Barlow Condensed"
+            "ratio": 4.522787846917201,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 16,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "28",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/12",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "29",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/14",
-            "size": 16,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "30",
-            "size": 30,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 18,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 16,
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
+          },
+          {
+            "text": "Run/Row",
+            "size": 17,
             "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Switch Template",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Lift More",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Elevation Gain",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "BOSU",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Low Bench",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Minibands",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Signature",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Benchmark",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Specialty",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Standard",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
           },
           {
             "text": "Image: u/MnM0720",
             "size": 16,
             "weight": 400,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "ratio": 6.998985568614425,
+            "family": "Inter"
           },
           {
             "text": "Modsquad: u/lookie4dacookie, u/jenniferlynn5454, u/pantherluna, and u/Rizzah319",
             "size": 16,
             "weight": 400,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "ratio": 6.998985568614425,
+            "family": "Inter"
           }
         ],
-        "missing_fonts": [],
+        "missing_fonts": [
+          "Inter"
+        ],
         "font_errors": [],
         "overflow": [],
         "clipped": [],
         "broken_images": [],
-        "calendar_icons": 35,
-        "loaded_fonts": [
-          "barlow",
-          "barlow condensed"
-        ]
+        "calendar_icons": 0,
+        "loaded_fonts": []
       }
     },
     {
       "layout": "social",
       "image": "social.png",
-      "issues": [],
+      "issues": [
+        "Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+        "Text contrast 3.48:1 below 4.5:1: Lift More",
+        "Text contrast 4.23:1 below 4.5:1: Switch Template",
+        "Text contrast 4.10:1 below 4.5:1: Minibands",
+        "Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+        "Missing font: Inter"
+      ],
+      "errors": [],
+      "warnings": [
+        "Text contrast 4.23:1 below 4.5:1: Specialty: Member Choice",
+        "Text contrast 3.48:1 below 4.5:1: Lift More",
+        "Text contrast 4.23:1 below 4.5:1: Switch Template",
+        "Text contrast 4.10:1 below 4.5:1: Minibands",
+        "Text contrast 2.77:1 below 4.5:1: Signature: Strength in Numbers",
+        "Missing font: Inter"
+      ],
       "metrics": {
+        "visual_style": "classic",
         "width": 1080,
         "height": 1350,
         "texts": [
           {
             "text": "OTF",
-            "size": 56.597637,
+            "size": 48,
             "weight": 700,
-            "ratio": 7.385880722224861,
-            "family": "Barlow Condensed"
+            "ratio": 4.0644765032863575,
+            "family": "Inter"
           },
           {
             "text": "NOVEMBER 2026",
-            "size": 56.597637,
+            "size": 48,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
-          },
-          {
-            "text": "Monthly Schedule Poster",
-            "size": 19.858819999999998,
-            "weight": 400,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "ratio": 13.507309434906857,
+            "family": "Inter"
           },
           {
             "text": "Community & Mobility",
-            "size": 24.823525,
+            "size": 27,
             "weight": 700,
-            "ratio": 6.69433384033015,
-            "family": "Barlow"
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Monthly Schedule Poster",
+            "size": 19,
+            "weight": 400,
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Sun",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Mon",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Tue",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Wed",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Thu",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Fri",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "Sat",
-            "size": 18.865879,
+            "size": 20,
             "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow Condensed"
+            "ratio": 5.3756938084548365,
+            "family": "Inter"
           },
           {
             "text": "1",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Specialty: Member Choice",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.968261964804532,
-            "family": "Barlow Condensed"
+            "ratio": 4.226830257495532,
+            "family": "Inter"
           },
           {
             "text": "2",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Low Bench",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 6.6138160256812535,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "3",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "4",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "BOSU",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 9.390820863829939,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "5",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Benchmark: .25 Mile",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 11.281514520808521,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Switch Template",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.968261964804532,
-            "family": "Barlow Condensed"
+            "ratio": 4.226830257495532,
+            "family": "Inter"
           },
           {
             "text": "6",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "7",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Elevation Gain",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.643153893303642,
-            "family": "Barlow Condensed"
+            "ratio": 4.522787846917201,
+            "family": "Inter"
           },
           {
             "text": "Minibands",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 5.120353685186739,
-            "family": "Barlow Condensed"
+            "ratio": 4.10127918716891,
+            "family": "Inter"
           },
           {
             "text": "8",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "9",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "10",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "11",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "12",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "13",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Benchmark: 1 Mile",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 11.281514520808521,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "14",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "15",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 15.887056,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "16",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 15.887056,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "17",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Benchmark: 200 Meter row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 11.281514520808521,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 15.887056,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "18",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Low Bench",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 6.6138160256812535,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/2",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "19",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/3",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "20",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "BOSU",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 9.390820863829939,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/4",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "21",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/6",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "22",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Elevation Gain",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.643153893303642,
-            "family": "Barlow Condensed"
+            "ratio": 4.522787846917201,
+            "family": "Inter"
           },
           {
             "text": "Minibands",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 5.120353685186739,
-            "family": "Barlow Condensed"
+            "ratio": 4.10127918716891,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/7",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "23",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
-          },
-          {
-            "text": "3G",
-            "size": 14.894115,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Signature: Strength in Numbers",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 9.737422511725912,
-            "family": "Barlow Condensed"
+            "ratio": 2.7726925858754905,
+            "family": "Inter"
+          },
+          {
+            "text": "3G",
+            "size": 15,
+            "weight": 700,
+            "ratio": 4.521131036704498,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 15.887056,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "24",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/8",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "25",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/9",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "26",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Run/Row",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
             "ratio": 5.74632080646379,
-            "family": "Barlow Condensed"
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/10",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "27",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Elevation Gain",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 4.643153893303642,
-            "family": "Barlow Condensed"
+            "ratio": 4.522787846917201,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 15.887056,
-            "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "28",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/12",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "29",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Lift More",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 6.042338654998136,
-            "family": "Barlow Condensed"
+            "ratio": 3.475475506926296,
+            "family": "Inter"
           },
           {
             "text": "Repeat of 11/14",
-            "size": 15.887056,
-            "weight": 500,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
           },
           {
             "text": "30",
-            "size": 29.78823,
-            "weight": 700,
-            "ratio": 15.571134057319037,
-            "family": "Barlow"
+            "size": 29,
+            "weight": 800,
+            "ratio": 15.02489087073125,
+            "family": "Inter"
           },
           {
             "text": "Standard",
-            "size": 17.872937999999998,
+            "size": 17,
             "weight": 700,
-            "ratio": 16.92879333890639,
-            "family": "Barlow Condensed"
+            "ratio": 4.820407014492846,
+            "family": "Inter"
           },
           {
             "text": "Not a repeat",
-            "size": 15.887056,
+            "size": 14,
+            "weight": 400,
+            "ratio": 5.9796670251566315,
+            "family": "Inter"
+          },
+          {
+            "text": "Run/Row",
+            "size": 17,
             "weight": 600,
-            "ratio": 7.385880722224861,
-            "family": "Barlow"
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Switch Template",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Lift More",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Elevation Gain",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "BOSU",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Low Bench",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Minibands",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Signature",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Benchmark",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Specialty",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
+          },
+          {
+            "text": "Standard",
+            "size": 17,
+            "weight": 600,
+            "ratio": 13.507309434906857,
+            "family": "Inter"
           },
           {
             "text": "Image: u/MnM0720",
-            "size": 15.887056,
+            "size": 16,
             "weight": 400,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "ratio": 6.998985568614425,
+            "family": "Inter"
           },
           {
             "text": "Modsquad: u/lookie4dacookie, u/jenniferlynn5454, u/pantherluna, and u/Rizzah319",
-            "size": 15.887056,
+            "size": 16,
             "weight": 400,
-            "ratio": 6.922962673412383,
-            "family": "Barlow"
+            "ratio": 6.998985568614425,
+            "family": "Inter"
           }
         ],
-        "missing_fonts": [],
+        "missing_fonts": [
+          "Inter"
+        ],
         "font_errors": [],
         "overflow": [],
         "clipped": [],
         "broken_images": [],
-        "calendar_icons": 35,
-        "loaded_fonts": [
-          "barlow",
-          "barlow condensed"
-        ]
+        "calendar_icons": 0,
+        "loaded_fonts": []
       }
     }
   ]

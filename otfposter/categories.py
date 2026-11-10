@@ -139,7 +139,9 @@ def lookup(name: str) -> Category | None:
 
 def light_text(color: str) -> bool:
     """True when white text on this colour is readable (used for pill contrast)."""
-    return contrast_foreground(color) == '#FFFFFF'
+    r, g, b = (int(color[i:i + 2], 16) for i in (1, 3, 5))
+    # Relative luminance, sRGB-ish. 0.55 lands Standard's #E4E7EB on dark text.
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.62
 
 
 def relative_luminance(color: str) -> float:

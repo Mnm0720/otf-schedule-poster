@@ -14,6 +14,21 @@ from otfposter.render import render_html
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_default_restores_the_requested_classic_poster_appearance(month):
+    html = output(month, 'full')
+    assert 'data-visual-style="classic"' in html
+    assert 'class="corner tl"' in html and 'class="hero-icon dark"' in html
+    assert "font-family:'Anton'" in html and 'font-size:72px' in html
+    assert 'MARKED DATES' in html
+    assert 'Template &amp; Equipment Highlights' in html
+    assert 'Workout Types &amp; Monthly Notes' in html
+    assert 'class="workout-icon"' not in html
+    assert derive.category_foreground(month, 'lift') == '#fff'
+    benchmark = next(row for row in derive.key_dates(month)
+                     if row['detail'].startswith('Benchmark:'))
+    assert (benchmark['icon'], benchmark['color']) == ('local_cafe', '#6A1B9A')
+
+
 @pytest.fixture
 def month():
     return parse((ROOT / 'schedules/raw/2026-11.txt').read_text(encoding='utf-8'))[0]
@@ -36,32 +51,35 @@ def contrast(first, second):
     return (light + .05) / (dark + .05)
 
 
-@pytest.mark.parametrize('key', list(categories.BY_KEY))
-def test_builtin_pill_foregrounds_meet_normal_text_contrast(month, key):
-    foreground = derive.category_foreground(month, key)
-    assert contrast(categories.BY_KEY[key].color, foreground) >= 4.5
+@pytest.mark.parametrize('key,foreground', [
+    ('runrow', '#fff'), ('lift', '#fff'), ('elev', '#fff'), ('switch', '#fff'),
+    ('bosu', '#fff'), ('band', '#fff'), ('lowbench', '#fff'), ('incline', '#fff'),
+    ('sig', '#5C6470'), ('spec', '#fff'), ('bench', '#fff'),
+    ('std', '#5C6470'), ('unknown', '#fff'),
+])
+def test_builtin_pill_foregrounds_retain_the_original_palette(month, key, foreground):
+    assert derive.category_foreground(month, key) == foreground
 
 
 @pytest.mark.parametrize('color', ['#000000', '#FFFFFF', '#777777', '#F4511E', '#00FF00'])
-def test_custom_pill_colors_use_the_same_contrast_rule(month, color):
+def test_explicit_custom_pill_colors_keep_the_existing_linear_contrast_rule(month, color):
     month.category_styles['lift'] = {'color': color}
     foreground = derive.category_foreground(month, 'lift')
     assert foreground in ('#000000', '#FFFFFF')
     assert contrast(color, foreground) >= 4.5
-    assert categories.light_text(color) == (foreground == '#FFFFFF')
 
 
-def test_clean_default_omits_duplicate_panels_but_keeps_all_custom_copy(month):
+def test_classic_default_keeps_original_panels_and_all_custom_copy(month):
     month.notes = ['Custom Strength/Tread reminder']
     month.footnotes = [{'icon': 'star', 'lead': 'Custom monthly note', 'text': 'Keep this copy'}]
     month.additional_info = 'Bring water'
     before = deepcopy(month.to_dict())
     html = output(month, 'full')
-    assert 'layout-clean density-comfortable' in html
-    assert 'class="corner ' not in html and 'class="hero-icon ' not in html
-    assert 'MARKED DATES' not in html
-    assert 'data-section="highlights"' not in html
-    assert 'data-section="workout-guide"' not in html
+    assert 'layout-reference density-comfortable' in html
+    assert 'class="corner ' in html and 'class="hero-icon ' in html
+    assert 'MARKED DATES' in html
+    assert 'data-section="highlights"' in html
+    assert 'data-section="workout-guide"' in html
     assert 'data-section="key-dates"' in html
     assert 'data-section="repeat-map"' in html
     for text in ('Custom Strength/Tread reminder', 'Custom monthly note', 'Keep this copy',
@@ -102,14 +120,19 @@ def test_every_builtin_category_has_a_cached_semantic_icon(month):
 
 @pytest.mark.parametrize('layout', ['full', 'phone', 'social'])
 def test_calendar_icons_keep_text_and_can_be_turned_off(month, layout):
+    # Icons remain available as an explicit choice; the requested classic
+    # default has none on calendar dates.
+    assert 'class="workout-icon"' not in output(month, layout)
+    month.appearance = {'calendar_icons': True}
     html = output(month, layout)
-    pills = re.findall(r'<div class="pill[^\"]*"[^>]*>(.*?)</div>', html, re.S)
+    calendar = html.split('<tbody>', 1)[1].split('</tbody>', 1)[0]
+    pills = re.findall(r'<div class="pill(?: two)?"[^>]*>(.*?)</div>', calendar, re.S)
     assert pills
     assert all('class="workout-icon"' in pill for pill in pills)
     assert all('aria-hidden="true"' in pill for pill in pills)
-    assert all(re.search(r'<span[^>]*>[^<]+</span>', pill) for pill in pills)
+    assert all(re.sub('<[^>]+>', '', pill).strip() for pill in pills)
     assert 'Strength in Numbers' in html and '.25 Mile' in html
-    assert 'class="g3"' in html
+    assert ('class="g3"' if layout == 'full' else 'class="three-g"') in html
     month.appearance = {'calendar_icons': False}
     html = output(month, layout)
     assert 'class="workout-icon"' not in html
@@ -117,16 +140,15 @@ def test_calendar_icons_keep_text_and_can_be_turned_off(month, layout):
 
 
 @pytest.mark.parametrize('layout', ['phone', 'social'])
-def test_compact_typography_uses_the_bundled_family_and_density(month, layout):
+def test_compact_retains_original_font_stack_and_optional_density(month, layout):
     month.appearance = {'density': 'compact'}
     html = output(month, layout)
-    assert "font-family:'Barlow'" in html
-    assert "'Inter'" not in html
+    assert "font-family:'Inter',Arial,sans-serif" in html
     assert 'density-compact' in html
     assert 'data:font/woff2;base64,' in html
 
 
-def test_benchmark_key_date_uses_timing_artwork(month):
+def test_benchmark_key_date_retains_original_artwork(month):
     rows = [row for row in derive.key_dates(month) if row['detail'].startswith('Benchmark:')]
     assert len(rows) == 3
-    assert all(row['icon'] in ('timer', 'military_tech', 'trophy') for row in rows)
+    assert all((row['icon'], row['color']) == ('local_cafe', '#6A1B9A') for row in rows)

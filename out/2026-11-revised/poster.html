@@ -104,131 +104,238 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-:root{--orange:#F4511E;--accent:#9C300F;--orange-lt:#FFF1EB;--ink:#20242B;--muted:#505B67;--line:#DCE1E6}
-*{box-sizing:border-box;margin:0;padding:0}
-body{width:1200px;background:#fff;font-family:'Barlow',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
-.poster{width:1200px;padding:26px 30px;background:#fff}
-.frame{border-top:7px solid var(--orange);padding-top:22px}
-header{margin-bottom:22px}
-h1{font-family:'Barlow Condensed','Barlow',sans-serif;font-size:58px;line-height:1.02;font-weight:700;letter-spacing:.3px}
-h1 .otf{color:var(--accent)}
-.sub{font-size:21px;color:var(--muted);margin-top:8px;font-weight:500}
-.theme{display:inline-block;margin-top:14px;padding:7px 12px;border-radius:6px;background:var(--orange-lt);color:var(--accent);font-size:20px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
-.tagline{font-size:18px;color:var(--muted);line-height:1.4;margin-top:9px}
-.tagline b,.tagline strong{color:var(--accent)}
-.ribbon{margin:0 0 14px;padding:10px 13px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:baseline;gap:14px}
-.ribbon .tag{font-size:15px;font-weight:700;white-space:nowrap;color:var(--accent)}
-.ribbon .txt{font-size:17px;line-height:1.4;color:var(--ink)}
-.ribbon.event{background:var(--orange-lt);border-color:#F6CFBE}
-.cal{border:1.5px solid #AAB2BC;border-radius:9px;overflow:hidden}
-.cal table{width:100%;border-collapse:collapse;table-layout:fixed}
-.cal th{background:var(--ink);color:#fff;font-family:'Barlow Condensed','Barlow',sans-serif;font-size:19px;font-weight:700;letter-spacing:1.2px;padding:10px 0;text-transform:uppercase}
-.cal td{border:1px solid var(--line);vertical-align:top;height:128px;padding:9px 8px 10px;background:#fff}
-.cal td.blank{background:#F1F3F6}.cal td.weekend{background:#F8F9FB}
-.dnum{display:flex;justify-content:space-between;align-items:center;font-size:29px;line-height:1.1;font-weight:700;color:var(--ink)}
-.pills{margin-top:8px;display:flex;flex-direction:column;gap:5px}
-.pill{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed','Barlow',sans-serif;font-weight:700;font-size:17px;border-radius:5px;padding:5px 6px;line-height:1.2}
-.pill span{min-width:0;overflow-wrap:anywhere}
-.workout-icon{width:18px;height:18px;flex:0 0 18px;display:block}
-.event-label{background:var(--ink);color:#fff;border-left:3px solid var(--orange);font-family:'Barlow Condensed','Barlow',sans-serif;font-weight:700;font-size:17px;border-radius:5px;padding:5px 6px;line-height:1.2;overflow-wrap:anywhere}
-.g3{display:inline-flex;align-items:center;background:var(--ink);color:#fff;font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;letter-spacing:.3px;padding:3px 6px;border-radius:4px;line-height:1.1}
-.note{font-size:15px;color:var(--muted);margin-top:7px;font-weight:500;line-height:1.25;overflow-wrap:anywhere}.note.flag{color:var(--accent);font-weight:600}
-.strength{margin-top:20px;border:1px solid var(--line);border-radius:9px;padding:17px 18px;display:flex;align-items:flex-start;gap:22px;background:#F8F9FB}
-.s-mid{flex:0 0 430px;min-width:0}.s-title{font-size:21px;font-weight:700;margin-bottom:12px;line-height:1.25}
-.split{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:#fff}
-.split>div{flex:1;padding:12px 6px;text-align:center;border-right:1px solid var(--line);min-width:0}.split>div:last-child{border-right:none}
-.split .d{font-family:'Barlow Condensed','Barlow',sans-serif;font-weight:700;color:var(--accent);font-size:19px}
-.split .b{font-size:16px;font-weight:600;color:var(--ink);line-height:1.3;margin-top:6px}
-.s-list{flex:1;min-width:0}.s-list li{list-style:none;display:flex;gap:8px;align-items:flex-start;font-size:16px;font-weight:500;margin-bottom:7px;line-height:1.35}.s-list li:last-child{margin-bottom:0}
-.chk{flex:0 0 18px;width:18px;height:18px;margin-top:2px}
-.row3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
-.panel{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;min-width:0}
-.panel .ph{display:flex;align-items:center;gap:8px;background:#F1F3F6;color:var(--ink);padding:11px 15px;font-size:20px;font-weight:700;line-height:1.2}
-.panel .ph svg{width:21px;height:21px;flex:0 0 21px}.panel .pb{padding:15px}
-.kd{display:flex;gap:10px;margin-bottom:13px;align-items:flex-start}.kd:last-child{margin-bottom:0}
-.kd .ic{flex:0 0 23px;width:23px;height:23px;margin-top:1px}.kd .d{font-weight:700;font-size:17px;line-height:1.25}
-.kd .t{font-size:16px;color:var(--muted);line-height:1.3;margin-top:3px;overflow-wrap:anywhere}
-.hl{display:flex;gap:8px;font-size:16px;margin-bottom:10px;line-height:1.35;align-items:baseline}.hl:last-child{margin-bottom:0}
-.dot{flex:0 0 10px;width:10px;height:10px;border-radius:50%;position:relative;top:1px}.hl b{font-weight:700}
-.map{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}.map div{font-size:17px;font-weight:600;line-height:1.3}
-.mapnote{margin-top:16px;color:var(--accent);font-weight:600;font-size:16px;line-height:1.35}
-.empty{font-size:16px;color:var(--muted);line-height:1.4}
-.bottom{margin-top:20px;border:1px solid var(--line);border-radius:9px;overflow:hidden}
-.bottom .bh{background:#F1F3F6;color:var(--ink);padding:11px 15px;font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}.bottom .bh svg{width:21px;height:21px}
-.bwrap{display:grid}.bcol{padding:15px;border-right:1px solid var(--line);min-width:0}.bcol:last-child{border-right:none}
-.btype{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}.btype:last-child{margin-bottom:0}
-.btype .pill{align-self:flex-start;font-size:16px}.btype p{font-size:15px;color:var(--muted);line-height:1.35}
-.monthly-notes{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px}
-.bnote{display:flex;gap:10px;align-items:flex-start;min-width:0}.bnote svg{flex:0 0 22px;width:22px;height:22px;margin-top:1px}
-.bnote p{font-size:16px;color:var(--muted);line-height:1.35;overflow-wrap:anywhere}.bnote p b{font-weight:700;color:var(--ink)}
-.with-guide .monthly-notes{display:block}.with-guide .bnote{margin-bottom:13px}.with-guide .bnote:last-child{margin-bottom:0}
-.credit{margin-top:15px;font-size:14px;color:var(--muted);font-weight:500;overflow-wrap:anywhere;line-height:1.35}
-.poster-extra{margin-top:20px}.extra-copy{white-space:pre-wrap;overflow-wrap:anywhere;font-size:17px;line-height:1.4}
-.poster-credits{margin-top:18px;padding-top:13px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;line-height:1.5;overflow-wrap:anywhere}
-.poster-credits h2{font-size:15px;color:var(--ink);margin-bottom:4px;font-weight:700}.credit-line{white-space:pre-wrap;min-height:1.5em}
-.poster-credits a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
-.density-compact .cal td{height:108px;padding:7px 7px 8px}.density-compact .dnum{font-size:26px}
-.density-compact .pills{margin-top:6px;gap:4px}.density-compact .pill,.density-compact .event-label{font-size:16px;padding:4px 5px}
-.density-compact .note{font-size:14px;margin-top:5px}.density-compact .strength,.density-compact .row3,.density-compact .bottom{margin-top:14px}
+  :root{
+    --orange:#F4511E;
+    --orange-lt:#FFF1EB;
+    --ink:#1A1A1A;
+    --line:#DCE0E6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    width:1200px;background:#fff;font-family:'Barlow',system-ui,sans-serif;color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .poster{width:1200px;padding:16px;background:#fff;}
+  .frame{
+    border:3px solid var(--orange);border-radius:22px;padding:22px 22px 24px;position:relative;overflow:hidden;
+    background:radial-gradient(circle at 1px 1px, #E9EDF2 1.1px, transparent 1.1px) 0 0/14px 14px;
+    background-repeat:repeat-x;background-size:14px 14px;background-color:#fff;
+  }
+  /* corner accents */
+  .corner{position:absolute;width:0;height:0;z-index:2;}
+  .corner.tl{top:0;left:0;border-top:96px solid var(--orange);border-right:96px solid transparent;}
+  .corner.tr{top:0;right:0;border-top:96px solid #16181D;border-left:96px solid transparent;}
+  .speed{position:absolute;z-index:3;}
+  .speed span{display:block;height:3px;background:#fff;border-radius:2px;margin-bottom:6px;transform:skewX(-28deg);opacity:.85;}
+  .speed.tl{top:16px;left:14px;}
+  .speed.tr{top:16px;right:14px;text-align:right;}
+  .speed.tr span{margin-left:auto}
+  .speed span:nth-child(1){width:38px}
+  .speed span:nth-child(2){width:28px}
+  .speed span:nth-child(3){width:18px}
+
+  /* ---------- header ---------- */
+  header{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative;z-index:4;padding:6px 6px 0;}
+  .brandwrap{text-align:center;flex:1;}
+  h1{font-family:'Anton',Impact,sans-serif;font-size:72px;line-height:.92;letter-spacing:.5px;font-weight:400;}
+  h1 .otf{color:var(--orange);}
+  h1 .mo{color:#16181D;}
+  .sub{font-family:'Anton',sans-serif;font-size:30px;color:#7A828C;letter-spacing:.4px;margin-top:2px;font-weight:400;}
+  .theme{
+    display:inline-block;background:var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;font-size:27px;letter-spacing:.6px;padding:7px 26px;border-radius:999px;margin-top:9px;
+  }
+  .tagline{font-style:italic;color:#7A828C;font-size:17px;font-weight:600;margin-top:7px;letter-spacing:.2px;}
+  .tagline b{color:var(--orange);font-style:italic;}
+  .hero-icon{width:112px;height:112px;flex:0 0 112px;border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(0,0,0,.08);}
+  .hero-icon svg{width:66px;height:66px;display:block;}
+  .hero-icon.dark{background:#16181D;color:var(--orange);}
+  .hero-icon.accent{background:var(--orange);color:#fff;}
+
+  /* ---------- marked-dates ribbon ---------- */
+  .ribbon{
+    margin:12px 0 10px;border-radius:12px;background:#16181D;color:#fff;display:flex;align-items:center;
+    padding:9px 18px;gap:14px;position:relative;overflow:hidden;
+  }
+  .ribbon:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--orange) 0 6px,transparent 6px);}
+  .ribbon .tag{background:var(--orange);color:#fff;font-family:'Anton',sans-serif;font-size:19px;letter-spacing:.6px;padding:4px 13px;border-radius:6px;white-space:nowrap;}
+  .ribbon .txt{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.3px;}
+  .ribbon .txt em{color:#FFB59A;font-style:italic;}
+  .ribbon.event{background:var(--orange);margin-bottom:8px;}
+  .ribbon.event:before{background:linear-gradient(90deg,#16181D 0 6px,transparent 6px);}
+  .ribbon.event .tag{background:#16181D;}
+
+  /* ---------- calendar ---------- */
+  .cal{border:2px solid #16181D;border-radius:12px;overflow:hidden;position:relative;z-index:4;}
+  .cal table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  .cal th{
+    background:#16181D;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+    font-size:20px;letter-spacing:2px;padding:7px 0;text-transform:uppercase;
+  }
+  .cal td{border:1px solid var(--line);vertical-align:top;height:92px;padding:5px 6px 7px;background:#fff;position:relative;}
+  .cal td.blank{background:#F7F8FA;}
+  .cal td.weekend{background:#FCFCFD;}
+  .dnum{font-family:'Anton',sans-serif;font-size:22px;line-height:1;color:#16181D;font-weight:400;}
+  .pills{margin-top:5px;display:flex;flex-direction:column;gap:3px;align-items:stretch;}
+  .pill{
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:.3px;
+    color:#fff;text-align:center;border-radius:5px;padding:3px 4px;line-height:1.12;
+  }
+  .pill.two{font-size:13.5px;}
+  .event-label{background:#16181D;color:#fff;border-left:3px solid var(--orange);
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14.5px;
+    text-align:center;border-radius:5px;padding:4px;line-height:1.15;overflow-wrap:anywhere;}
+  .g3{float:right;background:#16181D;color:#fff;font-family:'Barlow Condensed',sans-serif;
+      font-size:11px;font-weight:700;letter-spacing:.5px;padding:1px 5px;border-radius:4px;
+      line-height:1.35;}
+  .note{font-size:12.5px;color:#8A919B;font-style:italic;margin-top:4px;text-align:center;font-weight:500;}
+  .note.flag{color:var(--orange);font-weight:600;}
+
+  /* ---------- panels ---------- */
+  .panel{border:2px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;}
+  .panel .ph{
+    display:flex;align-items:center;gap:9px;background:var(--orange);color:#fff;padding:7px 13px;
+    font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.5px;font-weight:400;
+  }
+  .panel .ph svg{width:20px;height:20px;fill:#fff;flex:0 0 20px;}
+  .panel .pb{padding:11px 13px 12px;}
+
+  /* strength row */
+  .strength{margin-top:11px;border:2px solid var(--orange);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:18px;}
+  .strength .kb{width:78px;flex:0 0 78px;display:flex;align-items:center;justify-content:center;}
+  .strength .kb svg{width:78px;height:78px;}
+  .s-mid{flex:0 0 430px;}
+  .s-title{font-family:'Anton',sans-serif;font-size:23px;text-align:center;margin-bottom:9px;font-weight:400;}
+  .split{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden;}
+  .split div{flex:1;padding:8px 6px;text-align:center;border-right:2px solid var(--line);}
+  .split div:last-child{border-right:none;}
+  .split .d{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--orange);font-size:18px;letter-spacing:.4px;}
+  .split .bb{margin:5px auto;display:block;width:52px;}
+  .split .b{font-size:12.5px;font-weight:600;color:#3C424A;line-height:1.25;}
+  .s-list{flex:1;}
+  .s-list li{list-style:none;display:flex;gap:8px;align-items:flex-start;font-size:14.5px;font-weight:500;margin-bottom:5.5px;color:#2E3339;line-height:1.25;}
+  .s-list li:last-child{margin-bottom:0;}
+  .chk{flex:0 0 15px;width:15px;height:15px;margin-top:2px;}
+  .s-run{width:78px;flex:0 0 78px;display:flex;align-items:center;justify-content:center;}
+  .s-run svg{width:78px;height:78px;}
+
+  /* three-column row */
+  .row3{display:grid;grid-template-columns:1fr 1.18fr 1fr;gap:12px;margin-top:11px;}
+  .kd{display:flex;gap:9px;margin-bottom:9px;align-items:flex-start;}
+  .kd:last-child{margin-bottom:0;}
+  .kd .ic{flex:0 0 22px;width:22px;height:22px;margin-top:1px;}
+  .kd .d{font-weight:700;font-size:14.5px;line-height:1.2;}
+  .kd .t{font-size:13px;color:#6B727B;font-style:italic;line-height:1.25;margin-top:1px;}
+  .hl{display:flex;gap:8px;font-size:13.5px;margin-bottom:6.5px;line-height:1.3;align-items:baseline;}
+  .hl:last-child{margin-bottom:0;}
+  .dot{flex:0 0 10px;width:10px;height:10px;border-radius:50%;position:relative;top:1px;}
+  .hl b{font-weight:700;}
+  .map{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;}
+  .map div{font-size:13.5px;font-weight:600;color:#2E3339;display:flex;gap:6px;align-items:baseline;}
+  .map div:before{content:"";width:5px;height:5px;border-radius:50%;background:#9AA1AA;position:relative;top:-3px;}
+  .mapnote{margin-top:9px;color:#E53935;font-weight:700;font-size:13.5px;text-align:center;line-height:1.3;}
+  .mapnote span{display:block;color:#8A919B;font-weight:600;font-style:italic;font-size:12.5px;margin-top:3px;}
+  .empty{font-size:13px;color:#8A919B;font-style:italic;}
+
+  /* bottom */
+  .bottom{margin-top:11px;border:2px solid var(--line);border-radius:12px;overflow:hidden;}
+  .bottom .bh{background:var(--orange);color:#fff;text-align:center;padding:7px;font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.6px;display:flex;justify-content:center;align-items:center;gap:9px;font-weight:400;}
+  .bottom .bh svg{width:20px;height:20px;fill:#fff;}
+  .bwrap{display:grid;grid-template-columns:1fr 1fr 1fr 0.92fr;}
+  .bcol{padding:11px 13px;border-right:2px solid var(--line);}
+  .bcol:last-child{border-right:none;background:var(--orange-lt);}
+  .btype{display:flex;gap:9px;margin-bottom:8px;align-items:flex-start;}
+  .btype:last-child{margin-bottom:0;}
+  .btype .pill{flex:0 0 112px;font-size:13px;padding:3px 4px;}
+  .btype p{font-size:12.4px;color:#5C6470;line-height:1.28;font-weight:500;}
+  .bnote{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;}
+  .bnote:last-child{margin-bottom:0;}
+  .bnote svg{flex:0 0 22px;width:22px;height:22px;fill:currentColor;margin-top:1px;}
+  .bnote p{font-size:12.6px;font-style:italic;color:#4C535B;line-height:1.3;font-weight:500;}
+  .bnote p b{font-style:normal;font-weight:700;color:#2E3339;}
+  .repeat-ic{display:inline-block;vertical-align:middle;width:22px;height:22px;fill:var(--orange);}
+  .credit{margin-top:9px;text-align:center;font-size:11.5px;color:#A6ADB6;font-weight:500;}
+  .poster-extra{margin-top:11px;}
+  .extra-copy{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.45;}
+  .poster-credits{margin-top:11px;padding:12px 14px;border-top:1px solid var(--line);color:#5C6470;font-size:13px;line-height:1.5;overflow-wrap:anywhere;}
+  .poster-credits h2{font-size:14px;color:#2E3339;margin-bottom:5px;}
+  .credit-line{white-space:pre-wrap;min-height:1.5em;}
+  .poster-credits a{color:#9C300F;text-decoration:underline;text-underline-offset:2px;}
+  .workout-icon{display:inline-block;width:14px;height:14px;vertical-align:middle;margin-right:4px;}
+  .density-compact .cal td{height:80px;padding:4px 5px 5px;}
+  .density-compact .pills{gap:2px;margin-top:4px;}
 </style>
 </head>
 <body>
-<div class="poster layout-clean density-comfortable">
+<div class="poster layout-reference density-comfortable" data-visual-style="classic">
 <div class="frame">
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="speed tl"><span></span><span></span><span></span></div>
+  <div class="speed tr"><span></span><span></span><span></span></div>
+
   <header>
+    <div class="hero-icon dark"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="sprint"><path d="M486.54-421.17 243.22-179.33q-9.5 9.72-22.69 9.72-13.18 0-22.9-9.65-9.72-9.65-9.72-23.27t9.72-23.38l382.22-381.46H443.59v45.46q0 13.88-9.51 23.37-9.51 9.5-23.42 9.5-13.9 0-23.12-9.5-9.21-9.49-9.21-23.37v-76.66q0-14.42 9.82-24.24 9.82-9.82 24.24-9.82h197.76q13.65 0 26.1 5.6 12.45 5.6 21.88 14.79l121.02 119.26q23.07 23.07 52.09 36.71 29.02 13.64 60.3 19.4 13.91 2.49 24.27 12.7 10.36 10.21 8.36 24.2-2 14.98-13.15 22.91-11.16 7.93-26.24 5.45-41.24-6-78.45-22.5-37.22-16.5-67.7-48.22l-44.09-43.84L584.37-416l54.65 54.65q12.2 12.44 9.96 28.47-2.24 16.03-16.91 24.99L449.74-201.61q-11.96 6.48-25.16 3.01-13.19-3.47-19.55-15.2-6.36-11.72-3.12-24.8 3.24-13.07 15.2-19.79L564-343.48l-77.46-77.69Zm-341.08-12.61q-13.78 0-23.21-9.46-9.42-9.47-9.42-23.3t9.42-23.17q9.43-9.33 23.21-9.33h140q13.88 0 23.37 9.46 9.5 9.46 9.5 23.29 0 13.83-9.5 23.17-9.49 9.34-23.37 9.34h-140Zm-80-135.26q-13.78 0-23.21-9.51-9.42-9.51-9.42-23.42 0-13.9 9.42-23.24 9.43-9.33 23.21-9.33h140q13.88 0 23.37 9.51 9.5 9.51 9.5 23.41t-9.5 23.24q-9.49 9.34-23.37 9.34h-140Zm731.27-80.48q-29.91 0-51.29-21.19-21.37-21.18-21.37-51.53t21.37-51.44q21.38-21.1 51.29-21.1 29.68 0 51.02 21.3 21.34 21.31 21.34 51.42 0 30.1-21.34 51.32t-51.02 21.22Zm-651.27-55.02q-13.78 0-23.21-9.47-9.42-9.46-9.42-23.29 0-13.83 9.42-23.17 9.43-9.33 23.21-9.33h140q13.88 0 23.37 9.46 9.5 9.46 9.5 23.29 0 13.83-9.5 23.17-9.49 9.34-23.37 9.34h-140Z"/></svg></div>
     <div class="brandwrap">
       <h1><span class="otf">OTF</span> <span class="mo">NOVEMBER 2026</span></h1>
       <div class="sub">Monthly Schedule Poster</div>
-<div class="theme">COMMUNITY &amp; MOBILITY</div>    </div>
+<div class="theme">&#9733; THEME OF THE MONTH: COMMUNITY &amp; MOBILITY &#9733;</div>    </div>
+    <div class="hero-icon accent"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg></div>
   </header>
+
+
+  <div class="ribbon" data-section="marked-dates">
+    <span class="tag">MARKED DATES</span>
+    <span class="txt"><em>11/1 Specialty: Member Choice</em> &middot; 11/5 Benchmark: .25 Mile &middot; 11/13 Benchmark: 1 Mile &middot; 11/17 Benchmark: 200 Meter row &middot; 11/23 Signature: Strength in Numbers</span>
+  </div>
+
   <div class="cal">
-    <table aria-label="NOVEMBER 2026 workout schedule">
-      <thead><tr><th scope="col">Sun</th><th scope="col">Mon</th><th scope="col">Tue</th><th scope="col">Wed</th><th scope="col">Thu</th><th scope="col">Fri</th><th scope="col">Sat</th></tr></thead>
+    <table>
+      <thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
       <tbody>
         <tr>
           <td class="weekend">
             <div class="dnum">1</div>
             <div class="pills">
-              <div class="pill" style="background:#E53935;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_fire_department" class="workout-icon"><path d="M156.41-400q0-115.68 71.5-225.2 71.5-109.52 196.74-187.47 19.15-12.44 39.05-.68 19.89 11.75 19.89 35.74v69.5q0 32.52 22.46 54.52t54.95 22q17.28 0 32.18-7.25 14.9-7.25 26.43-21.79 8.45-9.88 19.54-13.54 11.09-3.66 21.05 2.82 66.98 46.2 105.19 117.92 38.2 71.71 38.2 153.33 0 95.68-49 172.66-49 76.98-129.24 116.59 23.79-26.42 36.61-59.37 12.82-32.95 12.82-68.88 0-39.16-14.36-73.46-14.35-34.31-42.02-61.94L480-509.65 342.89-374.54q-28.72 27.71-43.07 62.1-14.36 34.38-14.36 73.39 0 35.81 12.7 68.79 12.7 32.97 36.49 59.41-80.24-39.61-129.24-116.59-49-76.98-49-172.56ZM480-414.17l89.61 87.81q17.52 17.56 27.16 39.88 9.64 22.33 9.64 47.28 0 51.51-36.96 87.97-36.97 36.45-89.49 36.45-52.53 0-89.45-36.45-36.92-36.46-36.92-87.97 0-25.04 9.25-47.35 9.26-22.32 27.79-39.78L480-414.17Z"/></svg><span>Specialty: Member Choice</span></div>
+              <div class="pill" style="background:#E53935;color:#fff">Specialty: Member Choice</div>
             </div>
           </td>
           <td>
             <div class="dnum">2</div>
             <div class="pills">
-              <div class="pill" style="background:#00695C;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="chair_alt" class="workout-icon"><path d="M192.59-145.93V-422.5q0-29.35 19.39-48.74t48.98-19.39h57.61v-84.74h-57.61q-29.59 0-48.98-19.39-19.39-19.39-19.39-48.74V-780q0-29.35 19.39-48.86 19.39-19.51 48.98-19.51h438.08q29.59 0 48.98 19.51 19.39 19.51 19.39 48.86v136.5q0 29.35-19.39 48.74t-48.98 19.39h-57.61v84.74h57.61q29.59 0 48.98 19.39 19.39 19.39 19.39 48.74v276.57q0 14.67-9.69 24.36-9.7 9.7-24.49 9.7-14.8 0-24.49-9.7-9.7-9.69-9.7-24.36V-231H260.96v85.07q0 14.67-9.7 24.36-9.69 9.7-24.49 9.7-14.79 0-24.49-9.7-9.69-9.69-9.69-24.36Zm185.98-344.7h202.86v-84.74H378.57v84.74Z"/></svg><span>Low Bench</span></div>
+              <div class="pill" style="background:#00695C;color:#fff">Low Bench</div>
             </div>
           </td>
           <td>
             <div class="dnum">3</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
           </td>
           <td>
             <div class="dnum">4</div>
             <div class="pills">
-              <div class="pill" style="background:#6A1B9A;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="balance" class="workout-icon"><path d="M108.09-114.02q-14.68 0-24.37-9.7-9.7-9.69-9.7-24.37 0-14.67 9.7-24.37 9.69-9.69 24.37-9.69h337.84v-480.89q-25.52-9.24-45.42-29.26-19.9-20.03-29.14-45.55H219.3l114.9 277.83q4.47 9.19 5.09 19.39.62 10.2-1.38 20.15-9.24 45.96-47.67 69.3-38.44 23.33-82.15 23.33-43.72 0-82.27-23.45-38.56-23.46-47.56-69.18-2-9.95-1.5-20.15t4.98-19.39l115.13-277.83h-48.78q-14.68 0-24.37-9.69-9.7-9.7-9.7-24.37 0-14.68 9.7-24.49 9.69-9.82 24.37-9.82h223.28q12.96-35.24 42.43-57.62 29.48-22.38 66.2-22.38t66.2 22.38q29.47 22.38 42.43 57.62h223.28q14.68 0 24.49 9.82 9.82 9.81 9.82 24.49 0 14.67-9.82 24.37-9.81 9.69-24.49 9.69h-48.78l115.13 277.83q4.48 9.19 4.98 19.39.5 10.2-1.5 20.15-9 45.96-47.56 69.3-38.55 23.33-82.15 23.33-43.6 0-82.15-23.45-38.55-23.46-47.55-69.18-2.24-9.95-1.62-20.15.62-10.2 5.09-19.39l114.9-277.83H588.63q-9.24 25.52-29.14 45.55-19.9 20.02-45.42 29.26v480.89h337.84q14.68 0 24.49 9.69 9.82 9.7 9.82 24.37 0 14.68-9.82 24.37-9.81 9.7-24.49 9.7H108.09Zm571.69-330.76h144.5l-72.37-177.55-72.13 177.55Zm-543.82 0h144.5l-72.37-177.55-72.13 177.55ZM480-723.35q20.52 0 34.54-14.64 14.03-14.64 14.03-33.92 0-20.52-14.03-34.55-14.02-14.02-34.54-14.02-19.52 0-34.04 14.02-14.53 14.03-14.53 34.55 0 19.28 14.53 33.92 14.52 14.64 34.04 14.64Z"/></svg><span>BOSU</span></div>
+              <div class="pill" style="background:#6A1B9A;color:#fff">BOSU</div>
             </div>
           </td>
           <td>
             <div class="dnum">5</div>
             <div class="pills">
-              <div class="pill" style="background:#1A3A6B;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="timer" class="workout-icon"><path d="M387.16-860q-13.98 0-23.32-9.51t-9.34-23.54q0-14.02 9.34-23.23 9.34-9.22 23.32-9.22h185.68q13.98 0 23.32 9.39 9.34 9.4 9.34 23.42 0 14.02-9.34 23.35-9.34 9.34-23.32 9.34H387.16Zm116.13 442.6q9.34-9.43 9.34-23.21v-165.22q0-13.77-9.46-23.2t-23.3-9.43q-13.83 0-23.16 9.43-9.34 9.43-9.34 23.2v165.22q0 13.78 9.46 23.21 9.46 9.42 23.3 9.42 13.83 0 23.16-9.42ZM337.89-98.97q-66.56-28.96-116.35-78.69-49.8-49.73-78.66-116.27-28.86-66.54-28.86-142.01 0-75.47 28.86-142.05 28.86-66.58 78.66-116.42 49.81-49.85 116.38-78.82Q404.5-802.2 480-802.2q67.48 0 126.58 22 59.09 22 105.33 62.24l30.24-30.24q9.96-9.95 23.53-9.95 13.58 0 23.54 10.07 9.95 10.08 9.95 23.66 0 13.57-9.95 23.53l-30 30q36.24 40.48 61.62 97.96 25.38 57.47 25.38 136.95 0 75.52-28.96 142.11-28.95 66.59-78.78 116.28-49.83 49.7-116.44 78.64Q555.43-70 479.94-70T337.89-98.97Z"/></svg><span>Benchmark: .25 Mile</span></div>
-              <div class="pill" style="background:#E53935;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="swap_horiz" class="workout-icon"><path d="m203.8-318.46 92.83 92.83q10.2 10.43 10.2 23.99 0 13.55-10.2 23.75-9.96 10.43-23.75 10.43t-23.99-10.19l-151-151q-5.48-5.48-7.96-11.32-2.47-5.83-2.47-12.67t2.47-12.68q2.48-5.83 7.96-11.31l151-151q10.2-9.96 23.99-10.08 13.79-.12 23.75 10.08 10.2 10.2 10.2 23.99t-10.2 23.75l-92.83 93.06h272.37q14.68 0 24.49 9.7 9.82 9.7 9.82 24.49t-9.82 24.49q-9.81 9.69-24.49 9.69H203.8Zm552.63-254.71h-272.6q-14.68 0-24.37-9.7-9.7-9.7-9.7-24.49t9.7-24.49q9.69-9.69 24.37-9.69h272.6l-93.06-93.07q-10.2-10.19-10.2-23.75 0-13.55 10.2-23.99 9.96-10.19 23.75-10.19t23.99 10.19l151 151q5.48 5.48 7.96 11.32 2.47 5.83 2.47 12.67t-2.47 12.68q-2.48 5.83-7.96 11.31l-151 150.76q-10.2 10.2-23.99 10.32-13.79.12-23.75-10.32-10.2-9.96-10.2-23.75t10.2-23.99l93.06-92.82Z"/></svg><span>Switch Template</span></div>
+              <div class="pill two" style="background:#1A3A6B;color:#fff">Benchmark: .25 Mile</div>
+              <div class="pill two" style="background:#E53935;color:#fff">Switch Template</div>
             </div>
           </td>
           <td>
             <div class="dnum">6</div>
             <div class="pills">
-              <div class="pill" style="background:#1565C0;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="rowing" class="workout-icon"><path d="m710.61-24.11-79.37-79.37q-5.48-5.24-7.84-10.95-2.36-5.72-2.36-12.68v-48.32L301-495.48q-6.24 1.76-12.86 2.88-6.62 1.12-12.1 1.12v-55.87q49.24-2.24 111.12-28.4 61.88-26.16 93.36-60.88l58-63q12.24-13.24 27.98-21.48t32.98-8.24q32.72 0 56.07 23.36 23.36 23.36 23.36 56.08v248q0 29.76-13.14 60.64t-33.62 42.36L515.04-416.26v-167.07q-29.28 25.29-65.08 44.57-35.81 19.28-67.61 30.8L668.2-222.35h48.32q6.72 0 12.44 2.36 5.71 2.36 11.19 7.84l79.37 79.13q10.2 10.19 10.2 23.99 0 13.79-10.2 23.99l-60.93 60.93q-10.2 10.2-23.99 10.2-13.8 0-23.99-10.2ZM351.2-288.48 228.43-166.96q-9.47 9.48-22.95 9.48-13.48 0-22.84-9.48-9.36-9.47-9.86-23.45-.5-13.98 9.98-23.46l182.28-181.28 106.44 106.67H351.2Zm200.22-510.01q-21.85-21.86-21.85-52.58 0-30.71 21.85-52.57Q573.28-925.5 604-925.5t52.58 21.86q21.85 21.86 21.85 52.57 0 30.72-21.85 52.58-21.86 21.86-52.58 21.86t-52.58-21.86ZM256.71-499.96q-7.86-8.47-7.86-20.07t7.86-19.46q7.86-7.86 19.45-7.86 11.6 0 19.96 7.86 8.36 7.86 8.36 19.46 0 11.6-8.36 20.07-8.36 8.48-19.96 8.48-11.59 0-19.45-8.48Z"/></svg><span>Run/Row</span></div>
+              <div class="pill" style="background:#1565C0;color:#fff">Run/Row</div>
             </div>
           </td>
           <td class="weekend">
             <div class="dnum">7</div>
             <div class="pills">
-              <div class="pill" style="background:#1565C0;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="rowing" class="workout-icon"><path d="m710.61-24.11-79.37-79.37q-5.48-5.24-7.84-10.95-2.36-5.72-2.36-12.68v-48.32L301-495.48q-6.24 1.76-12.86 2.88-6.62 1.12-12.1 1.12v-55.87q49.24-2.24 111.12-28.4 61.88-26.16 93.36-60.88l58-63q12.24-13.24 27.98-21.48t32.98-8.24q32.72 0 56.07 23.36 23.36 23.36 23.36 56.08v248q0 29.76-13.14 60.64t-33.62 42.36L515.04-416.26v-167.07q-29.28 25.29-65.08 44.57-35.81 19.28-67.61 30.8L668.2-222.35h48.32q6.72 0 12.44 2.36 5.71 2.36 11.19 7.84l79.37 79.13q10.2 10.19 10.2 23.99 0 13.79-10.2 23.99l-60.93 60.93q-10.2 10.2-23.99 10.2-13.8 0-23.99-10.2ZM351.2-288.48 228.43-166.96q-9.47 9.48-22.95 9.48-13.48 0-22.84-9.48-9.36-9.47-9.86-23.45-.5-13.98 9.98-23.46l182.28-181.28 106.44 106.67H351.2Zm200.22-510.01q-21.85-21.86-21.85-52.58 0-30.71 21.85-52.57Q573.28-925.5 604-925.5t52.58 21.86q21.85 21.86 21.85 52.57 0 30.72-21.85 52.58-21.86 21.86-52.58 21.86t-52.58-21.86ZM256.71-499.96q-7.86-8.47-7.86-20.07t7.86-19.46q7.86-7.86 19.45-7.86 11.6 0 19.96 7.86 8.36 7.86 8.36 19.46 0 11.6-8.36 20.07-8.36 8.48-19.96 8.48-11.59 0-19.45-8.48Z"/></svg><span>Run/Row</span></div>
-              <div class="pill" style="background:#00838F;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="filter_hdr" class="workout-icon"><path d="m75.52-292.07 177.37-236.41q4.98-6.72 12.19-10.07 7.21-3.36 14.92-3.36t14.92 3.36q7.21 3.35 12.43 10.07L465.52-317.5q4.29 6 10.44 9 6.16 3 13.7 3 18.86 0 26.86-16.38t-3-31.38L412.91-487.15q-6.95-9.52-6.95-20.68 0-11.15 6.95-20.34l119.98-160.31q4.98-6.72 12.19-10.07 7.21-3.36 14.92-3.36t14.92 3.36q7.21 3.35 12.43 10.07l297.13 396.41q12.67 17.4 3.29 36.05-9.39 18.65-30.4 18.65H102.63q-21.01 0-30.4-18.65-9.38-18.65 3.29-36.05Z"/></svg><span>Elevation Gain</span></div>
-              <div class="pill" style="background:#558B2F;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="all_inclusive" class="workout-icon"><path d="M211.89-255.93q-91.56 0-153.76-66.7-62.2-66.7-62.2-159.37 0-91.67 62.7-156.87t153.26-65.2q36.72 0 70.96 12.24 34.24 12.23 60.78 37.72l90.85 87.61-48.22 47.5-85.81-83.87q-17.51-17.52-40.46-25.29t-47.98-7.77q-62.45 0-105.19 45.27-42.75 45.27-42.75 108.75 0 64.48 42.24 111.16 42.25 46.68 105.69 46.68 24.28 0 47.12-7.76 22.83-7.77 41.25-24.28l316-298q26.54-25.49 60.78-37.72 34.24-12.24 69.96-12.24 91.56 0 154.26 65.2 62.7 65.2 62.7 156.87 0 92.67-62.7 159.37t-154.26 66.7q-35.72 0-70.46-11.74-34.74-11.73-60.28-37.22l-88.61-87.61 47.98-47.5 83.88 83.89q16.53 16.52 39.81 24.28 23.29 7.76 47.57 7.76 63.44 0 106.19-46.72 42.74-46.72 42.74-111.13 0-63.41-43.24-108.71-43.25-45.3-105.69-45.3-24.28 0-47.12 8.76-22.83 8.77-40.25 25.28l-316 298q-26.54 24.49-61.28 36.22-34.74 11.74-70.46 11.74Z"/></svg><span>Minibands</span></div>
+              <div class="pill two" style="background:#1565C0;color:#fff">Run/Row</div>
+              <div class="pill two" style="background:#00838F;color:#fff">Elevation Gain</div>
+              <div class="pill two" style="background:#558B2F;color:#fff">Minibands</div>
             </div>
           </td>
         </tr>
@@ -236,43 +343,43 @@ h1 .otf{color:var(--accent)}
           <td class="weekend">
             <div class="dnum">8</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
           </td>
           <td>
             <div class="dnum">9</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
           </td>
           <td>
             <div class="dnum">10</div>
             <div class="pills">
-              <div class="pill" style="background:#1565C0;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="rowing" class="workout-icon"><path d="m710.61-24.11-79.37-79.37q-5.48-5.24-7.84-10.95-2.36-5.72-2.36-12.68v-48.32L301-495.48q-6.24 1.76-12.86 2.88-6.62 1.12-12.1 1.12v-55.87q49.24-2.24 111.12-28.4 61.88-26.16 93.36-60.88l58-63q12.24-13.24 27.98-21.48t32.98-8.24q32.72 0 56.07 23.36 23.36 23.36 23.36 56.08v248q0 29.76-13.14 60.64t-33.62 42.36L515.04-416.26v-167.07q-29.28 25.29-65.08 44.57-35.81 19.28-67.61 30.8L668.2-222.35h48.32q6.72 0 12.44 2.36 5.71 2.36 11.19 7.84l79.37 79.13q10.2 10.19 10.2 23.99 0 13.79-10.2 23.99l-60.93 60.93q-10.2 10.2-23.99 10.2-13.8 0-23.99-10.2ZM351.2-288.48 228.43-166.96q-9.47 9.48-22.95 9.48-13.48 0-22.84-9.48-9.36-9.47-9.86-23.45-.5-13.98 9.98-23.46l182.28-181.28 106.44 106.67H351.2Zm200.22-510.01q-21.85-21.86-21.85-52.58 0-30.71 21.85-52.57Q573.28-925.5 604-925.5t52.58 21.86q21.85 21.86 21.85 52.57 0 30.72-21.85 52.58-21.86 21.86-52.58 21.86t-52.58-21.86ZM256.71-499.96q-7.86-8.47-7.86-20.07t7.86-19.46q7.86-7.86 19.45-7.86 11.6 0 19.96 7.86 8.36 7.86 8.36 19.46 0 11.6-8.36 20.07-8.36 8.48-19.96 8.48-11.59 0-19.45-8.48Z"/></svg><span>Run/Row</span></div>
+              <div class="pill" style="background:#1565C0;color:#fff">Run/Row</div>
             </div>
           </td>
           <td>
             <div class="dnum">11</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
           </td>
           <td>
             <div class="dnum">12</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
           </td>
           <td>
             <div class="dnum">13</div>
             <div class="pills">
-              <div class="pill" style="background:#1A3A6B;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="timer" class="workout-icon"><path d="M387.16-860q-13.98 0-23.32-9.51t-9.34-23.54q0-14.02 9.34-23.23 9.34-9.22 23.32-9.22h185.68q13.98 0 23.32 9.39 9.34 9.4 9.34 23.42 0 14.02-9.34 23.35-9.34 9.34-23.32 9.34H387.16Zm116.13 442.6q9.34-9.43 9.34-23.21v-165.22q0-13.77-9.46-23.2t-23.3-9.43q-13.83 0-23.16 9.43-9.34 9.43-9.34 23.2v165.22q0 13.78 9.46 23.21 9.46 9.42 23.3 9.42 13.83 0 23.16-9.42ZM337.89-98.97q-66.56-28.96-116.35-78.69-49.8-49.73-78.66-116.27-28.86-66.54-28.86-142.01 0-75.47 28.86-142.05 28.86-66.58 78.66-116.42 49.81-49.85 116.38-78.82Q404.5-802.2 480-802.2q67.48 0 126.58 22 59.09 22 105.33 62.24l30.24-30.24q9.96-9.95 23.53-9.95 13.58 0 23.54 10.07 9.95 10.08 9.95 23.66 0 13.57-9.95 23.53l-30 30q36.24 40.48 61.62 97.96 25.38 57.47 25.38 136.95 0 75.52-28.96 142.11-28.95 66.59-78.78 116.28-49.83 49.7-116.44 78.64Q555.43-70 479.94-70T337.89-98.97Z"/></svg><span>Benchmark: 1 Mile</span></div>
+              <div class="pill" style="background:#1A3A6B;color:#fff">Benchmark: 1 Mile</div>
             </div>
           </td>
           <td class="weekend">
             <div class="dnum">14</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
           </td>
         </tr>
@@ -280,43 +387,43 @@ h1 .otf{color:var(--accent)}
           <td class="weekend">
             <div class="dnum">15</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
 <div class="note flag">Not a repeat</div>          </td>
           <td>
             <div class="dnum">16</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
 <div class="note flag">Not a repeat</div>          </td>
           <td>
             <div class="dnum">17</div>
             <div class="pills">
-              <div class="pill" style="background:#1A3A6B;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="timer" class="workout-icon"><path d="M387.16-860q-13.98 0-23.32-9.51t-9.34-23.54q0-14.02 9.34-23.23 9.34-9.22 23.32-9.22h185.68q13.98 0 23.32 9.39 9.34 9.4 9.34 23.42 0 14.02-9.34 23.35-9.34 9.34-23.32 9.34H387.16Zm116.13 442.6q9.34-9.43 9.34-23.21v-165.22q0-13.77-9.46-23.2t-23.3-9.43q-13.83 0-23.16 9.43-9.34 9.43-9.34 23.2v165.22q0 13.78 9.46 23.21 9.46 9.42 23.3 9.42 13.83 0 23.16-9.42ZM337.89-98.97q-66.56-28.96-116.35-78.69-49.8-49.73-78.66-116.27-28.86-66.54-28.86-142.01 0-75.47 28.86-142.05 28.86-66.58 78.66-116.42 49.81-49.85 116.38-78.82Q404.5-802.2 480-802.2q67.48 0 126.58 22 59.09 22 105.33 62.24l30.24-30.24q9.96-9.95 23.53-9.95 13.58 0 23.54 10.07 9.95 10.08 9.95 23.66 0 13.57-9.95 23.53l-30 30q36.24 40.48 61.62 97.96 25.38 57.47 25.38 136.95 0 75.52-28.96 142.11-28.95 66.59-78.78 116.28-49.83 49.7-116.44 78.64Q555.43-70 479.94-70T337.89-98.97Z"/></svg><span>Benchmark: 200 Meter row</span></div>
+              <div class="pill" style="background:#1A3A6B;color:#fff">Benchmark: 200 Meter row</div>
             </div>
 <div class="note flag">Not a repeat</div>          </td>
           <td>
             <div class="dnum">18</div>
             <div class="pills">
-              <div class="pill" style="background:#00695C;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="chair_alt" class="workout-icon"><path d="M192.59-145.93V-422.5q0-29.35 19.39-48.74t48.98-19.39h57.61v-84.74h-57.61q-29.59 0-48.98-19.39-19.39-19.39-19.39-48.74V-780q0-29.35 19.39-48.86 19.39-19.51 48.98-19.51h438.08q29.59 0 48.98 19.51 19.39 19.51 19.39 48.86v136.5q0 29.35-19.39 48.74t-48.98 19.39h-57.61v84.74h57.61q29.59 0 48.98 19.39 19.39 19.39 19.39 48.74v276.57q0 14.67-9.69 24.36-9.7 9.7-24.49 9.7-14.8 0-24.49-9.7-9.7-9.69-9.7-24.36V-231H260.96v85.07q0 14.67-9.7 24.36-9.69 9.7-24.49 9.7-14.79 0-24.49-9.7-9.69-9.69-9.69-24.36Zm185.98-344.7h202.86v-84.74H378.57v84.74Z"/></svg><span>Low Bench</span></div>
+              <div class="pill" style="background:#00695C;color:#fff">Low Bench</div>
             </div>
 <div class="note">Repeat of 11/2</div>          </td>
           <td>
             <div class="dnum">19</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
 <div class="note">Repeat of 11/3</div>          </td>
           <td>
             <div class="dnum">20</div>
             <div class="pills">
-              <div class="pill" style="background:#6A1B9A;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="balance" class="workout-icon"><path d="M108.09-114.02q-14.68 0-24.37-9.7-9.7-9.69-9.7-24.37 0-14.67 9.7-24.37 9.69-9.69 24.37-9.69h337.84v-480.89q-25.52-9.24-45.42-29.26-19.9-20.03-29.14-45.55H219.3l114.9 277.83q4.47 9.19 5.09 19.39.62 10.2-1.38 20.15-9.24 45.96-47.67 69.3-38.44 23.33-82.15 23.33-43.72 0-82.27-23.45-38.56-23.46-47.56-69.18-2-9.95-1.5-20.15t4.98-19.39l115.13-277.83h-48.78q-14.68 0-24.37-9.69-9.7-9.7-9.7-24.37 0-14.68 9.7-24.49 9.69-9.82 24.37-9.82h223.28q12.96-35.24 42.43-57.62 29.48-22.38 66.2-22.38t66.2 22.38q29.47 22.38 42.43 57.62h223.28q14.68 0 24.49 9.82 9.82 9.81 9.82 24.49 0 14.67-9.82 24.37-9.81 9.69-24.49 9.69h-48.78l115.13 277.83q4.48 9.19 4.98 19.39.5 10.2-1.5 20.15-9 45.96-47.56 69.3-38.55 23.33-82.15 23.33-43.6 0-82.15-23.45-38.55-23.46-47.55-69.18-2.24-9.95-1.62-20.15.62-10.2 5.09-19.39l114.9-277.83H588.63q-9.24 25.52-29.14 45.55-19.9 20.02-45.42 29.26v480.89h337.84q14.68 0 24.49 9.69 9.82 9.7 9.82 24.37 0 14.68-9.82 24.37-9.81 9.7-24.49 9.7H108.09Zm571.69-330.76h144.5l-72.37-177.55-72.13 177.55Zm-543.82 0h144.5l-72.37-177.55-72.13 177.55ZM480-723.35q20.52 0 34.54-14.64 14.03-14.64 14.03-33.92 0-20.52-14.03-34.55-14.02-14.02-34.54-14.02-19.52 0-34.04 14.02-14.53 14.03-14.53 34.55 0 19.28 14.53 33.92 14.52 14.64 34.04 14.64Z"/></svg><span>BOSU</span></div>
+              <div class="pill" style="background:#6A1B9A;color:#fff">BOSU</div>
             </div>
 <div class="note">Repeat of 11/4</div>          </td>
           <td class="weekend">
             <div class="dnum">21</div>
             <div class="pills">
-              <div class="pill" style="background:#1565C0;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="rowing" class="workout-icon"><path d="m710.61-24.11-79.37-79.37q-5.48-5.24-7.84-10.95-2.36-5.72-2.36-12.68v-48.32L301-495.48q-6.24 1.76-12.86 2.88-6.62 1.12-12.1 1.12v-55.87q49.24-2.24 111.12-28.4 61.88-26.16 93.36-60.88l58-63q12.24-13.24 27.98-21.48t32.98-8.24q32.72 0 56.07 23.36 23.36 23.36 23.36 56.08v248q0 29.76-13.14 60.64t-33.62 42.36L515.04-416.26v-167.07q-29.28 25.29-65.08 44.57-35.81 19.28-67.61 30.8L668.2-222.35h48.32q6.72 0 12.44 2.36 5.71 2.36 11.19 7.84l79.37 79.13q10.2 10.19 10.2 23.99 0 13.79-10.2 23.99l-60.93 60.93q-10.2 10.2-23.99 10.2-13.8 0-23.99-10.2ZM351.2-288.48 228.43-166.96q-9.47 9.48-22.95 9.48-13.48 0-22.84-9.48-9.36-9.47-9.86-23.45-.5-13.98 9.98-23.46l182.28-181.28 106.44 106.67H351.2Zm200.22-510.01q-21.85-21.86-21.85-52.58 0-30.71 21.85-52.57Q573.28-925.5 604-925.5t52.58 21.86q21.85 21.86 21.85 52.57 0 30.72-21.85 52.58-21.86 21.86-52.58 21.86t-52.58-21.86ZM256.71-499.96q-7.86-8.47-7.86-20.07t7.86-19.46q7.86-7.86 19.45-7.86 11.6 0 19.96 7.86 8.36 7.86 8.36 19.46 0 11.6-8.36 20.07-8.36 8.48-19.96 8.48-11.59 0-19.45-8.48Z"/></svg><span>Run/Row</span></div>
+              <div class="pill" style="background:#1565C0;color:#fff">Run/Row</div>
             </div>
 <div class="note">Repeat of 11/6</div>          </td>
         </tr>
@@ -324,45 +431,45 @@ h1 .otf{color:var(--accent)}
           <td class="weekend">
             <div class="dnum">22</div>
             <div class="pills">
-              <div class="pill" style="background:#1565C0;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="rowing" class="workout-icon"><path d="m710.61-24.11-79.37-79.37q-5.48-5.24-7.84-10.95-2.36-5.72-2.36-12.68v-48.32L301-495.48q-6.24 1.76-12.86 2.88-6.62 1.12-12.1 1.12v-55.87q49.24-2.24 111.12-28.4 61.88-26.16 93.36-60.88l58-63q12.24-13.24 27.98-21.48t32.98-8.24q32.72 0 56.07 23.36 23.36 23.36 23.36 56.08v248q0 29.76-13.14 60.64t-33.62 42.36L515.04-416.26v-167.07q-29.28 25.29-65.08 44.57-35.81 19.28-67.61 30.8L668.2-222.35h48.32q6.72 0 12.44 2.36 5.71 2.36 11.19 7.84l79.37 79.13q10.2 10.19 10.2 23.99 0 13.79-10.2 23.99l-60.93 60.93q-10.2 10.2-23.99 10.2-13.8 0-23.99-10.2ZM351.2-288.48 228.43-166.96q-9.47 9.48-22.95 9.48-13.48 0-22.84-9.48-9.36-9.47-9.86-23.45-.5-13.98 9.98-23.46l182.28-181.28 106.44 106.67H351.2Zm200.22-510.01q-21.85-21.86-21.85-52.58 0-30.71 21.85-52.57Q573.28-925.5 604-925.5t52.58 21.86q21.85 21.86 21.85 52.57 0 30.72-21.85 52.58-21.86 21.86-52.58 21.86t-52.58-21.86ZM256.71-499.96q-7.86-8.47-7.86-20.07t7.86-19.46q7.86-7.86 19.45-7.86 11.6 0 19.96 7.86 8.36 7.86 8.36 19.46 0 11.6-8.36 20.07-8.36 8.48-19.96 8.48-11.59 0-19.45-8.48Z"/></svg><span>Run/Row</span></div>
-              <div class="pill" style="background:#00838F;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="filter_hdr" class="workout-icon"><path d="m75.52-292.07 177.37-236.41q4.98-6.72 12.19-10.07 7.21-3.36 14.92-3.36t14.92 3.36q7.21 3.35 12.43 10.07L465.52-317.5q4.29 6 10.44 9 6.16 3 13.7 3 18.86 0 26.86-16.38t-3-31.38L412.91-487.15q-6.95-9.52-6.95-20.68 0-11.15 6.95-20.34l119.98-160.31q4.98-6.72 12.19-10.07 7.21-3.36 14.92-3.36t14.92 3.36q7.21 3.35 12.43 10.07l297.13 396.41q12.67 17.4 3.29 36.05-9.39 18.65-30.4 18.65H102.63q-21.01 0-30.4-18.65-9.38-18.65 3.29-36.05Z"/></svg><span>Elevation Gain</span></div>
-              <div class="pill" style="background:#558B2F;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="all_inclusive" class="workout-icon"><path d="M211.89-255.93q-91.56 0-153.76-66.7-62.2-66.7-62.2-159.37 0-91.67 62.7-156.87t153.26-65.2q36.72 0 70.96 12.24 34.24 12.23 60.78 37.72l90.85 87.61-48.22 47.5-85.81-83.87q-17.51-17.52-40.46-25.29t-47.98-7.77q-62.45 0-105.19 45.27-42.75 45.27-42.75 108.75 0 64.48 42.24 111.16 42.25 46.68 105.69 46.68 24.28 0 47.12-7.76 22.83-7.77 41.25-24.28l316-298q26.54-25.49 60.78-37.72 34.24-12.24 69.96-12.24 91.56 0 154.26 65.2 62.7 65.2 62.7 156.87 0 92.67-62.7 159.37t-154.26 66.7q-35.72 0-70.46-11.74-34.74-11.73-60.28-37.22l-88.61-87.61 47.98-47.5 83.88 83.89q16.53 16.52 39.81 24.28 23.29 7.76 47.57 7.76 63.44 0 106.19-46.72 42.74-46.72 42.74-111.13 0-63.41-43.24-108.71-43.25-45.3-105.69-45.3-24.28 0-47.12 8.76-22.83 8.77-40.25 25.28l-316 298q-26.54 24.49-61.28 36.22-34.74 11.74-70.46 11.74Z"/></svg><span>Minibands</span></div>
+              <div class="pill two" style="background:#1565C0;color:#fff">Run/Row</div>
+              <div class="pill two" style="background:#00838F;color:#fff">Elevation Gain</div>
+              <div class="pill two" style="background:#558B2F;color:#fff">Minibands</div>
             </div>
 <div class="note">Repeat of 11/7</div>          </td>
           <td>
             <div class="dnum">23<span class="g3">3G</span></div>
             <div class="pills">
-              <div class="pill" style="background:#E8A33D;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="military_tech" class="workout-icon"><path d="m480-155.74-75.63 55.91q-10.2 7.72-19.89.38-9.7-7.33-6.46-19.53l28.96-93.35-75.63-56.15q-10.2-7.72-6.34-19.15 3.86-11.44 16.29-11.44h93.59l25-96.52-139.04-81.76q-20.96-12.48-32.94-32.43-11.98-19.96-11.98-44.15v-268.7q0-28.59 19.9-48.48Q315.72-891 344.07-891h271.86q28.35 0 48.24 19.89 19.9 19.89 19.9 48.48v268.7q0 24.19-11.98 44.15-11.98 19.95-32.94 32.43l-140.04 81.76 26 96.52h92.59q12.43 0 16.29 11.44 3.86 11.43-6.34 19.15l-75.63 56.15 28.96 93.35q3.24 12.2-6.46 19.03-9.69 6.84-19.89-.88L480-155.74ZM454-825.5v347.13l30 16 30-16V-825.5h-60Z"/></svg><span>Signature: Strength in Numbers</span></div>
+              <div class="pill" style="background:#E8A33D;color:#5C6470">Signature: Strength in Numbers</div>
             </div>
 <div class="note flag">Not a repeat</div>          </td>
           <td>
             <div class="dnum">24</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
 <div class="note">Repeat of 11/8</div>          </td>
           <td>
             <div class="dnum">25</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
 <div class="note">Repeat of 11/9</div>          </td>
           <td>
             <div class="dnum">26</div>
             <div class="pills">
-              <div class="pill" style="background:#1565C0;color:#FFFFFF"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="rowing" class="workout-icon"><path d="m710.61-24.11-79.37-79.37q-5.48-5.24-7.84-10.95-2.36-5.72-2.36-12.68v-48.32L301-495.48q-6.24 1.76-12.86 2.88-6.62 1.12-12.1 1.12v-55.87q49.24-2.24 111.12-28.4 61.88-26.16 93.36-60.88l58-63q12.24-13.24 27.98-21.48t32.98-8.24q32.72 0 56.07 23.36 23.36 23.36 23.36 56.08v248q0 29.76-13.14 60.64t-33.62 42.36L515.04-416.26v-167.07q-29.28 25.29-65.08 44.57-35.81 19.28-67.61 30.8L668.2-222.35h48.32q6.72 0 12.44 2.36 5.71 2.36 11.19 7.84l79.37 79.13q10.2 10.19 10.2 23.99 0 13.79-10.2 23.99l-60.93 60.93q-10.2 10.2-23.99 10.2-13.8 0-23.99-10.2ZM351.2-288.48 228.43-166.96q-9.47 9.48-22.95 9.48-13.48 0-22.84-9.48-9.36-9.47-9.86-23.45-.5-13.98 9.98-23.46l182.28-181.28 106.44 106.67H351.2Zm200.22-510.01q-21.85-21.86-21.85-52.58 0-30.71 21.85-52.57Q573.28-925.5 604-925.5t52.58 21.86q21.85 21.86 21.85 52.57 0 30.72-21.85 52.58-21.86 21.86-52.58 21.86t-52.58-21.86ZM256.71-499.96q-7.86-8.47-7.86-20.07t7.86-19.46q7.86-7.86 19.45-7.86 11.6 0 19.96 7.86 8.36 7.86 8.36 19.46 0 11.6-8.36 20.07-8.36 8.48-19.96 8.48-11.59 0-19.45-8.48Z"/></svg><span>Run/Row</span></div>
+              <div class="pill" style="background:#1565C0;color:#fff">Run/Row</div>
             </div>
 <div class="note">Repeat of 11/10</div>          </td>
           <td>
             <div class="dnum">27</div>
             <div class="pills">
-              <div class="pill" style="background:#00838F;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="filter_hdr" class="workout-icon"><path d="m75.52-292.07 177.37-236.41q4.98-6.72 12.19-10.07 7.21-3.36 14.92-3.36t14.92 3.36q7.21 3.35 12.43 10.07L465.52-317.5q4.29 6 10.44 9 6.16 3 13.7 3 18.86 0 26.86-16.38t-3-31.38L412.91-487.15q-6.95-9.52-6.95-20.68 0-11.15 6.95-20.34l119.98-160.31q4.98-6.72 12.19-10.07 7.21-3.36 14.92-3.36t14.92 3.36q7.21 3.35 12.43 10.07l297.13 396.41q12.67 17.4 3.29 36.05-9.39 18.65-30.4 18.65H102.63q-21.01 0-30.4-18.65-9.38-18.65 3.29-36.05Z"/></svg><span>Elevation Gain</span></div>
+              <div class="pill" style="background:#00838F;color:#fff">Elevation Gain</div>
             </div>
 <div class="note flag">Not a repeat</div>          </td>
           <td class="weekend">
             <div class="dnum">28</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
 <div class="note">Repeat of 11/12</div>          </td>
         </tr>
@@ -370,13 +477,13 @@ h1 .otf{color:var(--accent)}
           <td class="weekend">
             <div class="dnum">29</div>
             <div class="pills">
-              <div class="pill" style="background:#F4511E;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" class="workout-icon"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><span>Lift More</span></div>
+              <div class="pill" style="background:#F4511E;color:#fff">Lift More</div>
             </div>
 <div class="note">Repeat of 11/14</div>          </td>
           <td>
             <div class="dnum">30</div>
             <div class="pills">
-              <div class="pill" style="background:#E4E7EB;color:#000000"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="workout-icon"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Standard</span></div>
+              <div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div>
             </div>
 <div class="note flag">Not a repeat</div>          </td>
 <td class="blank"></td>
@@ -388,44 +495,109 @@ h1 .otf{color:var(--accent)}
       </tbody>
     </table>
   </div>
+
   <div class="strength">
+    <div class="kb"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="exercise" style="color:#16181D"><path d="M827.91-582.13 581.37-828.91l29.52-30.29q23.72-23.95 58.56-23.57 34.83.38 58.79 24.34L858.2-728.48q23.71 23.96 23.83 58.41.12 34.46-23.83 58.18l-30.29 29.76Zm-478.8 479.56q-23.96 23.96-58.41 23.96-34.46 0-58.42-23.96L88.33-246.52q-17.96-17.96-17.84-44.3.12-26.33 18.08-44.29l43.76-43.52 246.3 246.3-29.52 29.76Zm136.56-6.76q-9.71 9.72-23.03 9.72-13.31 0-23.03-9.72L109.09-439.85q-9.72-9.72-9.6-22.91.12-13.2 9.84-22.91l94.43-94.44q9.72-9.72 22.79-9.72 13.08 0 22.8 9.72l74.13 74.37 131.54-131.54-74.13-74.13q-9.72-9.72-9.72-22.92 0-13.19 9.72-22.91l93.68-94.67q9.71-9.48 23.17-9.48t23.17 9.48l330.76 330.76q9.72 9.72 9.72 23.29 0 13.58-9.48 23.29l-94.67 93.68q-9.72 9.72-23.03 9.72-13.32 0-23.04-9.72l-73.89-74.13-131.54 131.54 74.13 74.13q9.72 9.72 9.84 22.8.12 13.07-9.6 22.79l-94.44 94.43Z"/></svg></div>
     <div class="s-mid">
       <div class="s-title">Strength 50 / Tread 50 Weekly Pattern</div>
       <div class="split">
-<div><div class="d">Mon / Thu</div><div class="b">Upper Body</div></div><div><div class="d">Tue / Fri</div><div class="b">Lower Body</div></div><div><div class="d">Wed / Sat / Sun</div><div class="b">Total Body</div></div>      </div>
+        <div>
+          <div class="d">Mon / Thu</div>
+          <svg class="bb" viewBox="0 0 100 26"><rect x="0" y="7" width="9" height="12" rx="3" fill="#16181D"/><rect x="11" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="23" y="10" width="54" height="6" rx="3" fill="#16181D"/><rect x="77" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="91" y="7" width="9" height="12" rx="3" fill="#16181D"/></svg>
+          <div class="b">Strength 50 =<br><b>Upper Body</b></div>
+        </div>
+        <div>
+          <div class="d">Tue / Fri</div>
+          <svg class="bb" viewBox="0 0 100 26"><rect x="0" y="7" width="9" height="12" rx="3" fill="#16181D"/><rect x="11" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="23" y="10" width="54" height="6" rx="3" fill="#16181D"/><rect x="77" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="91" y="7" width="9" height="12" rx="3" fill="#16181D"/></svg>
+          <div class="b">Strength 50 =<br><b>Lower Body</b></div>
+        </div>
+        <div>
+          <div class="d">Wed / Sat / Sun</div>
+          <svg class="bb" viewBox="0 0 100 26"><rect x="0" y="7" width="9" height="12" rx="3" fill="#16181D"/><rect x="11" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="23" y="10" width="54" height="6" rx="3" fill="#16181D"/><rect x="77" y="3" width="12" height="20" rx="4" fill="#16181D"/><rect x="91" y="7" width="9" height="12" rx="3" fill="#16181D"/></svg>
+          <div class="b">Strength 50 =<br><b>Total Body</b></div>
+        </div>
+      </div>
     </div>
-    <ul class="s-list"><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Tread 50 runs daily; Strength 50 follows the split at left</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Tread benchmarks appear in Tread 50; signatures and specialties do not</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Templates never repeat inside the same Monday-Sunday week</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Strength / Tread 50 templates from the first 14 days typically repeat two weeks later</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>November has 30 days; 29th-30th are bonus templates (no 31st)</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>60-minute benchmarks: 11/5 .25 Mile · 11/13 1 Mile · 11/17 200 Meter row</span></li></ul>
+    <ul class="s-list">
+<li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Tread 50 runs daily; Strength 50 follows the split at left</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Tread benchmarks appear in Tread 50; signatures and specialties do not</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Templates never repeat inside the same Monday-Sunday week</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>Strength / Tread 50 templates from the first 14 days typically repeat two weeks later</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>November has 30 days; 29th-30th are bonus templates (no 31st)</span></li><li><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="check_circle" class="chk" style="color:#F4511E"><path d="m420.52-395.22-93.45-93.45q-9.96-9.96-24.42-9.96t-25.61 10.96q-9.95 10.19-9.95 24.63 0 14.43 10.19 24.39l119.13 120.13q10.31 10.19 24.05 10.19t24.17-10.19l236.13-236.37q11.2-10.96 11.2-25.3t-11.2-25.48q-10.96-9.96-25.92-9.46t-25.1 10.46L420.52-395.22Zm59.51 321.2q-83.46 0-157.54-31.88-74.07-31.88-129.39-87.2-55.32-55.32-87.2-129.36-31.88-74.04-31.88-157.51 0-84.46 31.88-158.54 31.88-74.07 87.16-128.9 55.28-54.84 129.34-86.82 74.06-31.99 157.55-31.99 84.48 0 158.59 31.97 74.1 31.97 128.91 86.77 54.82 54.8 86.79 128.88 31.98 74.08 31.98 158.6 0 83.5-31.99 157.57-31.98 74.07-86.82 129.36-54.83 55.29-128.87 87.17-74.04 31.88-158.51 31.88Z"/></svg><span>60-minute benchmarks: 11/5 .25 Mile · 11/13 1 Mile · 11/17 200 Meter row</span></li>    </ul>
+    <div class="s-run"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="sprint" style="color:#F4511E"><path d="M486.54-421.17 243.22-179.33q-9.5 9.72-22.69 9.72-13.18 0-22.9-9.65-9.72-9.65-9.72-23.27t9.72-23.38l382.22-381.46H443.59v45.46q0 13.88-9.51 23.37-9.51 9.5-23.42 9.5-13.9 0-23.12-9.5-9.21-9.49-9.21-23.37v-76.66q0-14.42 9.82-24.24 9.82-9.82 24.24-9.82h197.76q13.65 0 26.1 5.6 12.45 5.6 21.88 14.79l121.02 119.26q23.07 23.07 52.09 36.71 29.02 13.64 60.3 19.4 13.91 2.49 24.27 12.7 10.36 10.21 8.36 24.2-2 14.98-13.15 22.91-11.16 7.93-26.24 5.45-41.24-6-78.45-22.5-37.22-16.5-67.7-48.22l-44.09-43.84L584.37-416l54.65 54.65q12.2 12.44 9.96 28.47-2.24 16.03-16.91 24.99L449.74-201.61q-11.96 6.48-25.16 3.01-13.19-3.47-19.55-15.2-6.36-11.72-3.12-24.8 3.24-13.07 15.2-19.79L564-343.48l-77.46-77.69Zm-341.08-12.61q-13.78 0-23.21-9.46-9.42-9.47-9.42-23.3t9.42-23.17q9.43-9.33 23.21-9.33h140q13.88 0 23.37 9.46 9.5 9.46 9.5 23.29 0 13.83-9.5 23.17-9.49 9.34-23.37 9.34h-140Zm-80-135.26q-13.78 0-23.21-9.51-9.42-9.51-9.42-23.42 0-13.9 9.42-23.24 9.43-9.33 23.21-9.33h140q13.88 0 23.37 9.51 9.5 9.51 9.5 23.41t-9.5 23.24q-9.49 9.34-23.37 9.34h-140Zm731.27-80.48q-29.91 0-51.29-21.19-21.37-21.18-21.37-51.53t21.37-51.44q21.38-21.1 51.29-21.1 29.68 0 51.02 21.3 21.34 21.31 21.34 51.42 0 30.1-21.34 51.32t-51.02 21.22Zm-651.27-55.02q-13.78 0-23.21-9.47-9.42-9.46-9.42-23.29 0-13.83 9.42-23.17 9.43-9.33 23.21-9.33h140q13.88 0 23.37 9.46 9.5 9.46 9.5 23.29 0 13.83-9.5 23.17-9.49 9.34-23.37 9.34h-140Z"/></svg></div>
   </div>
+
   <div class="row3">
     <div class="panel" data-section="key-dates">
       <div class="ph"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="calendar_month"><path d="M182.15-74.02q-27.6 0-47.86-20.27-20.27-20.26-20.27-47.86v-615.7q0-27.7 20.27-48.03 20.26-20.34 47.86-20.34H245v-25.85q0-14.35 9.76-24.25 9.77-9.9 24.46-9.9 14.68 0 24.77 9.9 10.08 9.9 10.08 24.25v25.85h331.86v-25.85q0-14.35 9.77-24.25 9.76-9.9 24.45-9.9t24.77 9.9q10.08 9.9 10.08 24.25v25.85h62.85q27.7 0 48.03 20.34 20.34 20.33 20.34 48.03v615.7q0 27.6-20.34 47.86-20.33 20.27-48.03 20.27h-595.7Zm0-68.13h595.7V-570h-595.7v427.85Zm297.88-256.42q-17.51 0-29.49-11.95-11.97-11.95-11.97-29.45 0-17.51 11.95-29.49 11.95-11.97 29.45-11.97 17.51 0 29.49 11.95 11.97 11.95 11.97 29.45 0 17.51-11.95 29.49-11.95 11.97-29.45 11.97Zm-189.49-11.95q-11.97-11.95-11.97-29.45 0-17.51 11.95-29.49 11.95-11.97 29.45-11.97 17.51 0 29.49 11.95 11.97 11.95 11.97 29.45 0 17.51-11.95 29.49-11.95 11.97-29.45 11.97-17.51 0-29.49-11.95Zm349.49 11.95q-17.27 0-29.37-11.95-12.09-11.95-12.09-29.45 0-17.51 12.07-29.49 12.07-11.97 29.33-11.97 17.51 0 29.49 11.95 11.97 11.95 11.97 29.45 0 17.51-11.95 29.49-11.95 11.97-29.45 11.97Zm-160 160q-17.51 0-29.49-12.07-11.97-12.07-11.97-29.33 0-17.51 11.95-29.49 11.95-11.97 29.45-11.97 17.51 0 29.49 11.95 11.97 11.95 11.97 29.45 0 17.27-11.95 29.37-11.95 12.09-29.45 12.09Zm-189.49-12.07q-11.97-12.07-11.97-29.33 0-17.51 11.95-29.49 11.95-11.97 29.45-11.97 17.51 0 29.49 11.95 11.97 11.95 11.97 29.45 0 17.27-11.95 29.37-11.95 12.09-29.45 12.09-17.51 0-29.49-12.07Zm349.49 12.07q-17.27 0-29.37-12.07-12.09-12.07-12.09-29.33 0-17.51 12.07-29.49 12.07-11.97 29.33-11.97 17.51 0 29.49 11.95 11.97 11.95 11.97 29.45 0 17.27-11.95 29.37-11.95 12.09-29.45 12.09Z"/></svg>Key Dates</div>
       <div class="pb">
-<div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_fire_department" class="ic" style="color:#E53935"><path d="M156.41-400q0-115.68 71.5-225.2 71.5-109.52 196.74-187.47 19.15-12.44 39.05-.68 19.89 11.75 19.89 35.74v69.5q0 32.52 22.46 54.52t54.95 22q17.28 0 32.18-7.25 14.9-7.25 26.43-21.79 8.45-9.88 19.54-13.54 11.09-3.66 21.05 2.82 66.98 46.2 105.19 117.92 38.2 71.71 38.2 153.33 0 95.68-49 172.66-49 76.98-129.24 116.59 23.79-26.42 36.61-59.37 12.82-32.95 12.82-68.88 0-39.16-14.36-73.46-14.35-34.31-42.02-61.94L480-509.65 342.89-374.54q-28.72 27.71-43.07 62.1-14.36 34.38-14.36 73.39 0 35.81 12.7 68.79 12.7 32.97 36.49 59.41-80.24-39.61-129.24-116.59-49-76.98-49-172.56ZM480-414.17l89.61 87.81q17.52 17.56 27.16 39.88 9.64 22.33 9.64 47.28 0 51.51-36.96 87.97-36.97 36.45-89.49 36.45-52.53 0-89.45-36.45-36.92-36.46-36.92-87.97 0-25.04 9.25-47.35 9.26-22.32 27.79-39.78L480-414.17Z"/></svg><div><div class="d">November 1 (Sunday)</div><div class="t">Specialty: Member Choice</div></div></div>
-<div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="timer" class="ic" style="color:#1A3A6B"><path d="M387.16-860q-13.98 0-23.32-9.51t-9.34-23.54q0-14.02 9.34-23.23 9.34-9.22 23.32-9.22h185.68q13.98 0 23.32 9.39 9.34 9.4 9.34 23.42 0 14.02-9.34 23.35-9.34 9.34-23.32 9.34H387.16Zm116.13 442.6q9.34-9.43 9.34-23.21v-165.22q0-13.77-9.46-23.2t-23.3-9.43q-13.83 0-23.16 9.43-9.34 9.43-9.34 23.2v165.22q0 13.78 9.46 23.21 9.46 9.42 23.3 9.42 13.83 0 23.16-9.42ZM337.89-98.97q-66.56-28.96-116.35-78.69-49.8-49.73-78.66-116.27-28.86-66.54-28.86-142.01 0-75.47 28.86-142.05 28.86-66.58 78.66-116.42 49.81-49.85 116.38-78.82Q404.5-802.2 480-802.2q67.48 0 126.58 22 59.09 22 105.33 62.24l30.24-30.24q9.96-9.95 23.53-9.95 13.58 0 23.54 10.07 9.95 10.08 9.95 23.66 0 13.57-9.95 23.53l-30 30q36.24 40.48 61.62 97.96 25.38 57.47 25.38 136.95 0 75.52-28.96 142.11-28.95 66.59-78.78 116.28-49.83 49.7-116.44 78.64Q555.43-70 479.94-70T337.89-98.97Z"/></svg><div><div class="d">November 5 (Thursday)</div><div class="t">Benchmark: .25 Mile</div></div></div>
-<div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="timer" class="ic" style="color:#1A3A6B"><path d="M387.16-860q-13.98 0-23.32-9.51t-9.34-23.54q0-14.02 9.34-23.23 9.34-9.22 23.32-9.22h185.68q13.98 0 23.32 9.39 9.34 9.4 9.34 23.42 0 14.02-9.34 23.35-9.34 9.34-23.32 9.34H387.16Zm116.13 442.6q9.34-9.43 9.34-23.21v-165.22q0-13.77-9.46-23.2t-23.3-9.43q-13.83 0-23.16 9.43-9.34 9.43-9.34 23.2v165.22q0 13.78 9.46 23.21 9.46 9.42 23.3 9.42 13.83 0 23.16-9.42ZM337.89-98.97q-66.56-28.96-116.35-78.69-49.8-49.73-78.66-116.27-28.86-66.54-28.86-142.01 0-75.47 28.86-142.05 28.86-66.58 78.66-116.42 49.81-49.85 116.38-78.82Q404.5-802.2 480-802.2q67.48 0 126.58 22 59.09 22 105.33 62.24l30.24-30.24q9.96-9.95 23.53-9.95 13.58 0 23.54 10.07 9.95 10.08 9.95 23.66 0 13.57-9.95 23.53l-30 30q36.24 40.48 61.62 97.96 25.38 57.47 25.38 136.95 0 75.52-28.96 142.11-28.95 66.59-78.78 116.28-49.83 49.7-116.44 78.64Q555.43-70 479.94-70T337.89-98.97Z"/></svg><div><div class="d">November 13 (Friday)</div><div class="t">Benchmark: 1 Mile</div></div></div>
-<div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="timer" class="ic" style="color:#1A3A6B"><path d="M387.16-860q-13.98 0-23.32-9.51t-9.34-23.54q0-14.02 9.34-23.23 9.34-9.22 23.32-9.22h185.68q13.98 0 23.32 9.39 9.34 9.4 9.34 23.42 0 14.02-9.34 23.35-9.34 9.34-23.32 9.34H387.16Zm116.13 442.6q9.34-9.43 9.34-23.21v-165.22q0-13.77-9.46-23.2t-23.3-9.43q-13.83 0-23.16 9.43-9.34 9.43-9.34 23.2v165.22q0 13.78 9.46 23.21 9.46 9.42 23.3 9.42 13.83 0 23.16-9.42ZM337.89-98.97q-66.56-28.96-116.35-78.69-49.8-49.73-78.66-116.27-28.86-66.54-28.86-142.01 0-75.47 28.86-142.05 28.86-66.58 78.66-116.42 49.81-49.85 116.38-78.82Q404.5-802.2 480-802.2q67.48 0 126.58 22 59.09 22 105.33 62.24l30.24-30.24q9.96-9.95 23.53-9.95 13.58 0 23.54 10.07 9.95 10.08 9.95 23.66 0 13.57-9.95 23.53l-30 30q36.24 40.48 61.62 97.96 25.38 57.47 25.38 136.95 0 75.52-28.96 142.11-28.95 66.59-78.78 116.28-49.83 49.7-116.44 78.64Q555.43-70 479.94-70T337.89-98.97Z"/></svg><div><div class="d">November 17 (Tuesday)</div><div class="t">Benchmark: 200 Meter row</div></div></div>
-<div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="military_tech" class="ic" style="color:#F4511E"><path d="m480-155.74-75.63 55.91q-10.2 7.72-19.89.38-9.7-7.33-6.46-19.53l28.96-93.35-75.63-56.15q-10.2-7.72-6.34-19.15 3.86-11.44 16.29-11.44h93.59l25-96.52-139.04-81.76q-20.96-12.48-32.94-32.43-11.98-19.96-11.98-44.15v-268.7q0-28.59 19.9-48.48Q315.72-891 344.07-891h271.86q28.35 0 48.24 19.89 19.9 19.89 19.9 48.48v268.7q0 24.19-11.98 44.15-11.98 19.95-32.94 32.43l-140.04 81.76 26 96.52h92.59q12.43 0 16.29 11.44 3.86 11.43-6.34 19.15l-75.63 56.15 28.96 93.35q3.24 12.2-6.46 19.03-9.69 6.84-19.89-.88L480-155.74ZM454-825.5v347.13l30 16 30-16V-825.5h-60Z"/></svg><div><div class="d">November 23 (Monday)</div><div class="t">Signature: Strength in Numbers</div></div></div>
-<div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="star" class="ic" style="color:#E8A33D"><path d="M480-262.3 293.52-149.83q-9.43 5.72-19.63 5.1-10.19-.62-18.15-6.34-7.96-5.71-11.82-14.79-3.85-9.07-1.62-20.51l49.24-212.48-164.47-143.48q-8.96-7.71-10.94-17.41-1.98-9.69.38-18.89 2.36-9.2 10.44-15.53 8.07-6.34 19.51-7.34l217.47-19 84.24-200.72q4.48-10.43 13.56-15.53 9.07-5.1 18.27-5.1t18.27 5.1q9.08 5.1 13.56 15.53l84.24 200.72 217.71 19q11.2 1 19.27 7.34 8.08 6.33 10.44 15.53 2.36 9.2.38 18.89-1.98 9.7-10.94 17.41L668.46-398.85l49.24 212.48q2.23 11.44-1.62 20.51-3.86 9.08-11.82 14.79-7.96 5.72-18.15 6.34-10.2.62-19.63-5.1L480-262.3Z"/></svg><div><div class="d">November 15, 16, 17, 23, 27 &amp; 30</div><div class="t">The month’s only non-repeat days</div></div></div>
+        <div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_fire_department" class="ic" style="color:#E53935"><path d="M156.41-400q0-115.68 71.5-225.2 71.5-109.52 196.74-187.47 19.15-12.44 39.05-.68 19.89 11.75 19.89 35.74v69.5q0 32.52 22.46 54.52t54.95 22q17.28 0 32.18-7.25 14.9-7.25 26.43-21.79 8.45-9.88 19.54-13.54 11.09-3.66 21.05 2.82 66.98 46.2 105.19 117.92 38.2 71.71 38.2 153.33 0 95.68-49 172.66-49 76.98-129.24 116.59 23.79-26.42 36.61-59.37 12.82-32.95 12.82-68.88 0-39.16-14.36-73.46-14.35-34.31-42.02-61.94L480-509.65 342.89-374.54q-28.72 27.71-43.07 62.1-14.36 34.38-14.36 73.39 0 35.81 12.7 68.79 12.7 32.97 36.49 59.41-80.24-39.61-129.24-116.59-49-76.98-49-172.56ZM480-414.17l89.61 87.81q17.52 17.56 27.16 39.88 9.64 22.33 9.64 47.28 0 51.51-36.96 87.97-36.97 36.45-89.49 36.45-52.53 0-89.45-36.45-36.92-36.46-36.92-87.97 0-25.04 9.25-47.35 9.26-22.32 27.79-39.78L480-414.17Z"/></svg><div><div class="d">November 1 (Sunday)</div><div class="t">Specialty: Member Choice</div></div></div>
+        <div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_cafe" class="ic" style="color:#6A1B9A"><path d="M188.09-114.02q-14.43 0-24.25-9.87t-9.82-24.37q0-14.5 9.82-24.2 9.82-9.69 24.25-9.69h583.82q14.4 0 24.35 9.87 9.96 9.87 9.96 24.37 0 14.5-9.96 24.19-9.95 9.7-24.35 9.7H188.09ZM309.8-258.57q-65.17 0-110.48-44.93-45.3-44.93-45.3-109.85v-364.5q0-28.45 19.89-48.41 19.89-19.96 48.24-19.96h595.94q28.21 0 48.17 20.08t19.96 48.05v160q0 28.1-19.96 48.12-19.96 20.01-48.17 20.01h-92.66v136.61q0 64.92-45.42 109.85-45.42 44.93-110.6 44.93H309.8Zm415.63-359.52h92.42v-160h-92.42v160Z"/></svg><div><div class="d">November 5 (Thursday)</div><div class="t">Benchmark: .25 Mile</div></div></div>
+        <div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_cafe" class="ic" style="color:#6A1B9A"><path d="M188.09-114.02q-14.43 0-24.25-9.87t-9.82-24.37q0-14.5 9.82-24.2 9.82-9.69 24.25-9.69h583.82q14.4 0 24.35 9.87 9.96 9.87 9.96 24.37 0 14.5-9.96 24.19-9.95 9.7-24.35 9.7H188.09ZM309.8-258.57q-65.17 0-110.48-44.93-45.3-44.93-45.3-109.85v-364.5q0-28.45 19.89-48.41 19.89-19.96 48.24-19.96h595.94q28.21 0 48.17 20.08t19.96 48.05v160q0 28.1-19.96 48.12-19.96 20.01-48.17 20.01h-92.66v136.61q0 64.92-45.42 109.85-45.42 44.93-110.6 44.93H309.8Zm415.63-359.52h92.42v-160h-92.42v160Z"/></svg><div><div class="d">November 13 (Friday)</div><div class="t">Benchmark: 1 Mile</div></div></div>
+        <div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_cafe" class="ic" style="color:#6A1B9A"><path d="M188.09-114.02q-14.43 0-24.25-9.87t-9.82-24.37q0-14.5 9.82-24.2 9.82-9.69 24.25-9.69h583.82q14.4 0 24.35 9.87 9.96 9.87 9.96 24.37 0 14.5-9.96 24.19-9.95 9.7-24.35 9.7H188.09ZM309.8-258.57q-65.17 0-110.48-44.93-45.3-44.93-45.3-109.85v-364.5q0-28.45 19.89-48.41 19.89-19.96 48.24-19.96h595.94q28.21 0 48.17 20.08t19.96 48.05v160q0 28.1-19.96 48.12-19.96 20.01-48.17 20.01h-92.66v136.61q0 64.92-45.42 109.85-45.42 44.93-110.6 44.93H309.8Zm415.63-359.52h92.42v-160h-92.42v160Z"/></svg><div><div class="d">November 17 (Tuesday)</div><div class="t">Benchmark: 200 Meter row</div></div></div>
+        <div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="military_tech" class="ic" style="color:#F4511E"><path d="m480-155.74-75.63 55.91q-10.2 7.72-19.89.38-9.7-7.33-6.46-19.53l28.96-93.35-75.63-56.15q-10.2-7.72-6.34-19.15 3.86-11.44 16.29-11.44h93.59l25-96.52-139.04-81.76q-20.96-12.48-32.94-32.43-11.98-19.96-11.98-44.15v-268.7q0-28.59 19.9-48.48Q315.72-891 344.07-891h271.86q28.35 0 48.24 19.89 19.9 19.89 19.9 48.48v268.7q0 24.19-11.98 44.15-11.98 19.95-32.94 32.43l-140.04 81.76 26 96.52h92.59q12.43 0 16.29 11.44 3.86 11.43-6.34 19.15l-75.63 56.15 28.96 93.35q3.24 12.2-6.46 19.03-9.69 6.84-19.89-.88L480-155.74ZM454-825.5v347.13l30 16 30-16V-825.5h-60Z"/></svg><div><div class="d">November 23 (Monday)</div><div class="t">Signature: Strength in Numbers</div></div></div>
+        <div class="kd"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="star" class="ic" style="color:#E8A33D"><path d="M480-262.3 293.52-149.83q-9.43 5.72-19.63 5.1-10.19-.62-18.15-6.34-7.96-5.71-11.82-14.79-3.85-9.07-1.62-20.51l49.24-212.48-164.47-143.48q-8.96-7.71-10.94-17.41-1.98-9.69.38-18.89 2.36-9.2 10.44-15.53 8.07-6.34 19.51-7.34l217.47-19 84.24-200.72q4.48-10.43 13.56-15.53 9.07-5.1 18.27-5.1t18.27 5.1q9.08 5.1 13.56 15.53l84.24 200.72 217.71 19q11.2 1 19.27 7.34 8.08 6.33 10.44 15.53 2.36 9.2.38 18.89-1.98 9.7-10.94 17.41L668.46-398.85l49.24 212.48q2.23 11.44-1.62 20.51-3.86 9.08-11.82 14.79-7.96 5.72-18.15 6.34-10.2.62-19.63-5.1L480-262.3Z"/></svg><div><div class="d">November 15, 16, 17, 23, 27 &amp; 30</div><div class="t">The month’s only non-repeat days</div></div></div>
       </div>
     </div>
+
+    <div class="panel" data-section="highlights">
+      <div class="ph"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="equalizer"><path d="M175.24-175.18q-21.22-21.16-21.22-51.45v-183.04q0-30.29 21.31-51.63 21.3-21.33 51.54-21.33t51.44 21.33q21.21 21.34 21.21 51.63v183.04q0 30.29-21.29 51.45-21.3 21.16-51.54 21.16-30.23 0-51.45-21.16Zm304.67 21.16q-30.11 0-51.32-21.28-21.22-21.28-21.22-51.42v-506.56q0-30.14 21.19-51.54 21.18-21.4 51.53-21.4 30.11 0 51.32 21.43 21.22 21.43 21.22 51.44v506.63q0 30.14-21.19 51.42-21.18 21.28-51.53 21.28Zm201.91-21.16q-21.34-21.16-21.34-51.43v-306.7q0-30.27 21.41-51.59 21.42-21.32 51.66-21.32 30.23 0 51.45 21.32 21.22 21.32 21.22 51.59v306.7q0 30.27-21.3 51.43t-51.53 21.16q-30.24 0-51.57-21.16Z"/></svg>Template &amp; Equipment Highlights</div>
+      <div class="pb">
+        <div class="hl"><span class="dot" style="background:#1565C0"></span><span><b style="color:#1565C0">Run/Rows:</b> 11/6, 11/7, 11/10, 11/21, 11/22, 11/26</span></div>
+        <div class="hl"><span class="dot" style="background:#E53935"></span><span><b style="color:#E53935">Switch Templates:</b> 11/5</span></div>
+        <div class="hl"><span class="dot" style="background:#F4511E"></span><span><b style="color:#F4511E">Lift More:</b> 11/3, 11/9, 11/14, 11/15, 11/19, 11/25, 11/29</span></div>
+        <div class="hl"><span class="dot" style="background:#00838F"></span><span><b style="color:#00838F">Elevation Gain:</b> 11/7, 11/22, 11/27</span></div>
+        <div class="hl"><span class="dot" style="background:#6A1B9A"></span><span><b style="color:#6A1B9A">BOSU:</b> 11/4, 11/20</span></div>
+        <div class="hl"><span class="dot" style="background:#00695C"></span><span><b style="color:#00695C">Low Bench:</b> 11/2, 11/18</span></div>
+        <div class="hl"><span class="dot" style="background:#558B2F"></span><span><b style="color:#558B2F">Minibands:</b> 11/7, 11/22</span></div>
+        <div class="hl"><span class="dot" style="background:#E8A33D"></span><span><b style="color:#E8A33D">Signatures:</b> 11/23 Strength in Numbers</span></div>
+        <div class="hl"><span class="dot" style="background:#1A3A6B"></span><span><b style="color:#1A3A6B">Benchmarks:</b> 11/5 .25 Mile · 11/13 1 Mile · 11/17 200 Meter row</span></div>
+        <div class="hl"><span class="dot" style="background:#E53935"></span><span><b style="color:#E53935">Specialties:</b> 11/1 Member Choice</span></div>
+      </div>
+    </div>
+
     <div class="panel" data-section="repeat-map">
       <div class="ph"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="autorenew"><path d="M224.07-478.48q0 19.76 2.5 38.16 2.5 18.41 7.02 35.17 3.48 13.67-1.26 27.35-4.74 13.67-17.18 19.87-12.43 6.19-25.61.95-13.17-5.24-17.65-17.67-8.48-25.72-12.22-51.18-3.74-25.45-3.74-52.65 0-131.95 95.34-227.77 95.34-95.82 227.06-95.82h43l-57.42-57.41q-8.48-8.48-8.48-19.95 0-11.48 8.72-19.96 8.48-8.48 20.46-8.48t20.46 8.48l108.28 107.28q10.19 10.2 10.19 24.11t-10.19 24.11L506.07-636.61q-8.48 8.48-20.96 8.48t-20.96-8.48q-8.72-8.48-8.6-21.07.12-12.6 8.6-21.08l55.18-55.17H478.8q-104.6 0-179.67 75.3-75.06 75.3-75.06 180.15Zm511.86-.28q0-19.52-2.38-38.04-2.38-18.53-7.14-36.05-4.24-13.67.38-27.35 4.62-13.67 17.06-19.87 12.19-6.19 24.87-1.07 12.67 5.12 17.39 17.31 9.48 25.96 13.72 52.04 4.24 26.07 4.24 53.03 0 132.19-95.34 228.13-95.34 95.93-226.82 95.93h-45.24l57.18 57.18q8.72 8.48 8.6 19.95-.12 11.48-8.6 19.96-8.72 8.48-20.58 8.48-11.86 0-20.34-8.48L344.65-164.89q-10.19-10.2-10.19-23.99t10.19-23.99l108.52-108.28q8.24-8.48 20.22-8.6 11.98-.12 20.58 8.48 8.6 8.6 8.6 20.45 0 11.86-8.48 20.34l-57.42 57.41h44.53q104.6 0 179.67-75.3 75.06-75.3 75.06-180.39Z"/></svg>Repeat Template Map</div>
       <div class="pb">
-<div class="map"><div>11/18 = 11/2</div><div>11/19 = 11/3</div><div>11/20 = 11/4</div><div>11/21 = 11/6</div><div>11/22 = 11/7</div><div>11/24 = 11/8</div><div>11/25 = 11/9</div><div>11/26 = 11/10</div><div>11/28 = 11/12</div><div>11/29 = 11/14</div></div>
-<div class="mapnote">11/15, 11/16, 11/17, 11/23, 11/27, 11/30 are not repeats</div>      </div>
-    </div>
-  </div>
-  <div class="bottom">
-    <div class="bh"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="menu_book"><path d="M512-243.3q50-25 98-37.5t102-12.5q38 0 78.5 6t69.5 16v-429q-34-17.24-72-25.12-38-7.88-76-7.88-54 0-104.5 16.5T512-670.3v427Zm-44.5 83.47q-6.98-1.5-12.46-5.73-46.76-29-99.56-45.24-52.81-16.24-107.48-16.24-36.42 0-70.87 9.12-34.46 9.12-68.98 21.64-25.39 12.43-49.52-2.8-24.13-15.24-24.13-44.27v-462.76q0-17.39 7.96-31.97 7.95-14.58 23.87-22.68 42.47-19.52 88.21-28.9 45.74-9.38 92.96-9.38 63.26 0 122.88 17.12T482-729.33q51-35.24 109.62-52.47 58.62-17.24 120.88-17.24 47.22 0 92.46 9.5 45.24 9.5 87.71 28.78 15.92 8.1 24.37 22.68 8.46 14.58 8.46 31.97v465.39q0 30.16-25.01 45.01-25.01 14.86-49.64-.57-33.52-13.52-67.98-22.14-34.45-8.62-70.87-8.62-53.76 0-105.04 16.36-51.29 16.35-97.05 45.12-5.24 4.23-12.21 5.73-6.98 1.5-15.1 1.5t-15.1-1.5ZM560-601.78q0-5.77 3.88-11.03t8.88-7.49q30-11 61.5-17t65.74-6q22 0 43 2.51 21 2.52 41 7.54 6 1.78 11 7.45t5 12.5q0 11.23-7.5 17.12-7.5 5.88-18.5 2.88-17.24-5-35.62-7.5T700-603.3q-29 0-55.88 5.38-26.88 5.38-52.64 16.38-14.21 5-22.85-.66-8.63-5.66-8.63-19.58Zm0 220q0-5.77 3.88-11.53t8.88-7.99q30-11 61.5-16.5t65.74-5.5q22 0 43 2.51 21 2.52 41 7.54 6 1.78 11 7.45t5 12.5q0 11.23-7.5 17.12-7.5 5.88-18.5 2.88-17.24-5-35.62-7.5T700-383.3q-29 0-55.88 4.88-26.88 4.88-52.64 15.88-14.21 5-22.85-.04-8.63-5.04-8.63-19.2Zm0-110q0-5.77 3.88-11.03t8.88-7.49q30-11 61.5-17t65.74-6q22 0 43 2.51 21 2.52 41 7.54 6 1.78 11 7.45t5 12.5q0 11.23-7.5 17.12-7.5 5.88-18.5 2.88-17.24-5-35.62-7.5T700-493.3q-29 0-55.88 5.38-26.88 5.38-52.64 16.38-14.21 5-22.85-.66-8.63-5.66-8.63-19.58Z"/></svg>Monthly Notes</div>
-    <div class="bwrap" style="grid-template-columns:repeat(1,1fr)">
-      <div class="bcol">
-        <div class="monthly-notes"><div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="groups" style="color:#8A919B"><path d="M31.2-237.13q-14.43 0-24.25-9.82t-9.82-24.25V-293q0-40.06 42.34-64.96 42.33-24.91 110.91-24.91 10.84 0 20.58.38 9.74.38 19.54 1.79-8.48 18.07-12.72 36.72-4.24 18.66-4.24 38.94v67.91H31.2Zm240 0q-14.43 0-24.25-9.82t-9.82-24.25V-305q0-32.72 17.62-59.82 17.62-27.09 50.1-47.33 32.48-20.24 77.4-30.48 44.93-10.24 97.68-10.24 53.77 0 98.58 10.24 44.81 10.24 77.4 30.48 32.48 20.24 49.72 47.33 17.24 27.1 17.24 59.82v33.8q0 14.43-9.82 24.25t-24.25 9.82H271.2Zm515.26 0v-67.97q0-20.81-3.86-39.27-3.86-18.47-12.1-36.25 9.8-1.49 19.56-1.87 9.76-.38 19.94-.38 68.98 0 110.93 24.55 41.94 24.55 41.94 65.32v21.8q0 14.43-9.82 24.25t-24.25 9.82H786.46ZM149.62-412.15q-29.34 0-50.32-21.11-20.97-21.1-20.97-50.74 0-29.78 21.05-50.76 21.06-20.98 50.62-20.98 29.72 0 50.82 20.99 21.09 20.98 21.09 51.14 0 29.26-21.03 50.36-21.04 21.1-51.26 21.1Zm660 0q-29.34 0-50.32-21.11-20.97-21.1-20.97-50.74 0-29.78 21.05-50.76 21.06-20.98 50.62-20.98 29.72 0 50.82 20.99 21.09 20.98 21.09 51.14 0 29.26-21.03 50.36-21.04 21.1-51.26 21.1Zm-329.5-70.48q-51.25 0-87.12-35.87-35.87-35.87-35.87-87.12 0-52.08 35.87-87.41 35.87-35.34 87.12-35.34 52.08 0 87.41 35.34 35.34 35.33 35.34 87.41 0 51.25-35.34 87.12-35.33 35.87-87.41 35.87Z"/></svg><p><b>3G-only templates:</b> 11/23 run 3G-style even where 2G is listed.</p></div><div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_fire_department" style="color:#8A919B"><path d="M156.41-400q0-115.68 71.5-225.2 71.5-109.52 196.74-187.47 19.15-12.44 39.05-.68 19.89 11.75 19.89 35.74v69.5q0 32.52 22.46 54.52t54.95 22q17.28 0 32.18-7.25 14.9-7.25 26.43-21.79 8.45-9.88 19.54-13.54 11.09-3.66 21.05 2.82 66.98 46.2 105.19 117.92 38.2 71.71 38.2 153.33 0 95.68-49 172.66-49 76.98-129.24 116.59 23.79-26.42 36.61-59.37 12.82-32.95 12.82-68.88 0-39.16-14.36-73.46-14.35-34.31-42.02-61.94L480-509.65 342.89-374.54q-28.72 27.71-43.07 62.1-14.36 34.38-14.36 73.39 0 35.81 12.7 68.79 12.7 32.97 36.49 59.41-80.24-39.61-129.24-116.59-49-76.98-49-172.56ZM480-414.17l89.61 87.81q17.52 17.56 27.16 39.88 9.64 22.33 9.64 47.28 0 51.51-36.96 87.97-36.97 36.45-89.49 36.45-52.53 0-89.45-36.45-36.92-36.46-36.92-87.97 0-25.04 9.25-47.35 9.26-22.32 27.79-39.78L480-414.17Z"/></svg><p><b>Specialty workouts this month.</b> Scheduled on 11/1.</p></div><div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" style="color:#8A919B"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><p><b>Bench days are specific this month.</b> Low bench 11/2, 11/18.</p></div><div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="cyclone" style="color:#8A919B"><path d="M480-327.37q-62.96 0-107.79-44.84-44.84-44.83-44.84-107.79 0-63.96 44.84-108.29 44.83-44.34 107.79-44.34 63.96 0 108.29 44.34 44.34 44.33 44.34 108.29 0 62.96-44.34 107.79-44.33 44.84-108.29 44.84Zm0-65.26q36.8 0 62.09-25.78 25.28-25.79 25.28-61.59 0-36.8-25.28-62.09-25.29-25.28-62.09-25.28-35.8 0-61.59 25.28-25.78 25.29-25.78 62.09 0 35.8 25.78 61.59 25.79 25.78 61.59 25.78Zm0 240.13q-118.28 0-209.71-14.16-91.42-14.17-153.66-30.69-15.2-4-25.91-15.95Q80-225.26 80-241.46q0-13.19 11.34-20.79 11.33-7.6 25.29-3.36 44.17 12.81 84.92 20.95 40.75 8.14 62.52 11.9-53.57-44.04-82.57-113.02-29-68.98-29-134.22 0-114.93 14.16-206.84 14.17-91.9 30.93-156.05 4-15.44 15.83-26.27Q225.26-880 241.46-880q13.19 0 20.79 11.1t3.6 25.29q-12.57 44.18-19.97 84.28-7.4 40.11-10.4 61.16 46.8-53.09 111.97-81.21Q412.61-807.5 480-807.5q117.57 0 208.99 14.28 91.42 14.29 154.14 30.57 15.2 4.24 26.03 16.07Q880-734.74 880-718.54q0 12.95-11.22 20.55-11.21 7.6-25.17 3.36-44.41-12.8-84.4-20.83-39.99-8.02-61.28-10.78 56.53 50.67 83.05 114.76Q807.5-547.39 807.5-480q0 117.33-14.04 208.99-14.05 91.66-30.81 154.38-4 15.2-15.95 25.91Q734.74-80 718.54-80q-12.95 0-21.05-11.22-8.1-11.21-3.86-25.17 12.57-43.94 20.59-83.81 8.02-39.87 11.78-61.63-50.52 57.05-115.88 83.19Q544.76-152.5 480-152.5Zm185.5-142Q742-371 742-480t-76.5-185.5Q589-742 480-742t-185.5 76.5Q218-589 218-480t76.5 185.5Q371-218 480-218t185.5-76.5Z"/></svg><p><b>Tornado &amp; 90-minute classes</b> stay studio-specific. Two Tornado templates exist each month; coaches pick.</p></div><div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="bolt" style="color:#8A919B"><path d="M354.74-353.3h-138.7q-20.63 0-30.32-18.16-9.7-18.15 2.74-35.3l347.08-500.91q8.48-11.72 21.2-15.84 12.72-4.12 25.43 1 12.72 5.12 20.2 16.96 7.48 11.83 5.48 25.55l-39.48 313.07H740.3q21.63 0 30.71 19.39 9.08 19.39-4.36 36.3L386.33-54.52q-8.48 10.72-21.7 13.84-13.22 3.12-25.05-2.24-11.84-5.36-18.58-16.96-6.74-11.6-4.74-25.55l38.48-267.87Z"/></svg><p><b>Hyrox templates aren’t date-specific.</b> Participating studios run whichever training phase they&#39;re in.</p></div></div>
+        <div class="map">
+<div>11/18 = 11/2</div><div>11/19 = 11/3</div><div>11/20 = 11/4</div><div>11/21 = 11/6</div><div>11/22 = 11/7</div><div>11/24 = 11/8</div><div>11/25 = 11/9</div><div>11/26 = 11/10</div><div>11/28 = 11/12</div><div>11/29 = 11/14</div>        </div>
+        <div class="mapnote">11/15, 11/16, 11/17, 11/23, 11/27, 11/30 are not repeats</div>
       </div>
     </div>
   </div>
+
+  <div class="bottom">
+    <div class="bh"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="menu_book"><path d="M512-243.3q50-25 98-37.5t102-12.5q38 0 78.5 6t69.5 16v-429q-34-17.24-72-25.12-38-7.88-76-7.88-54 0-104.5 16.5T512-670.3v427Zm-44.5 83.47q-6.98-1.5-12.46-5.73-46.76-29-99.56-45.24-52.81-16.24-107.48-16.24-36.42 0-70.87 9.12-34.46 9.12-68.98 21.64-25.39 12.43-49.52-2.8-24.13-15.24-24.13-44.27v-462.76q0-17.39 7.96-31.97 7.95-14.58 23.87-22.68 42.47-19.52 88.21-28.9 45.74-9.38 92.96-9.38 63.26 0 122.88 17.12T482-729.33q51-35.24 109.62-52.47 58.62-17.24 120.88-17.24 47.22 0 92.46 9.5 45.24 9.5 87.71 28.78 15.92 8.1 24.37 22.68 8.46 14.58 8.46 31.97v465.39q0 30.16-25.01 45.01-25.01 14.86-49.64-.57-33.52-13.52-67.98-22.14-34.45-8.62-70.87-8.62-53.76 0-105.04 16.36-51.29 16.35-97.05 45.12-5.24 4.23-12.21 5.73-6.98 1.5-15.1 1.5t-15.1-1.5ZM560-601.78q0-5.77 3.88-11.03t8.88-7.49q30-11 61.5-17t65.74-6q22 0 43 2.51 21 2.52 41 7.54 6 1.78 11 7.45t5 12.5q0 11.23-7.5 17.12-7.5 5.88-18.5 2.88-17.24-5-35.62-7.5T700-603.3q-29 0-55.88 5.38-26.88 5.38-52.64 16.38-14.21 5-22.85-.66-8.63-5.66-8.63-19.58Zm0 220q0-5.77 3.88-11.53t8.88-7.99q30-11 61.5-16.5t65.74-5.5q22 0 43 2.51 21 2.52 41 7.54 6 1.78 11 7.45t5 12.5q0 11.23-7.5 17.12-7.5 5.88-18.5 2.88-17.24-5-35.62-7.5T700-383.3q-29 0-55.88 4.88-26.88 4.88-52.64 15.88-14.21 5-22.85-.04-8.63-5.04-8.63-19.2Zm0-110q0-5.77 3.88-11.03t8.88-7.49q30-11 61.5-17t65.74-6q22 0 43 2.51 21 2.52 41 7.54 6 1.78 11 7.45t5 12.5q0 11.23-7.5 17.12-7.5 5.88-18.5 2.88-17.24-5-35.62-7.5T700-493.3q-29 0-55.88 5.38-26.88 5.38-52.64 16.38-14.21 5-22.85-.66-8.63-5.66-8.63-19.58Z"/></svg>Workout Types &amp; Monthly Notes</div>
+    <div class="bwrap" style="grid-template-columns:repeat(4,1fr)">
+      <div class="bcol" data-section="workout-guide">
+        <div class="btype"><div class="pill" style="background:#1565C0;color:#fff">Run/Row</div><p>Treadmill running paired with rowing intervals for cardio endurance and power.</p></div>
+        <div class="btype"><div class="pill" style="background:#E53935;color:#fff">Switch Template</div><p>Stations rotate more often than usual for a faster switch-style class.</p></div>
+        <div class="btype"><div class="pill" style="background:#F4511E;color:#fff">Lift More</div><p>Strength-forward floor blocks: heavier loads, controlled reps, progression.</p></div>
+        <div class="btype"><div class="pill" style="background:#00838F;color:#fff">Elevation Gain</div><p>Incline-focused tread work that builds lower-body strength and burn.</p></div>
+      </div>
+      <div class="bcol" data-section="workout-guide">
+        <div class="btype"><div class="pill" style="background:#6A1B9A;color:#fff">BOSU</div><p>Balance trainer work for core engagement, stability, and control.</p></div>
+        <div class="btype"><div class="pill" style="background:#00695C;color:#fff">Low Bench</div><p>Step-ups, lower-body strength, and bench-based movements.</p></div>
+        <div class="btype"><div class="pill" style="background:#558B2F;color:#fff">Minibands</div><p>Resistance-band work targeting glutes, hips, shoulders, and stabilizers.</p></div>
+        <div class="btype"><div class="pill" style="background:#E8A33D;color:#5C6470">Signature</div><p>Recurring named OTF workouts with a known format and coaching focus.</p></div>
+      </div>
+      <div class="bcol" data-section="workout-guide">
+        <div class="btype"><div class="pill" style="background:#1A3A6B;color:#fff">Benchmark</div><p>Timed or measured efforts used to track progress over time.</p></div>
+        <div class="btype"><div class="pill" style="background:#E53935;color:#fff">Specialty</div><p>Event-style templates built around a theme or a season milestone.</p></div>
+        <div class="btype"><div class="pill" style="background:#E4E7EB;color:#5C6470">Standard</div><p>A regular daily template with no signature, benchmark, or equipment emphasis.</p></div>
+        <div class="btype"><div style="flex:0 0 112px;text-align:center"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="autorenew" class="repeat-ic" style="color:#F4511E"><path d="M224.07-478.48q0 19.76 2.5 38.16 2.5 18.41 7.02 35.17 3.48 13.67-1.26 27.35-4.74 13.67-17.18 19.87-12.43 6.19-25.61.95-13.17-5.24-17.65-17.67-8.48-25.72-12.22-51.18-3.74-25.45-3.74-52.65 0-131.95 95.34-227.77 95.34-95.82 227.06-95.82h43l-57.42-57.41q-8.48-8.48-8.48-19.95 0-11.48 8.72-19.96 8.48-8.48 20.46-8.48t20.46 8.48l108.28 107.28q10.19 10.2 10.19 24.11t-10.19 24.11L506.07-636.61q-8.48 8.48-20.96 8.48t-20.96-8.48q-8.72-8.48-8.6-21.07.12-12.6 8.6-21.08l55.18-55.17H478.8q-104.6 0-179.67 75.3-75.06 75.3-75.06 180.15Zm511.86-.28q0-19.52-2.38-38.04-2.38-18.53-7.14-36.05-4.24-13.67.38-27.35 4.62-13.67 17.06-19.87 12.19-6.19 24.87-1.07 12.67 5.12 17.39 17.31 9.48 25.96 13.72 52.04 4.24 26.07 4.24 53.03 0 132.19-95.34 228.13-95.34 95.93-226.82 95.93h-45.24l57.18 57.18q8.72 8.48 8.6 19.95-.12 11.48-8.6 19.96-8.72 8.48-20.58 8.48-11.86 0-20.34-8.48L344.65-164.89q-10.19-10.2-10.19-23.99t10.19-23.99l108.52-108.28q8.24-8.48 20.22-8.6 11.98-.12 20.58 8.48 8.6 8.6 8.6 20.45 0 11.86-8.48 20.34l-57.42 57.41h44.53q104.6 0 179.67-75.3 75.06-75.3 75.06-180.39Z"/></svg><div style="font-family:'Barlow Condensed';font-weight:700;font-size:13px;color:#F4511E">Repeat</div></div><p>The day re-runs an earlier template from the same month.</p></div>
+      </div>
+      <div class="bcol">
+        <div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="groups" style="color:#8A919B"><path d="M31.2-237.13q-14.43 0-24.25-9.82t-9.82-24.25V-293q0-40.06 42.34-64.96 42.33-24.91 110.91-24.91 10.84 0 20.58.38 9.74.38 19.54 1.79-8.48 18.07-12.72 36.72-4.24 18.66-4.24 38.94v67.91H31.2Zm240 0q-14.43 0-24.25-9.82t-9.82-24.25V-305q0-32.72 17.62-59.82 17.62-27.09 50.1-47.33 32.48-20.24 77.4-30.48 44.93-10.24 97.68-10.24 53.77 0 98.58 10.24 44.81 10.24 77.4 30.48 32.48 20.24 49.72 47.33 17.24 27.1 17.24 59.82v33.8q0 14.43-9.82 24.25t-24.25 9.82H271.2Zm515.26 0v-67.97q0-20.81-3.86-39.27-3.86-18.47-12.1-36.25 9.8-1.49 19.56-1.87 9.76-.38 19.94-.38 68.98 0 110.93 24.55 41.94 24.55 41.94 65.32v21.8q0 14.43-9.82 24.25t-24.25 9.82H786.46ZM149.62-412.15q-29.34 0-50.32-21.11-20.97-21.1-20.97-50.74 0-29.78 21.05-50.76 21.06-20.98 50.62-20.98 29.72 0 50.82 20.99 21.09 20.98 21.09 51.14 0 29.26-21.03 50.36-21.04 21.1-51.26 21.1Zm660 0q-29.34 0-50.32-21.11-20.97-21.1-20.97-50.74 0-29.78 21.05-50.76 21.06-20.98 50.62-20.98 29.72 0 50.82 20.99 21.09 20.98 21.09 51.14 0 29.26-21.03 50.36-21.04 21.1-51.26 21.1Zm-329.5-70.48q-51.25 0-87.12-35.87-35.87-35.87-35.87-87.12 0-52.08 35.87-87.41 35.87-35.34 87.12-35.34 52.08 0 87.41 35.34 35.34 35.33 35.34 87.41 0 51.25-35.34 87.12-35.33 35.87-87.41 35.87Z"/></svg><p><b>3G-only templates:</b> 11/23 run 3G-style even where 2G is listed.</p></div>
+        <div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="local_fire_department" style="color:#8A919B"><path d="M156.41-400q0-115.68 71.5-225.2 71.5-109.52 196.74-187.47 19.15-12.44 39.05-.68 19.89 11.75 19.89 35.74v69.5q0 32.52 22.46 54.52t54.95 22q17.28 0 32.18-7.25 14.9-7.25 26.43-21.79 8.45-9.88 19.54-13.54 11.09-3.66 21.05 2.82 66.98 46.2 105.19 117.92 38.2 71.71 38.2 153.33 0 95.68-49 172.66-49 76.98-129.24 116.59 23.79-26.42 36.61-59.37 12.82-32.95 12.82-68.88 0-39.16-14.36-73.46-14.35-34.31-42.02-61.94L480-509.65 342.89-374.54q-28.72 27.71-43.07 62.1-14.36 34.38-14.36 73.39 0 35.81 12.7 68.79 12.7 32.97 36.49 59.41-80.24-39.61-129.24-116.59-49-76.98-49-172.56ZM480-414.17l89.61 87.81q17.52 17.56 27.16 39.88 9.64 22.33 9.64 47.28 0 51.51-36.96 87.97-36.97 36.45-89.49 36.45-52.53 0-89.45-36.45-36.92-36.46-36.92-87.97 0-25.04 9.25-47.35 9.26-22.32 27.79-39.78L480-414.17Z"/></svg><p><b>Specialty workouts this month.</b> Scheduled on 11/1.</p></div>
+        <div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="fitness_center" style="color:#8A919B"><path d="M269.2-643.3 150.11-524.22q-9.96 9.96-23.03 9.84-13.08-.12-23.04-10.08-8.95-8.95-9.33-22.53-.38-13.58 8.57-23.53l33.61-34.37L105-637.02q-10.2-10.2-10.2-23.99T105-685l61.37-61.37-17.89-17.65q-10.44-10.2-10.44-23.99t10.2-23.75q9.19-9.44 23.37-9.82 14.17-.38 24.37 8.82l18.65 18.13L275-855q10.2-10.2 23.99-10.2t24.23 10.2l31.89 31.89 34.61-33.85q9.95-8.95 23.15-8.95t22.91 9.71q9.96 10.2 9.96 23.28 0 13.07-9.96 23.03L316.93-691.04l374.11 374.11 118.85-118.85q9.96-9.96 23.15-9.96 13.2 0 23.16 9.96 8.95 8.95 9.33 22.65.38 13.7-8.57 23.41l-33.85 34.61L855-323.22q10.2 10.44 10.2 24.23 0 13.79-10.2 23.99l-62.37 62.37 18.13 17.65q10.2 10.2 10.2 23.99t-10.2 23.75q-10.19 10.2-23.87 10.2-13.67 0-23.87-10.44l-17.65-17.89L685-105q-10.2 10.2-23.99 10.2T637.02-105l-32.13-31.89-34.61 33.85q-9.95 8.95-23.03 8.83-13.08-.12-22.79-9.83-10.2-9.96-10.2-23.04 0-13.07 10.2-23.27L643.3-269.2 269.2-643.3Z"/></svg><p><b>Bench days are specific this month.</b> Low bench 11/2, 11/18.</p></div>
+        <div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="cyclone" style="color:#8A919B"><path d="M480-327.37q-62.96 0-107.79-44.84-44.84-44.83-44.84-107.79 0-63.96 44.84-108.29 44.83-44.34 107.79-44.34 63.96 0 108.29 44.34 44.34 44.33 44.34 108.29 0 62.96-44.34 107.79-44.33 44.84-108.29 44.84Zm0-65.26q36.8 0 62.09-25.78 25.28-25.79 25.28-61.59 0-36.8-25.28-62.09-25.29-25.28-62.09-25.28-35.8 0-61.59 25.28-25.78 25.29-25.78 62.09 0 35.8 25.78 61.59 25.79 25.78 61.59 25.78Zm0 240.13q-118.28 0-209.71-14.16-91.42-14.17-153.66-30.69-15.2-4-25.91-15.95Q80-225.26 80-241.46q0-13.19 11.34-20.79 11.33-7.6 25.29-3.36 44.17 12.81 84.92 20.95 40.75 8.14 62.52 11.9-53.57-44.04-82.57-113.02-29-68.98-29-134.22 0-114.93 14.16-206.84 14.17-91.9 30.93-156.05 4-15.44 15.83-26.27Q225.26-880 241.46-880q13.19 0 20.79 11.1t3.6 25.29q-12.57 44.18-19.97 84.28-7.4 40.11-10.4 61.16 46.8-53.09 111.97-81.21Q412.61-807.5 480-807.5q117.57 0 208.99 14.28 91.42 14.29 154.14 30.57 15.2 4.24 26.03 16.07Q880-734.74 880-718.54q0 12.95-11.22 20.55-11.21 7.6-25.17 3.36-44.41-12.8-84.4-20.83-39.99-8.02-61.28-10.78 56.53 50.67 83.05 114.76Q807.5-547.39 807.5-480q0 117.33-14.04 208.99-14.05 91.66-30.81 154.38-4 15.2-15.95 25.91Q734.74-80 718.54-80q-12.95 0-21.05-11.22-8.1-11.21-3.86-25.17 12.57-43.94 20.59-83.81 8.02-39.87 11.78-61.63-50.52 57.05-115.88 83.19Q544.76-152.5 480-152.5Zm185.5-142Q742-371 742-480t-76.5-185.5Q589-742 480-742t-185.5 76.5Q218-589 218-480t76.5 185.5Q371-218 480-218t185.5-76.5Z"/></svg><p><b>Tornado &amp; 90-minute classes</b> stay studio-specific. Two Tornado templates exist each month; coaches pick.</p></div>
+        <div class="bnote"><svg viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" data-icon="bolt" style="color:#8A919B"><path d="M354.74-353.3h-138.7q-20.63 0-30.32-18.16-9.7-18.15 2.74-35.3l347.08-500.91q8.48-11.72 21.2-15.84 12.72-4.12 25.43 1 12.72 5.12 20.2 16.96 7.48 11.83 5.48 25.55l-39.48 313.07H740.3q21.63 0 30.71 19.39 9.08 19.39-4.36 36.3L386.33-54.52q-8.48 10.72-21.7 13.84-13.22 3.12-25.05-2.24-11.84-5.36-18.58-16.96-6.74-11.6-4.74-25.55l38.48-267.87Z"/></svg><p><b>Hyrox templates aren’t date-specific.</b> Participating studios run whichever training phase they&#39;re in.</p></div>
+      </div>
+    </div>
+  </div>
+
 <div class="credit">Schedule data from https://www.reddit.com/r/orangetheory/comments/1xqghtv/november_2026_monthly_post/</div>  <footer class="poster-credits">
     <h2>Credits &amp; team</h2>
-<div class="credit-line">Image: <a href="https://www.reddit.com/u/MnM0720/" target="_blank" rel="noopener noreferrer">u/MnM0720</a></div><div class="credit-line">Modsquad: <a href="https://www.reddit.com/u/lookie4dacookie/" target="_blank" rel="noopener noreferrer">u/lookie4dacookie</a>, <a href="https://www.reddit.com/u/jenniferlynn5454/" target="_blank" rel="noopener noreferrer">u/jenniferlynn5454</a>, <a href="https://www.reddit.com/u/pantherluna/" target="_blank" rel="noopener noreferrer">u/pantherluna</a>, and <a href="https://www.reddit.com/u/Rizzah319/" target="_blank" rel="noopener noreferrer">u/Rizzah319</a></div>  </footer>
+    <div class="credit-line">Image: <a href="https://www.reddit.com/u/MnM0720/" target="_blank" rel="noopener noreferrer">u/MnM0720</a></div>
+    <div class="credit-line">Modsquad: <a href="https://www.reddit.com/u/lookie4dacookie/" target="_blank" rel="noopener noreferrer">u/lookie4dacookie</a>, <a href="https://www.reddit.com/u/jenniferlynn5454/" target="_blank" rel="noopener noreferrer">u/jenniferlynn5454</a>, <a href="https://www.reddit.com/u/pantherluna/" target="_blank" rel="noopener noreferrer">u/pantherluna</a>, and <a href="https://www.reddit.com/u/Rizzah319/" target="_blank" rel="noopener noreferrer">u/Rizzah319</a></div>
+  </footer>
 </div>
 </div>
 </body>

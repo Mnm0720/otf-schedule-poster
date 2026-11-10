@@ -1,6 +1,38 @@
-# Readable calendar-first poster design
+# Classic poster appearance
 
 ## Acceptance contract
+
+- The user's explicit "Just revert the visual look for now" supersedes the
+  redesign contract below. Default full and compact posters retain the original
+  ee773ad appearance: decorative header, typography, spacing, colors, panel order,
+  complete guide, and original Key Date artwork. Calendar icons default off.
+- Appearance controls, saved styles, parser fixes, and review automation remain.
+  Explicit section/icon/spacing choices may customize the classic presentation;
+  missing settings use Reference, comfortable spacing, all original sections, and
+  no calendar icons. Compact outputs keep their original Inter/Arial font stack.
+- Classic render review preserves contrast and small-text diagnostics as warnings;
+  clipping, overflow, failed fonts, and missing artwork remain blocking errors.
+  User approval of the original appearance does not authorize another redesign.
+
+## Current verification
+
+- Final regenerated November full, phone and social PNGs are byte-for-byte
+  identical to the preserved pre-redesign images. All 352 Python tests, 85 Node
+  tests, six saved schedules and the complete real Chrome/Pyodide smoke pass.
+  The monthly RSS pipeline renders the classic outputs successfully; readability
+  warnings remain visible while technical faults still block review readiness.
+
+- The classic-default regression failed before restoration and passed afterward.
+  It checks the original decorative header, Anton title, complete panels, original
+  built-in pill foregrounds, coffee benchmark artwork, and icons off by default.
+- All 129 focused visual, November output, event, customization, derivation,
+  footer, export, and browser bridge checks pass. Explicit custom colors keep the
+  pre-existing linear contrast rule; optional icons/sections remain functional.
+- Template changes relative to ee773ad are limited to appearance controls and
+  nonpixel metadata. Compact outputs retain the exact original font declaration.
+  No accepted output or automation file was changed here.
+
+## Superseded redesign contract and historical evidence
 
 - New posters use a clean calendar-first layout with a restrained month/title
   header, larger dates and workout labels, and readable repeat annotations. Keep

@@ -1,4 +1,4 @@
-from scripts.review_visuals import assess_metrics, review_html
+from scripts.review_visuals import assess_metrics, review_html, classify_findings
 
 
 def test_contrast_uses_actual_text_size_and_reports_missing_fonts_and_clipping():
@@ -24,3 +24,13 @@ def test_review_page_escapes_untrusted_findings_and_references_every_layout():
                         {'layout':'social','image':'social.png','issues':[]}])
     assert '<img src=x' not in page and '&lt;img src=x' in page
     assert all(name in page for name in ('poster.png','phone.png','social.png'))
+
+
+def test_classic_readability_findings_stay_visible_without_hiding_technical_errors():
+    findings=['Text contrast 3.48:1 below 4.5:1: Lift More',
+              'Text size 10.8px below 11px: Caption','Clipped content: Workout',
+              'Failed font: Barlow']
+    errors,warnings=classify_findings({'visual_style':'classic'},findings)
+    assert errors==findings[2:] and warnings==findings[:2]
+    assert classify_findings({'visual_style':'other'},findings)==(findings,[])
+    assert classify_findings({'visual_style':'classic'},['Missing font: Inter'])==([],['Missing font: Inter'])

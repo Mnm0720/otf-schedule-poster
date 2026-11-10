@@ -151,10 +151,11 @@ def check_appearance_presets(browser, base):
         page.locator('#src').fill((ROOT / 'schedules/raw/2026-11.txt').read_text(encoding='utf-8'))
         page.locator('#go').click()
         expect(page.locator('#exportBtn')).to_be_enabled(timeout=60000)
-        assert page.frame_locator('#preview').locator('td .pill svg').count() > 0
+        assert page.frame_locator('#preview').locator('td .pill svg').count() == 0
         page.locator('#appearanceSection > summary').click()
         page.get_by_label('Poster layout', exact=True).select_option('reference')
         page.get_by_label('Poster spacing', exact=True).select_option('compact')
+        page.get_by_label('Show workout icons on calendar dates', exact=True).check()
         page.get_by_label('Show workout icons on calendar dates', exact=True).uncheck()
         page.locator('#workoutSection > summary').click()
         page.get_by_label('Run/Row color', exact=True).fill('#123456')

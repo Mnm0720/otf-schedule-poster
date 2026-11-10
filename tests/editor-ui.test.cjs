@@ -25,6 +25,8 @@ test('appearance controls set layout visibility and calendar icons without chang
  const {doc,state}=setup(), before=JSON.stringify(state.draft.days);
  const root=doc.getElementById('appearanceEditor');
  const layout=labelled(root,'Poster layout');assert.ok(layout);
+ assert.equal(layout.value,'reference');
+ assert.equal(labelled(root,'Show workout icons on calendar dates').checked,false);
  layout.value='reference';layout.onchange();assert.equal(state.draft.appearance.layout,'reference');
  assert.equal(state.draft.appearance.show_workout_guide,true);
  const icons=labelled(root,'Show workout icons on calendar dates');icons.checked=false;icons.onchange();

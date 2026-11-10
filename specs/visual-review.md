@@ -2,6 +2,14 @@
 
 ## Acceptance criteria
 
+- The user-requested original visual style is marked `data-visual-style="classic"`.
+  Keep its contrast and small-type findings visible as nonblocking warnings so
+  restoring the accepted look does not disable monthly automation. Missing or
+  failed fonts, artwork, overflow and clipping remain blocking errors. Other
+  styles retain strict readability gates.
+  The original compact Inter/Arial fallback stack is retained; an unavailable
+  Inter family is reported as a warning, while actual font-load failures block.
+
 - Review full, phone and social HTML in an isolated Playwright browser. Wait for
   fonts, use the compact export's fitting rule, and save all three actual PNGs.
 - Audit visible text for contrast, missing requested fonts, effective text size,

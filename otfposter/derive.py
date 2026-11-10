@@ -9,12 +9,12 @@ from __future__ import annotations
 from datetime import date
 import re
 
-from .categories import BY_KEY, CATEGORIES, category_icon, contrast_foreground, contrast_ratio
+from .categories import BY_KEY, CATEGORIES, category_icon, contrast_foreground, contrast_ratio, light_text
 from .models import Month
 
 # Icons (Material Symbols names) used for the Key Dates rows, per category.
 KEY_DATE_ICONS = {
-    "bench": ("timer", "#1A3A6B"),
+    "bench": ("local_cafe", "#6A1B9A"),
     "sig": ("military_tech", "#F4511E"),
     "spec": ("local_fire_department", "#E53935"),
 }
@@ -332,7 +332,13 @@ def category_color(m: Month, key: str) -> str:
 
 
 def category_foreground(m: Month, key: str) -> str:
-    return contrast_foreground(category_color(m, key))
+    color = category_color(m, key)
+    if 'color' not in m.category_styles.get(key, {}):
+        return '#fff' if light_text(color) else '#5C6470'
+    rgb = [int(color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb]
+    luminance = sum(v * weight for v, weight in zip(linear, (0.2126, 0.7152, 0.0722)))
+    return '#000000' if luminance > 0.179 else '#FFFFFF'
 
 
 def pill(entry, m: Month) -> dict:
@@ -348,10 +354,10 @@ def pill(entry, m: Month) -> dict:
 def appearance_settings(m: Month) -> dict:
     """Resolve sparse per-month appearance settings without changing the Month."""
     settings = getattr(m, 'appearance', {})
-    reference = settings.get('layout', 'clean') == 'reference'
+    reference = settings.get('layout', 'reference') == 'reference'
     return {
         'layout': 'reference' if reference else 'clean',
-        'density': 'comfortable', 'calendar_icons': True,
+        'density': 'comfortable', 'calendar_icons': False,
         'show_marked_dates': reference, 'show_highlights': reference,
         'show_repeat_map': True, 'show_workout_guide': reference,
         **settings,

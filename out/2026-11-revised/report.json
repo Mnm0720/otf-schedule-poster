@@ -1,7 +1,7 @@
 {
   "month": "2026-11",
   "status": "ready",
-  "checked_at": "2026-11-10T06:58:29.210240+00:00",
+  "checked_at": "2026-11-10T13:28:54.816671+00:00",
   "source": {
     "url": "https://www.reddit.com/r/orangetheory/comments/1xqghtv/november_2026_monthly_post/",
     "post_id": "1xqghtv",
@@ -13,7 +13,7 @@
     "body_format": "feed HTML converted to text",
     "html_sha256": "af7c8e779f80cd9de97a1749226fb00b337ab7f3d393fb46083bdaa4052cc60a",
     "sha256": "cadeafefa5ff85bd40e5c0838d02bd86429b8b892ce14fccee18b81e4c12cffe",
-    "retrieved_at": "2026-11-10T06:58:29.210240+00:00"
+    "retrieved_at": "2026-11-10T13:28:54.816671+00:00"
   },
   "issues": [],
   "recognized_days": [
@@ -52,5 +52,5 @@
   ],
   "conflicts": [],
   "semantic_changes": [],
-  "fingerprint": "6a5baabf71a31f73bf637cbdc3d56c8b3673233f09cdcee9b5555c59e5de410c"
+  "fingerprint": "c3c9cb39a0ed1fd5ac17f3c7d439fc57e494ba1ac2a6171a745a62d371e693e7"
 }

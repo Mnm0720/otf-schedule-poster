@@ -2,8 +2,8 @@
 
 ## Acceptance criteria
 
-- Month JSON has an additive `appearance` object. Missing settings use the clean,
-  comfortable, icon-enabled design; reference layout can show the detailed guide.
+- Month JSON has an additive `appearance` object. At the user's request, missing
+  settings restore the original reference design, with calendar icons off.
   Only supported layout/density values and boolean section/icon settings render.
 - Appearance controls participate in dirty state, regeneration, undo, backups,
   sharing and section reset. Applying a layout sets its documented section choices.

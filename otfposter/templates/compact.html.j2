@@ -1,58 +1,33 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><title>OTF {{ title_month }}</title>
-<style>
-{{ font_css }}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#fff;font-family:'Barlow',Arial,sans-serif;color:#20242B;-webkit-font-smoothing:antialiased}
-.poster{width:1080px;height:{{ height }}px;background:#fff;padding:{{ '150px 40px 100px' if layout=='phone' else '34px 34px' }};overflow:hidden;border-top:16px solid #F4511E}
+<!doctype html><html><head><meta charset="utf-8"><title>OTF {{ title_month }}</title>
+<style>{{ font_css }}
+*{box-sizing:border-box;margin:0}body{background:#fff;font-family:'Inter',Arial,sans-serif;color:#202732}
+.poster{width:1080px;height:{{ height }}px;background:#F1F3F5;padding:{{ '200px 48px 100px' if layout=='phone' else '42px 40px' }};overflow:hidden;border-top:16px solid #F4511E}
 .compact-content{transform-origin:top left;width:100%}
-header{margin-bottom:22px}
-h1{font-family:'Barlow Condensed','Barlow',sans-serif;font-size:57px;letter-spacing:.2px;line-height:1.02;font-weight:700}
-h1 span{color:#9C300F}
-.theme{display:inline-block;font-size:25px;line-height:1.2;margin-top:12px;font-weight:700;background:#FFF1EB;color:#9C300F;padding:7px 11px;border-radius:5px;overflow-wrap:anywhere}
-.subtitle{font-size:20px;line-height:1.35;margin-top:9px;color:#505B67;overflow-wrap:anywhere}
-.event{background:#FFF1EB;color:#20242B;padding:10px 12px;margin-bottom:12px;border-left:4px solid #F4511E;border-radius:5px;font-size:19px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
-table{width:100%;border-collapse:separate;border-spacing:5px;table-layout:fixed}
-th{font-family:'Barlow Condensed','Barlow',sans-serif;font-size:19px;padding:10px 0;color:#fff;background:#20242B;letter-spacing:1px;text-transform:uppercase}
-td{vertical-align:top;background:#fff;border:1px solid #D5DAE1;border-radius:7px;padding:10px 7px;height:{{ ((1160 if layout=='phone' else 900) / weeks|length)|int }}px}
-td.empty{background:#F5F7F9;border-color:transparent}
-.date{display:flex;justify-content:space-between;align-items:center;font-size:30px;line-height:1.1;font-weight:700;margin-bottom:8px}
-.pill{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed','Barlow',sans-serif;font-size:18px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px 6px;margin-top:5px}
-.pill span{min-width:0;overflow-wrap:anywhere}
-.workout-icon{display:block;width:18px;height:18px;flex:0 0 18px}
-.event-label{background:#20242B;color:#fff;border-left:3px solid #F4511E;font-family:'Barlow Condensed','Barlow',sans-serif;font-size:18px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px 6px;margin-top:5px;overflow-wrap:anywhere}
-.note{font-size:16px;line-height:1.3;color:#505B67;margin-top:8px;font-weight:500;overflow-wrap:anywhere}
-.note.flag{color:#9C300F;font-weight:600}
-.g3{display:inline-flex;background:#20242B;color:#fff;font-family:'Barlow',sans-serif;font-size:15px;font-weight:700;line-height:1.1;padding:3px 5px;border-radius:4px}
-.key{display:flex;flex-wrap:wrap;gap:9px 18px;margin:18px 5px;font-size:17px;font-weight:600;color:#20242B}
-.key span{display:inline-flex;align-items:center;gap:5px}.key svg{width:18px;height:18px;flex:0 0 18px}
-.dot{display:inline-block;width:11px;height:11px;border-radius:50%}
-footer{font-size:16px;line-height:1.45;border-top:1px solid #D5DAE1;margin-top:18px;padding-top:12px;color:#505B67;overflow-wrap:anywhere}
+header{margin-bottom:24px}h1{font-size:48px;letter-spacing:-1px;line-height:1.1}h1 span{color:#D6420E}
+.theme{font-size:27px;margin-top:12px;font-weight:700}.subtitle{font-size:19px;margin-top:8px;color:#5C6470}
+.event{background:#202732;color:white;padding:10px 16px;margin-bottom:10px;border-radius:8px;font-size:19px}
+table{width:100%;border-collapse:separate;border-spacing:5px;table-layout:fixed}th{font-size:20px;padding:10px;color:#5C6470}
+td{vertical-align:top;background:#fff;border:1px solid #DDE1E6;border-radius:10px;padding:9px 6px;height:{{ 175 if layout=='phone' else 122 }}px}
+td.empty{background:transparent;border:0}.date{font-size:29px;font-weight:800;margin-bottom:7px}
+.pill{font-size:17px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px;margin-top:4px;overflow-wrap:anywhere}
+.event-label{background:#202732;color:#fff;border-left:3px solid #F4511E;font-size:17px;line-height:1.2;font-weight:700;border-radius:5px;padding:5px;margin-top:4px;overflow-wrap:anywhere}
+.note{font-size:14px;color:#5C6470;margin-top:6px}.three-g{font-size:15px;font-weight:700;color:#D6420E}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 5px;font-size:17px;font-weight:600}
+.dot{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:6px}
+footer{font-size:16px;line-height:1.6;border-top:1px solid #CCD2D9;margin-top:16px;padding-top:12px;color:#4A5360;overflow-wrap:anywhere}
 footer a{color:inherit;text-decoration:none}.credit-line{white-space:pre-wrap}
-.density-compact td{padding:8px 6px;height:{{ ((1030 if layout=='phone' else 820) / weeks|length)|int }}px}
-.density-compact .date{font-size:27px;margin-bottom:6px}
-.density-compact .pill,.density-compact .event-label{font-size:16px;padding:4px 5px;margin-top:4px}
-.density-compact .note{font-size:15px;margin-top:6px}
-</style>
-</head>
-<body>
-<div class="poster layout-{{ appearance.layout }} density-{{ appearance.density }}"><div class="compact-content">
-<header><h1><span>OTF</span> {{ title_month }}</h1>
-<div class="subtitle">{{ subtitle }}{% if tagline %} · {{ tagline }}{% endif %}</div>
-{% if theme %}<div class="theme">{{ theme }}</div>{% endif %}</header>
+.workout-icon{display:inline-block;width:14px;height:14px;vertical-align:middle;margin-right:4px}
+.density-compact td{height:{{ 160 if layout=='phone' else 110 }}px;padding:7px 5px}
+</style></head><body><div class="poster layout-{{ appearance.layout }} density-{{ appearance.density }}" data-visual-style="classic"><div class="compact-content">
+<header><h1><span>OTF</span> {{ title_month }}</h1>{% if theme %}<div class="theme">{{ theme }}</div>{% endif %}
+<div class="subtitle">{{ subtitle }}{% if tagline %} · {{ tagline }}{% endif %}</div></header>
 {% for e in m.events %}<div class="event">{{ e.label(m.month) }}</div>{% endfor %}
-<table aria-label="{{ title_month }} workout schedule">
-<thead><tr>{% for name in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<th scope="col">{{ name }}</th>{% endfor %}</tr></thead>
-<tbody>
-{% for week in weeks %}<tr>{% for day in week %}{% if day %}<td class="compact-day">
-<div class="date">{{ day.day }}{% if day.three_g %}<span class="g3">3G</span>{% endif %}</div>
+<table><thead><tr>{% for name in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<th>{{ name }}</th>{% endfor %}</tr></thead><tbody>
+{% for week in weeks %}<tr>{% for day in week %}{% if day %}<td class="compact-day"><div class="date">{{ day.day }}</div>
 {% for event in day.events %}<div class="event-label">{{ event }}</div>{% endfor %}
-{% for pill in day.pills %}<div class="pill" style="background:{{ pill.color }};color:{{ pill.fg }}">{% if appearance.calendar_icons %}{{ icon(pill.icon, cls="workout-icon") }}{% endif %}<span>{{ pill.label }}</span></div>{% endfor %}
-{% if day.note %}<div class="note{% if day.flag %} flag{% endif %}">{{ day.note }}</div>{% endif %}</td>
-{% else %}<td class="empty"></td>{% endif %}{% endfor %}</tr>{% endfor %}
-</tbody></table>
-{% if appearance.show_workout_guide %}<div class="key">{% for type in legend %}<span><i class="dot" style="background:{{ type.color }}"></i>{% if appearance.calendar_icons %}{{ icon(type.icon) }}{% endif %}{{ type.label }}</span>{% endfor %}</div>{% endif %}
+{% for pill in day.pills %}<div class="pill" style="background:{{ pill.color }};color:{{ pill.fg }}">{% if appearance.calendar_icons %}{{ icon(pill.icon, cls="workout-icon") }}{% endif %}{{ pill.label }}</div>{% endfor %}
+{% if day.three_g %}<div class="three-g">3G</div>{% endif %}{% if day.note %}<div class="note">{{ day.note }}</div>{% endif %}</td>
+{% else %}<td class="empty"></td>{% endif %}{% endfor %}</tr>{% endfor %}</tbody></table>
+{% if appearance.show_workout_guide %}<div class="key">{% for type in legend %}<span><i class="dot" style="background:{{ type.color }}"></i>{{ type.label }}</span>{% endfor %}</div>{% endif %}
 {% if credit_lines %}<footer>{% for line in credit_lines %}<div class="credit-line">{% for part in line %}{{ part.text }}{% endfor %}</div>{% endfor %}</footer>{% endif %}
-</div></div>
-</body></html>
+</div></div></body></html>

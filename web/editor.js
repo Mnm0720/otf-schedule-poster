@@ -76,16 +76,16 @@
     renderAppearance() {
       const host=this.doc.getElementById('appearanceEditor');host.replaceChildren();
       const m=this.state.draft, a=m.appearance ??= {};
-      this.select(host,'Layout','Poster layout',[['clean','Clean calendar'],['reference','Detailed reference']],a.layout||'clean',value=>{
+      this.select(host,'Layout','Poster layout',[['reference','Original poster'],['clean','Fewer detail panels']],a.layout||'reference',value=>{
         Object.assign(a,{layout:value,show_marked_dates:value==='reference',show_highlights:value==='reference',
           show_repeat_map:true,show_workout_guide:value==='reference'});this.renderAppearance();
       });
       this.select(host,'Spacing','Poster spacing',[['comfortable','Comfortable'],['compact','Compact']],a.density||'comfortable',value=>{a.density=value;});
-      this.checkbox(host,'Show workout icons on calendar dates','Show workout icons on calendar dates',a.calendar_icons!==false,
+      this.checkbox(host,'Show workout icons on calendar dates','Show workout icons on calendar dates',a.calendar_icons===true,
         checked=>this.change(()=>{a.calendar_icons=checked;}));
-      for(const [key,label,fallback] of [['show_marked_dates','Marked Dates ribbon',a.layout==='reference'],
-        ['show_highlights','Workout date highlights',a.layout==='reference'],['show_repeat_map','Repeat map',true],
-        ['show_workout_guide','Detailed workout guide',a.layout==='reference']]){
+      for(const [key,label,fallback] of [['show_marked_dates','Marked Dates ribbon',(a.layout||'reference')==='reference'],
+        ['show_highlights','Workout date highlights',(a.layout||'reference')==='reference'],['show_repeat_map','Repeat map',true],
+        ['show_workout_guide','Detailed workout guide',(a.layout||'reference')==='reference']]){
         this.checkbox(host,label,`Show ${label}`,a[key]??fallback,checked=>this.change(()=>{a[key]=checked;}));
       }
       host.append(this.node('p','Save colors, spacing, sections, icon styles and credits for another month. Dates, workouts, themes and events stay with their poster.','hint'));

@@ -2,7 +2,7 @@
 
 Paste the monthly r/orangetheory thread, get a printable schedule poster.
 
-<img src="out/2026-11-revised/poster.png" alt="November poster with workout icons" width="400">
+<img src="out/2026-11-revised/poster.png" alt="November schedule poster" width="400">
 
 ## Generate a poster
 
@@ -21,10 +21,10 @@ loading**; your pasted text stays in place.
 
 ### Fix or customize your poster
 
-**Appearance & reusable styles** offers a clean calendar or a detailed reference
-layout, comfortable/compact spacing, workout icons on calendar dates, and section
-visibility controls. Icons use locally cached SVG artwork and always accompany
-readable workout labels. The default palette chooses contrasting text colors.
+**Appearance & reusable styles** keeps the original poster design as the default,
+with calendar icons off. Optional controls can hide detail panels, change spacing,
+enable cached workout icons, or change section visibility. The original fonts,
+orange frame, header artwork, colors and panel arrangement are restored.
 
 Save a named style to reuse its appearance, built-in workout colors, note/icon
 styles and credits. **Use this style for new posters when saved** makes it the
@@ -188,10 +188,9 @@ you can see what the output looks like before you paste anything.
 
 ## How the poster is laid out
 
-Available poster sections are listed below. The clean layout prioritizes the
-calendar; the detailed reference layout also shows the marked-date ribbon,
-equipment highlights and workout guide. Appearance controls can change these
-sections independently without changing the schedule.
+Available poster sections are listed below. The original layout includes the
+marked-date ribbon, equipment highlights and workout guide. Appearance controls
+can hide sections independently without changing the schedule.
 
 | Section | What it shows |
 | --- | --- |
