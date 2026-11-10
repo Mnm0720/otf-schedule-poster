@@ -62,6 +62,10 @@
 
 ## Verification
 
+- The first hosted manual dispatch rejected `check_next_month=off` with HTTP 422:
+  GitHub interpreted unquoted YAML `on`/`off` choices as booleans. Quoting these
+  choice values preserves their CLI string contract; hosted verification follows.
+
 - Integrated November 10 check: 350 Python tests and 85 Node tests passed; all six
   saved schedules passed strict validation. The complete Chrome smoke passed real
   Pyodide, icon rendering, cross-month style reuse/default recovery, saved-draft

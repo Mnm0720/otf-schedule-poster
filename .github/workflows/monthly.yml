@@ -22,7 +22,7 @@ on:
       check_next_month:
         description: 'Check next month too (auto starts on the 25th)'
         type: choice
-        options: [auto, on, off]
+        options: [auto, 'on', 'off']
         default: auto
       create_draft_pr:
         description: 'Create/update a draft PR from clean reviews (requires repository setting and write permissions)'
